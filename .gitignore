@@ -5,7 +5,7 @@
 *.suo
 *.user
 *.db
-
+*.opendb
 # Build results
 [Pp]roj.ios_mac/
 [Pp]roj.linux/

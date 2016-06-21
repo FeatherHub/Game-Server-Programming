@@ -1,6 +1,8 @@
 #pragma comment(lib, "ws2_32")
+
 #include <winsock2.h>
 #include <Ws2tcpip.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -9,11 +11,14 @@
 
 // 윈도우 프로시저
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+
 // 편집 컨트롤 출력 함수
 void DisplayText(char *fmt, ...);
+
 // 오류 출력 함수
 void err_quit(char *msg);
 void err_display(char *msg);
+
 // 소켓 통신 스레드 함수
 DWORD WINAPI ServerMain(LPVOID arg);
 DWORD WINAPI ProcessClient(LPVOID arg);
@@ -22,8 +27,10 @@ HINSTANCE hInst; // 인스턴스 핸들
 HWND hEdit; // 편집 컨트롤
 CRITICAL_SECTION cs; // 임계 영역
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                   LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, 
+					HINSTANCE hPrevInstance,
+					LPSTR lpCmdLine, 
+					int nCmdShow)
 {
 	hInst = hInstance;
 	InitializeCriticalSection(&cs);
@@ -40,12 +47,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	wndclass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wndclass.lpszMenuName = NULL;
 	wndclass.lpszClassName = "MyWndClass";
+
 	if(!RegisterClass(&wndclass)) return 1;
 
 	// 윈도우 생성
-	HWND hWnd = CreateWindow("MyWndClass", "TCP 서버", WS_OVERLAPPEDWINDOW,
-		0, 0, 600, 200, NULL, NULL, hInstance, NULL);
-	if(hWnd == NULL) return 1;
+	HWND hWnd = CreateWindow(
+		"MyWndClass", 
+		"TCP 서버", 
+		WS_OVERLAPPEDWINDOW,
+		0, 
+		0, 
+		600, 
+		200, 
+		NULL, 
+		NULL, 
+		hInstance, 
+		NULL);
+
+	if(hWnd == NULL) 
+		return 1;
+	
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -54,23 +75,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// 메시지 루프
 	MSG msg;
-	while(GetMessage(&msg, 0, 0, 0) > 0){
+	while(GetMessage(&msg, 0, 0, 0) > 0)
+	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+	
 	DeleteCriticalSection(&cs);
+	
 	return msg.wParam;
 }
 
 // 윈도우 프로시저
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch(uMsg){
+	switch(uMsg)
+	{
 	case WM_CREATE:
-		hEdit = CreateWindow("edit", NULL, 
+		hEdit = CreateWindow(
+			"edit", 
+			NULL, 
 			WS_CHILD | WS_VISIBLE | WS_HSCROLL | 
-			WS_VSCROLL | ES_AUTOHSCROLL | 
-			ES_AUTOVSCROLL | ES_MULTILINE | ES_READONLY,
+			WS_VSCROLL | ES_AUTOHSCROLL | ES_AUTOVSCROLL | 
+			ES_MULTILINE | ES_READONLY,
 			0, 0, 0, 0, hWnd, (HMENU)100, hInst, NULL);
 		return 0;
 	case WM_SIZE:
@@ -83,6 +110,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		return 0;
 	}
+
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
@@ -145,12 +173,14 @@ DWORD WINAPI ServerMain(LPVOID arg)
 	SOCKET listen_sock = socket(AF_INET, SOCK_STREAM, 0);
 	if(listen_sock == INVALID_SOCKET) err_quit("socket()");
 
-	// bind()
+	//initialize SOCKADDR_IN member
 	SOCKADDR_IN serveraddr;
 	ZeroMemory(&serveraddr, sizeof(serveraddr));
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	serveraddr.sin_port = htons(SERVERPORT);
+
+	// bind()
 	retval = bind(listen_sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
 	if(retval == SOCKET_ERROR) err_quit("bind()");
 
@@ -164,7 +194,8 @@ DWORD WINAPI ServerMain(LPVOID arg)
 	int addrlen;
 	HANDLE hThread;
 
-	while(1){
+	while(1)
+	{
 		// accept()
 		addrlen = sizeof(clientaddr);
 		client_sock = accept(listen_sock, (SOCKADDR *)&clientaddr, &addrlen);
