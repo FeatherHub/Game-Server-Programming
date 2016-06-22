@@ -208,7 +208,7 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-
+cocos2d
 # Directories potentially created on remote AFP share
 .AppleDB
 .AppleDesktop
