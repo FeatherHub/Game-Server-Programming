@@ -5,7 +5,6 @@
 #include "ILog.h"
 #include "TcpNetwork.h"
 
-
 namespace NServerNetLib
 {
 	TcpNetwork::TcpNetwork() {}
@@ -67,10 +66,10 @@ namespace NServerNetLib
 	{
 		auto read_set = m_Readfds;
 		auto write_set = m_Readfds;
-		auto exc_set = m_Readfds;
+		auto excpt_set = m_Readfds;
 
 		timeval timeout{ 0, 1000 }; //tv_sec, tv_usec
-		auto selectResult = select(0, &read_set, &write_set, &exc_set, &timeout);
+		auto selectResult = select(0, &read_set, &write_set, &excpt_set, &timeout);
 
 		auto isFDSetChanged = RunCheckSelectResult(selectResult);
 		if (isFDSetChanged == false)
@@ -85,7 +84,7 @@ namespace NServerNetLib
 		}
 		else // clients
 		{
-			RunCheckSelectClients(exc_set, read_set, write_set);
+			RunCheckSelectClients(excpt_set, read_set, write_set);
 		}
 	}
 
