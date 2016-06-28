@@ -19,7 +19,7 @@ namespace TCPServerLib
 		TCPNetwork();
 		~TCPNetwork();
 
-		NET_ERROR_CODE Init(const ServerConfig* pConfig, ILog* pLogger) override;
+		NET_ERROR_CODE Init(ServerConfig* pConfig, ILog* pLogger) override;
 		void Run() override;
 		NET_ERROR_CODE SendData(const int sIdx, const short pktId, const short size, const char* pMsg) override;
 		RecvPacketInfo GetPacketInfo() override;
@@ -33,10 +33,10 @@ namespace TCPServerLib
 		
 		NET_ERROR_CODE NewSession();
 		int GetClientSessionIndex();
-		void SetSockOption();
-		void ConnectedSession();
+		void SetSockOption(SOCKET s);
+		void ConnectedSession(int sessionIdx, int sockFd);
 		
-		void RunCheckSelectClient(fd_set& exc_set, fd_set& read_set, fd_set& write_set);
+		void RunCheckSelectClient(fd_set& read_set, fd_set& write_set, fd_set& exc_set);
 
 		bool RunProcessReceive(const int sessionIdx, const SOCKET fd, fd_set& read_set);
 		NET_ERROR_CODE ReceiveSocket(const int sessionIdx);
@@ -52,14 +52,14 @@ namespace TCPServerLib
 		void CloseSession(const SOCKET_CLOSE_CASE closeCase, const SOCKET sock, const int sessionIdx);
 
 	protected:
-		ServerConfig m_config;
+		ServerConfig* m_pConfig;
 
 		SOCKET m_serverSocket;
 		
 		fd_set m_readSet;
 		
 		std::vector<ClientSession> m_clientSessionPool;
-		std::vector<int> m_clientSessionPoolIndex;
+		std::deque<int> m_clientSessionPoolIndex;
 		size_t m_connectedSessionCount = 0;
 		int64_t m_connectSeq = 0;
 
