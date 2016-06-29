@@ -19,6 +19,7 @@ namespace NCommon
 {
 	enum class ERROR_CODE :short;
 }
+
 using ERROR_CODE = NCommon::ERROR_CODE;
 
 namespace NLogicLib

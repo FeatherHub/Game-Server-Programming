@@ -24,7 +24,7 @@ namespace NLogicLib
 		ERROR_CODE AddUser(const int sessionIndex, const char* pszID);
 		ERROR_CODE RemoveUser(const int sessionIndex);
 
-		std::tuple<ERROR_CODE,User*> GetUser(const int sessionIndex);
+		std::tuple<ERROR_CODE, User*> GetUser(const int sessionIndex);
 
 				
 	private:

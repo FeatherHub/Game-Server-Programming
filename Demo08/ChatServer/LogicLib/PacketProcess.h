@@ -1,5 +1,5 @@
 #pragma once
-
+ 
 #include "../../Common/Packet.h"
 #include "../ServerNetLib/Define.h"
 #include "../../Common/ErrorCode.h"
@@ -16,7 +16,6 @@ namespace NServerNetLib
 	class ILog;
 }
 
-
 namespace NLogicLib
 {	
 	class UserManager;
@@ -30,7 +29,6 @@ namespace NLogicLib
 		using PacketInfo = NServerNetLib::RecvPacketInfo;
 		typedef ERROR_CODE(PacketProcess::*PacketFunc)(PacketInfo);
 		PacketFunc PacketFuncArray[(int)NCommon::PACKET_ID::MAX];
-
 		using TcpNet = NServerNetLib::ITcpNetwork;
 		using ILog = NServerNetLib::ILog;
 
@@ -41,33 +39,29 @@ namespace NLogicLib
 		void Init(TcpNet* pNetwork, UserManager* pUserMgr, LobbyManager* pLobbyMgr, ILog* pLogger);
 
 		void Process(PacketInfo packetInfo);
-	
-	private:
-		ILog* m_pRefLogger;
-		TcpNet* m_pRefNetwork;
-		UserManager* m_pRefUserMgr;
-		LobbyManager* m_pRefLobbyMgr;
-		
-				
+
 	private:
 		ERROR_CODE NtfSysCloseSesson(PacketInfo packetInfo);
 		
+		//로그인
 		ERROR_CODE Login(PacketInfo packetInfo);
-		
 		ERROR_CODE LobbyList(PacketInfo packetInfo);
 
+		//로비
 		ERROR_CODE LobbyEnter(PacketInfo packetInfo);
-
 		ERROR_CODE LobbyRoomList(PacketInfo packetInfo);
-
 		ERROR_CODE LobbyUserList(PacketInfo packetInfo);
-
 		ERROR_CODE LobbyLeave(PacketInfo packetInfo);
-
+		
+		//룸
 		ERROR_CODE RoomEnter(PacketInfo packetInfo);
-
 		ERROR_CODE RoomLeave(PacketInfo packetInfo);
-
 		ERROR_CODE RoomChat(PacketInfo packetInfo);
+
+	private:
+		TcpNet* m_pRefNetwork;
+		UserManager* m_pRefUserMgr;
+		LobbyManager* m_pRefLobbyMgr;		
+		ILog* m_pRefLogger;
 	};
 }

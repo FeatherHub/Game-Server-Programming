@@ -14,9 +14,10 @@ using LOG_TYPE = NServerNetLib::LOG_TYPE;
 using NET_ERROR_CODE = NServerNetLib::NET_ERROR_CODE;
 
 namespace NLogicLib
-{
+{																		
 	Main::Main()
 	{
+
 	}
 
 	Main::~Main()
@@ -94,7 +95,7 @@ namespace NLogicLib
 		
 		wchar_t sPath[MAX_PATH] = { 0, };
 		::GetCurrentDirectory(MAX_PATH, sPath);
-
+		
 		wchar_t inipath[MAX_PATH] = { 0, };
 		_snwprintf_s(inipath, _countof(inipath), _TRUNCATE, L"%s\\ServerConfig.ini", sPath);
 
@@ -114,6 +115,7 @@ namespace NLogicLib
 		m_pServerConfig->MaxRoomUserCount = GetPrivateProfileInt(L"Config", L"MaxRoomUserCount", 0, inipath);
 
 		m_pLogger->Write(NServerNetLib::LOG_TYPE::L_INFO, "%s | Port(%d), Backlog(%d)", __FUNCTION__, m_pServerConfig->Port, m_pServerConfig->BackLogCount);
+	
 		return ERROR_CODE::NONE;
 	}
 		

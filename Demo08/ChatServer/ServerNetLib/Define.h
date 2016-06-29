@@ -60,6 +60,7 @@ namespace NServerNetLib
 		short PacketBodySize = 0;
 		char* pRefData = 0;
 	};
+
 	struct RecvPacketInfo2
 	{
 		int SessionIndex = 0;

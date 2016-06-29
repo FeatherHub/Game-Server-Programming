@@ -1,5 +1,6 @@
 #include "../ServerNetLib/ILog.h"
 #include "../ServerNetLib/TcpNetwork.h"
+
 #include "User.h"
 #include "UserManager.h"
 #include "Room.h"
@@ -16,13 +17,14 @@ namespace NLogicLib
 
 	void PacketProcess::Init(TcpNet* pNetwork, UserManager* pUserMgr, LobbyManager* pLobbyMgr, ILog* pLogger)
 	{
-		m_pRefLogger = pLogger;
 		m_pRefNetwork = pNetwork;
 		m_pRefUserMgr = pUserMgr;
 		m_pRefLobbyMgr = pLobbyMgr;
+		m_pRefLogger = pLogger;
 
 		using netLibPacketId = NServerNetLib::PACKET_ID;
 		using commonPacketId = NCommon::PACKET_ID;
+
 		for (int i = 0; i < (int)commonPacketId::MAX; ++i)
 		{
 			PacketFuncArray[i] = nullptr;

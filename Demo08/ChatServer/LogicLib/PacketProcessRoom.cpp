@@ -98,17 +98,20 @@ namespace NLogicLib
 
 		auto lobbyIndex = pUser->GetLobbyIndex();
 		auto pLobby = m_pRefLobbyMgr->GetLobby(lobbyIndex);
-		if (pLobby == nullptr) {
+		if (pLobby == nullptr) 
+		{
 			CHECK_ERROR(ERROR_CODE::ROOM_ENTER_INVALID_LOBBY_INDEX);
 		}
 
 		auto pRoom = pLobby->GetRoom(pUser->GetRoomIndex());
-		if (pRoom == nullptr) {
+		if (pRoom == nullptr) 
+		{
 			CHECK_ERROR(ERROR_CODE::ROOM_ENTER_INVALID_ROOM_INDEX);
 		}
 
 		auto leaveRet = pRoom->LeaveUser(userIndex);
-		if (leaveRet != ERROR_CODE::NONE) {
+		if (leaveRet != ERROR_CODE::NONE) 
+		{
 			CHECK_ERROR(leaveRet);
 		}
 		
@@ -124,12 +127,20 @@ namespace NLogicLib
 		// 로비에 바뀐 방 정보를 통보
 		pLobby->NotifyChangedRoomInfo(pRoom->GetIndex());
 		
-		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_LEAVE_RES, sizeof(resPkt), (char*)&resPkt);
+		m_pRefNetwork->SendData(packetInfo.SessionIndex, 
+			(short)PACKET_ID::ROOM_LEAVE_RES, 
+			sizeof(resPkt), 
+			(char*)&resPkt);
+
 		return ERROR_CODE::NONE;
 
 	CHECK_ERR:
 		resPkt.SetError(__result);
-		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_LEAVE_RES, sizeof(resPkt), (char*)&resPkt);
+		m_pRefNetwork->SendData(packetInfo.SessionIndex, 
+			(short)PACKET_ID::ROOM_LEAVE_RES, 
+			sizeof(resPkt), 
+			(char*)&resPkt);
+
 		return (ERROR_CODE)__result;
 	}
 
@@ -166,6 +177,7 @@ namespace NLogicLib
 		pRoom->NotifyChat(pUser->GetSessioIndex(), pUser->GetID().c_str(), reqPkt->Msg);
 				
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
+		
 		return ERROR_CODE::NONE;
 
 	CHECK_ERR:

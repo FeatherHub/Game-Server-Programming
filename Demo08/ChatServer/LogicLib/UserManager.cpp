@@ -81,13 +81,16 @@ namespace NLogicLib
 
 	std::tuple<ERROR_CODE, User*> UserManager::GetUser(const int sessionIndex)
 	{
+		//전달받은 세션번호로 유저를 검색한다
 		auto pUser = FindUser(sessionIndex);
 
-		if (pUser == nullptr) {
+		if (pUser == nullptr) 
+		{
 			return { ERROR_CODE::USER_MGR_INVALID_SESSION_INDEX, nullptr };
 		}
 
-		if (pUser->IsConfirm() == false) {
+		if (pUser->IsConfirm() == false) 
+		{
 			return{ ERROR_CODE::USER_MGR_NOT_CONFIRM_USER, nullptr };
 		}
 
@@ -98,7 +101,8 @@ namespace NLogicLib
 	{
 		auto findIter = m_UserSessionDic.find(sessionIndex);
 		
-		if (findIter == m_UserSessionDic.end()) {
+		if (findIter == m_UserSessionDic.end()) 
+		{
 			return nullptr;
 		}
 		

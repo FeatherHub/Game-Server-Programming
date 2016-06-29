@@ -49,16 +49,19 @@ namespace NLogicLib
 
 	ERROR_CODE Lobby::EnterUser(User* pUser)
 	{
-		if (m_UserIndexDic.size() >= m_MaxUserCount) {
+		if (m_UserIndexDic.size() >= m_MaxUserCount) 
+		{
 			return ERROR_CODE::LOBBY_ENTER_MAX_USER_COUNT;
 		}
 
-		if (FindUser(pUser->GetIndex()) != nullptr) {
+		if (FindUser(pUser->GetIndex()) != nullptr) 
+		{
 			return ERROR_CODE::LOBBY_ENTER_USER_DUPLICATION;
 		}
 
 		auto addRet = AddUser(pUser);
-		if (addRet != ERROR_CODE::NONE) {
+		if (addRet != ERROR_CODE::NONE) 
+		{
 			return addRet;
 		}
 
@@ -229,11 +232,13 @@ namespace NLogicLib
 	{
 		for (auto& pUser : m_UserIndexDic)
 		{
-			if (pUser.second->GetIndex() == passUserindex) {
+			if (pUser.second->GetIndex() == passUserindex) 
+			{
 				continue;
 			}
 
-			if (pUser.second->IsCurDomainInLobby() == false) {
+			if (pUser.second->IsCurDomainInLobby() == false) 
+			{
 				continue;
 			}
 

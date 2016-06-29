@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 
 #include "../../Common/Packet.h"
@@ -23,6 +24,7 @@ namespace NLogicLib
 	{
 	public:
 		Main();
+
 		~Main();
 
 		ERROR_CODE Init();
@@ -31,12 +33,10 @@ namespace NLogicLib
 
 		void Stop();
 
-
 	private:
 		ERROR_CODE LoadConfig();
 
 		void Release();
-
 
 	private:
 		bool m_IsRun = false;
@@ -48,6 +48,5 @@ namespace NLogicLib
 		std::unique_ptr<PacketProcess> m_pPacketProc;
 		std::unique_ptr<UserManager> m_pUserMgr;
 		std::unique_ptr<LobbyManager> m_pLobbyMgr;
-		
 	};
 }
