@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ITcpNetwork.h"
+
 #define FD_SETSIZE 1024 // http://blog.naver.com/znfgkro1/220175848048
 
 #pragma comment(lib, "ws2_32")
@@ -9,15 +11,9 @@
 #include <vector>
 #include <deque>
 #include <unordered_map>
-//#include "ServerNetErrorCode.h"
-//#include "Define.h"
-#include "ITcpNetwork.h"
-
 
 namespace NServerNetLib
 {
-	//class ILog;
-
 	class TcpNetwork : public ITcpNetwork
 	{
 	public:

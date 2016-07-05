@@ -11,45 +11,42 @@
 using LOG_TYPE = NServerNetLib::LOG_TYPE;
 
 namespace NLogicLib
-{	
-	PacketProcess::PacketProcess() {}
-	PacketProcess::~PacketProcess() {}
-
+{
 	void PacketProcess::Init(TcpNet* pNetwork, UserManager* pUserMgr, LobbyManager* pLobbyMgr, ILog* pLogger)
 	{
 		m_pRefNetwork = pNetwork;
+
 		m_pRefUserMgr = pUserMgr;
+
 		m_pRefLobbyMgr = pLobbyMgr;
+
 		m_pRefLogger = pLogger;
 
-		using netLibPacketId = NServerNetLib::PACKET_ID;
-		using commonPacketId = NCommon::PACKET_ID;
+		using NetLibPacketId = NServerNetLib::PACKET_ID;
+		using CommonPacketId = NCommon::PACKET_ID;
 
-		for (int i = 0; i < (int)commonPacketId::MAX; ++i)
+		for (int i = 0; i < CommonPacketId::MAX; ++i)
 		{
 			PacketFuncArray[i] = nullptr;
 		}
 
-		PacketFuncArray[(int)netLibPacketId::NTF_SYS_CLOSE_SESSION] = &PacketProcess::NtfSysCloseSesson;
-		PacketFuncArray[(int)commonPacketId::LOGIN_IN_REQ] = &PacketProcess::Login;
-		PacketFuncArray[(int)commonPacketId::LOBBY_LIST_REQ] = &PacketProcess::LobbyList;
-		PacketFuncArray[(int)commonPacketId::LOBBY_ENTER_REQ] = &PacketProcess::LobbyEnter;
-		PacketFuncArray[(int)commonPacketId::LOBBY_ENTER_ROOM_LIST_REQ] = &PacketProcess::LobbyRoomList;
-		PacketFuncArray[(int)commonPacketId::LOBBY_ENTER_USER_LIST_REQ] = &PacketProcess::LobbyUserList;
-		PacketFuncArray[(int)commonPacketId::LOBBY_LEAVE_REQ] = &PacketProcess::LobbyLeave;
-		PacketFuncArray[(int)commonPacketId::ROOM_ENTER_REQ] = &PacketProcess::RoomEnter;
-		PacketFuncArray[(int)commonPacketId::ROOM_LEAVE_REQ] = &PacketProcess::RoomLeave;
-		PacketFuncArray[(int)commonPacketId::ROOM_CHAT_REQ] = &PacketProcess::RoomChat;
+		PacketFuncArray[NetLibPacketId::NTF_SYS_CLOSE_SESSION] = PacketProcess::NtfSysCloseSesson;
+		PacketFuncArray[CommonPacketId::LOGIN_IN_REQ] = PacketProcess::Login;
+		PacketFuncArray[CommonPacketId::LOBBY_LIST_REQ] = PacketProcess::LobbyList;
+		PacketFuncArray[CommonPacketId::LOBBY_ENTER_REQ] = PacketProcess::LobbyEnter;
+		PacketFuncArray[CommonPacketId::LOBBY_ENTER_ROOM_LIST_REQ] = PacketProcess::LobbyRoomList;
+		PacketFuncArray[CommonPacketId::LOBBY_ENTER_USER_LIST_REQ] = PacketProcess::LobbyUserList;
+		PacketFuncArray[CommonPacketId::LOBBY_LEAVE_REQ] = PacketProcess::LobbyLeave;
+		PacketFuncArray[CommonPacketId::ROOM_ENTER_REQ] = PacketProcess::RoomEnter;
+		PacketFuncArray[CommonPacketId::ROOM_LEAVE_REQ] = PacketProcess::RoomLeave;
+		PacketFuncArray[CommonPacketId::ROOM_CHAT_REQ] = PacketProcess::RoomChat;
 	}
-	
+
 	void PacketProcess::Process(PacketInfo packetInfo)
 	{
 		auto packetId = packetInfo.PacketId;
-		
-		if (PacketFuncArray[packetId] == nullptr)
-		{
-			//TODO: 로그 남긴다
-		}
+
+		if (PacketFuncArray[packetId] == nullptr) { return; }
 
 		(this->*PacketFuncArray[packetId])(packetInfo);
 	}
@@ -58,36 +55,32 @@ namespace NLogicLib
 	{
 		auto pUser = std::get<1>(m_pRefUserMgr->GetUser(packetInfo.SessionIndex));
 
-		if (pUser) 
-		{
-			auto pLobby = m_pRefLobbyMgr->GetLobby(pUser->GetLobbyIndex());
-			if (pLobby)
-			{
-				auto pRoom = pLobby->GetRoom(pUser->GetRoomIndex());
+		if (pUser == nullptr) { return ERROR_CODE::NONE; }
 
-				if (pRoom)
-				{
-					pRoom->LeaveUser(pUser->GetIndex());
-					pRoom->NotifyLeaveUserInfo(pUser->GetID().c_str());
-					pLobby->NotifyChangedRoomInfo(pRoom->GetIndex());
+		auto pLobby = m_pRefLobbyMgr->GetLobby(pUser->GetLobbyIndex());
 
-					m_pRefLogger->Write(LOG_TYPE::L_INFO, "%s | NtfSysCloseSesson. sessionIndex(%d). Room Out", __FUNCTION__, packetInfo.SessionIndex);
-				}
+		if (pLobby == nullptr) { return ERROR_CODE::NONE; }
 
-				pLobby->LeaveUser(pUser->GetIndex());
+		auto pRoom = pLobby->GetRoom(pUser->GetRoomIndex());
 
-				if (pRoom == nullptr) {
-					pLobby->NotifyLobbyLeaveUserInfo(pUser);
-				}
+		if (pRoom == nullptr) { return ERROR_CODE::NONE; }
 
-				m_pRefLogger->Write(LOG_TYPE::L_INFO, "%s | NtfSysCloseSesson. sessionIndex(%d). Lobby Out", __FUNCTION__, packetInfo.SessionIndex);
-			}
-			
-			m_pRefUserMgr->RemoveUser(packetInfo.SessionIndex);		}
+		//Room Out
+		pRoom->LeaveUser(pUser->GetIndex());
+		pRoom->NotifyLeaveUserInfo(pUser->GetID().c_str());		
+		pLobby->NotifyChangedRoomInfo(pRoom->GetIndex());
 		
+		//Lobby Out
+		pLobby->LeaveUser(pUser->GetIndex());
+		pLobby->NotifyLobbyLeaveUserInfo(pUser);
 
-		m_pRefLogger->Write(LOG_TYPE::L_INFO, "%s | NtfSysCloseSesson. sessionIndex(%d)", __FUNCTION__, packetInfo.SessionIndex);
+		//User Out
+		m_pRefUserMgr->RemoveUser(packetInfo.SessionIndex);
+
+		m_pRefLogger->Write(LOG_TYPE::L_INFO, 
+			"%s | NtfSysCloseSesson. sessionIndex(%d)", 
+			__FUNCTION__, packetInfo.SessionIndex);
+		
 		return ERROR_CODE::NONE;
 	}
-	
 }

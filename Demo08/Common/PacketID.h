@@ -2,8 +2,8 @@
 
 namespace NCommon
 {
-	// 21 이상부터 시작해야 한다!!!
-	enum class PACKET_ID : short
+	// 21 이상부터 시작해야 한다
+	enum PACKET_ID : short
 	{
 		LOGIN_IN_REQ = 21,
 		LOGIN_IN_RES = 22,
@@ -41,5 +41,4 @@ namespace NCommon
 
 		MAX = 256
 	};
-
 }

@@ -21,7 +21,7 @@ namespace NCommon
 	//- 로그인 요청
 	const int MAX_USER_ID_SIZE = 16;
 	const int MAX_USER_PASSWORD_SIZE = 16;
-	struct PktLogInReq
+	struct PktLoginReq
 	{
 		char szID[MAX_USER_ID_SIZE+1] = { 0, };
 		char szPW[MAX_USER_PASSWORD_SIZE+1] = { 0, };
@@ -42,7 +42,7 @@ namespace NCommon
 	struct PktLobbyListRes : PktBase
 	{
 		short LobbyCount = 0;
-		LobbyListInfo LobbyList[MAX_LOBBY_LIST_COUNT];
+		LobbyListInfo LobbyListInfoArr[MAX_LOBBY_LIST_COUNT];
 	};
 
 

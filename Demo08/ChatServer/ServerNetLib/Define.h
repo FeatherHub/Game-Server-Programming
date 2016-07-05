@@ -80,7 +80,7 @@ namespace NServerNetLib
 	};
 	
 
-	enum class PACKET_ID : short
+	enum PACKET_ID : short
 	{
 		NTF_SYS_CLOSE_SESSION = 3,
 				

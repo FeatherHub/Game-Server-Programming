@@ -23,9 +23,9 @@ namespace NLogicLib
 	class Main
 	{
 	public:
-		Main();
+		Main() = default;
 
-		~Main();
+		~Main() = default;
 
 		ERROR_CODE Init();
 
@@ -35,17 +35,19 @@ namespace NLogicLib
 
 	private:
 		ERROR_CODE LoadConfig();
-
-		void Release();
-
+					
 	private:
 		bool m_IsRun = false;
-
+		
+		//init data
 		std::unique_ptr<NServerNetLib::ServerConfig> m_pServerConfig;
+		//logger
 		std::unique_ptr<NServerNetLib::ILog> m_pLogger;
-
+		//network handler
 		std::unique_ptr<NServerNetLib::ITcpNetwork> m_pNetwork;
+		//packet processor
 		std::unique_ptr<PacketProcess> m_pPacketProc;
+		//managers
 		std::unique_ptr<UserManager> m_pUserMgr;
 		std::unique_ptr<LobbyManager> m_pLobbyMgr;
 	};

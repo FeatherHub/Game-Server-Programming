@@ -11,7 +11,7 @@
 #ifdef NDEBUG
 #pragma comment(lib, "nana_v140_Release_x86.lib")
 #else
-#pragma comment(lib, "nana_v140_Debug_x86.lib")
+#pragma comment(lib, "nana_v140_Debug_x64.lib")
 #endif
 
 using namespace nana;

@@ -487,14 +487,6 @@ namespace NServerNetLib
 			return result;
 		}
 
-		// 이것은 안해도 될 듯
-		/*if (!FD_ISSET(fd, &rfds))
-		{
-			_snwprintf_s(result.Msg, _countof(result.Msg), _TRUNCATE, L"Send Msg! User %d", (int)fd);
-			result.Error = NET_ERROR_CODE::SEND_CLOSE_SOCKET;
-			return result;
-		}*/
-
 		result.Vlaue = send(fd, pMsg, size, 0);
 
 		if (result.Vlaue <= 0)

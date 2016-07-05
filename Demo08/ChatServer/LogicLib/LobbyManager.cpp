@@ -42,21 +42,18 @@ namespace NLogicLib
 		
 	void LobbyManager::SendLobbyListInfo(const int sessionIndex)
 	{
-		NCommon::PktLobbyListRes resPkt;
-		resPkt.ErrorCode = (short)ERROR_CODE::NONE;
-		resPkt.LobbyCount = static_cast<short>(m_LobbyList.size());
+		NCommon::PktLobbyListRes pktToSend;
+		pktToSend.ErrorCode = (short)ERROR_CODE::NONE;
+		pktToSend.LobbyCount = (short)m_LobbyList.size();
 
-		int index = 0;
-		for (auto& lobby : m_LobbyList)
+		for (int lobbyIdx = 0, length = m_LobbyList.size(); lobbyIdx < length; lobbyIdx++)
 		{
-			resPkt.LobbyList[index].LobbyId = lobby.GetIndex();
-			resPkt.LobbyList[index].LobbyUserCount = lobby.GetUserCount();
+			auto lobby = m_LobbyList[lobbyIdx];
 
-			++index;
+			pktToSend.LobbyListInfoArr[lobbyIdx].LobbyId = lobby.GetIndex();
+			pktToSend.LobbyListInfoArr[lobbyIdx].LobbyUserCount = lobby.GetUserCount();
 		}
 
-		// 보낼 데이터를 줄이기 위해 사용하지 않은 LobbyListInfo 크기는 빼고 보내도 된다.
-		m_pRefNetwork->SendData(sessionIndex, (short)PACKET_ID::LOBBY_LIST_RES, sizeof(resPkt), (char*)&resPkt);
+		m_pRefNetwork->SendData(sessionIndex, (short)PACKET_ID::LOBBY_LIST_RES, sizeof(pktToSend), (char*)&pktToSend);
 	}
-
 }

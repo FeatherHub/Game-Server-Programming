@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+
 #include <nana/gui/wvl.hpp>
 #include <nana/gui/widgets/button.hpp>
 #include <nana/gui/widgets/label.hpp>
@@ -8,11 +9,10 @@
 #include <nana/gui/timer.hpp>
 #include <nana/gui.hpp>
 
-
 #ifdef NDEBUG
 #pragma comment(lib, "nana_v140_Release_x86.lib")
 #else
-#pragma comment(lib, "nana_v140_Debug_x86.lib")
+#pragma comment(lib, "nana_v140_Debug_x64.lib")
 #endif
 
 using namespace nana;
