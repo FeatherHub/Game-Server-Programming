@@ -1,18 +1,23 @@
 #pragma once
 
 #pragma comment(lib, "ws2_32")
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#include <deque>
 #include <memory>
 #include <thread>
 #include <mutex>
 
+#include <deque>
+
 #include "../../Common/ErrorCode.h"
 #include "../../Common/PacketID.h"
 #include "../../Common/Packet.h"
-		
+
+const int MAX_PACKET_SIZE = 1024;
+const int MAX_SOCK_RECV_BUFFER = 8016;
+
 #pragma pack(push, 1)
 struct PacketHeader
 {
@@ -22,11 +27,11 @@ struct PacketHeader
 #pragma pack(pop)
 
 const int PACKET_HEADER_SIZE = sizeof(PacketHeader);
-const int MAX_PACKET_SIZE = 1024;
-const int MAX_SOCK_RECV_BUFFER = 8016;
 
 struct RecvPacketInfo
-{	
+{
+	RecvPacketInfo() {}
+
 	short PacketId = 0;
 	short PacketBodySize = 0;
 	char* pData = nullptr;
@@ -47,7 +52,8 @@ public:
 		}
 
 		m_sock = socket(AF_INET, SOCK_STREAM, 0);
-		if (m_sock == INVALID_SOCKET) {
+		if (m_sock == INVALID_SOCKET)
+		{
 			return false;
 		}
 
@@ -69,19 +75,19 @@ public:
 		NonBlock(m_sock);
 
 		m_Thread = std::thread([&]() { Update(); });
-		
+
 		return true;
-	}				
+	}
 
 	bool IsConnected() { return m_IsConnected; }
 
 	void DisConnect()
 	{
-		if (m_IsConnected) 
+		if (m_IsConnected)
 		{
 			closesocket(m_sock);
 
-			Clear();			
+			Clear();
 		}
 
 		if (m_Thread.joinable()) {
@@ -98,7 +104,7 @@ public:
 		if (dataSize > 0) {
 			memcpy(&data[PACKET_HEADER_SIZE], pData, dataSize);
 		}
-		
+
 		send(m_sock, data, dataSize + PACKET_HEADER_SIZE, 0);
 	}
 
@@ -191,7 +197,7 @@ private:
 			pPktHeader = (PacketHeader*)&m_RecvBuffer[readPos];
 			readPos += PACKET_HEADER_SIZE;
 
-			if (pPktHeader->BodySize < (dataSize - readPos))
+			if (pPktHeader->BodySize > (dataSize - readPos))
 			{
 				break;
 			}

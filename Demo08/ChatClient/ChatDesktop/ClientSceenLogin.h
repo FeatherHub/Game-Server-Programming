@@ -43,6 +43,7 @@ public:
 		m_btnEnterLobby->events().click([&]() {
 			this->RequestEnterLobby();
 		});
+		
 		//
 	}
 

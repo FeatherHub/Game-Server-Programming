@@ -11,7 +11,7 @@ using PACKET_ID = NCommon::PACKET_ID;
 
 MainForm::MainForm() {}
 
-MainForm::~MainForm() 
+MainForm::~MainForm()
 {
 	if (m_Network)
 	{
@@ -35,23 +35,25 @@ void MainForm::Init()
 
 void MainForm::CreateGUI()
 {
+	// https://moqups.com/   여기에서 디자인 하자
+
 	m_fm = std::make_unique<form>(API::make_center(900, 700));
 	m_fm->caption("Chat Client");
 
 	m_pClientSceen->CreateUI(m_fm.get());
-	
+
 	m_pClientSceenLogin->CreateUI(m_fm.get());
 
 	m_pClientSceenLobby->CreateUI(m_fm.get());
 
-	
+
 	m_ptxtCurState = std::make_unique<textbox>((form&)*m_fm.get(), nana::rectangle(450, 15, 120, 20));
 	m_ptxtCurState->caption("State: Disconnect");
-	
+
 	m_RoomUserList = std::make_shared<listbox>((form&)*m_fm.get(), nana::rectangle(22, 522, 120, 166));
 	m_RoomUserList->append_header("UserID", 90);
 
-	m_timer.elapse([&]() { PacketProcess();});
+	m_timer.elapse([&]() { PacketProcess(); });
 	m_timer.interval(32);
 	m_timer.start();
 }
@@ -69,7 +71,7 @@ void MainForm::PacketProcess()
 		return;
 	}
 
-	
+
 	auto packet = m_Network->GetPacket();
 
 	if (packet.PacketId != 0)
@@ -82,7 +84,6 @@ void MainForm::PacketProcess()
 			delete[] packet.pData;
 		}
 	}
-	
 
 	m_pClientSceen->Update();
 	m_pClientSceenLogin->Update();

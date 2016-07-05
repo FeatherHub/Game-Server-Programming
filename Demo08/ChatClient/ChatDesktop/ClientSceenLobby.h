@@ -7,8 +7,6 @@
 
 #include "IClientSceen.h"
 
-
-
 class ClientSceenLobby : public IClientSceen
 {
 public:

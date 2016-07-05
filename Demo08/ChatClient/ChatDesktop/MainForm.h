@@ -24,7 +24,6 @@ class ClientSceen;
 class ClientSceenLogin;
 class ClientSceenLobby;
 
-
 class MainForm
 {
 public:
@@ -37,24 +36,21 @@ public:
 
 	void ShowModal();
 
-
 private:
 	void PacketProcess();
 	
 private:
 	std::unique_ptr<TcpNetwork> m_Network;
 
-	bool m_IsLogined = false;
-
 	std::unique_ptr<form> m_fm;
-
-	timer m_timer;
-
 	std::unique_ptr<textbox> m_ptxtCurState;
-	
 	std::shared_ptr<listbox> m_RoomUserList;
 
 	std::shared_ptr<ClientSceen> m_pClientSceen;
 	std::shared_ptr<ClientSceenLogin> m_pClientSceenLogin;
 	std::shared_ptr<ClientSceenLobby> m_pClientSceenLobby;
+
+	timer m_timer;
+
+	bool m_IsLogined = false;
 };

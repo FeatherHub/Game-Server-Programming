@@ -3,7 +3,6 @@
 #include "TcpNetwork.h"
 #include "IClientSceen.h"
 
-
 class ClientSceen : public IClientSceen
 {
 public:
@@ -12,7 +11,8 @@ public:
 
 	virtual void Update() override
 	{
-		if (GetCurSceenType() != CLIENT_SCEEN_TYPE::CONNECT) {
+		if (GetCurSceenType() != CLIENT_SCEEN_TYPE::CONNECT) 
+		{
 			return;
 		}
 	}
@@ -23,68 +23,67 @@ public:
 
 		m_lbl1 = std::make_shared<label>((form&)*m_pForm, nana::rectangle(22, 17, 18, 18));
 		m_lbl1->caption("IP:");
+		
 		m_IPtxt = std::make_shared<textbox>((form&)*m_pForm, nana::rectangle(43, 15, 128, 20));
 		m_IPtxt->caption("127.0.0.1");
 
 		m_lbl2 = std::make_shared<label>((form&)*m_pForm, nana::rectangle(187, 17, 30, 18));
 		m_lbl2->caption("Port:");
+		
 		m_Porttxt = std::make_shared<textbox>((form&)*m_pForm, nana::rectangle(214, 15, 60, 20));
 		m_Porttxt->caption("23452");
 
 		m_Connectbtn = std::make_shared<button>((form&)*m_pForm, nana::rectangle(283, 14, 102, 23));
 		m_Connectbtn->caption("Connent");
-		m_Connectbtn->events().click([&]() {
-			this->ConnectOrDisConnect();
-		});
-
+		
+		m_Connectbtn->events().click([&]() {this->ConnectOrDisConnect();});
 
 		m_lbl3 = std::make_shared<label>((form&)*m_pForm, nana::rectangle(22, 58, 18, 18));
 		m_lbl3->caption("ID:");
+
 		m_IDtxt = std::make_shared<textbox>((form&)*m_pForm, nana::rectangle(43, 56, 115, 20));
 		m_IDtxt->caption("jacking");
 
 		m_lbl4 = std::make_shared<label>((form&)*m_pForm, nana::rectangle(170, 58, 69, 18));
 		m_lbl4->caption("PassWord:");
+
 		m_PWtxt = std::make_shared<textbox>((form&)*m_pForm, nana::rectangle(230, 56, 115, 20));
 		m_PWtxt->caption("1234");
 
 		m_Loginbtn = std::make_shared<button>((form&)*m_pForm, nana::rectangle(353, 54, 102, 23));
 		m_Loginbtn->caption("Login");
-		m_Loginbtn->events().click([&]() {
-			this->LogInOut();
-		});
+		m_Loginbtn->events().click([&]() { this->LogInOut(); });
 		m_Loginbtn->enabled(false);
 	}
-
 
 	bool ProcessPacket(const short packetId, char* pData) override
 	{
 		switch (packetId)
 		{
 		case (short)PACKET_ID::LOGIN_IN_RES:
+		{
+			m_Loginbtn->enabled(true);
+
+			auto pktRes = (NCommon::PktLogInRes*)pData;
+
+			if (pktRes->ErrorCode == (short)NCommon::ERROR_CODE::NONE)
 			{
-				m_Loginbtn->enabled(true);
-
-				auto pktRes = (NCommon::PktLogInRes*)pData;
-
-				if (pktRes->ErrorCode == (short)NCommon::ERROR_CODE::NONE)
-				{
-					m_Loginbtn->caption("LogOut");
-					SetCurSceenType(CLIENT_SCEEN_TYPE::LOGIN);
-				}
-				else
-				{
-					nana::msgbox m((form&)*m_pForm, "Fail LOGIN_IN_REQ", nana::msgbox::ok);
-					m.icon(m.icon_warning);
-					m << "ErrorCode: " << pktRes->ErrorCode;
-					m.show();
-				}
+				m_Loginbtn->caption("LogOut");
+				SetCurSceenType(CLIENT_SCEEN_TYPE::LOGIN);
 			}
-			break;
+			else
+			{
+				nana::msgbox m((form&)*m_pForm, "Fail LOGIN_IN_REQ", nana::msgbox::ok);
+				m.icon(m.icon_warning);
+				m << "ErrorCode: " << pktRes->ErrorCode;
+				m.show();
+			}
+		}
+		break;
 		default:
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -119,7 +118,6 @@ private:
 			m_Connectbtn->caption("Connect");
 			m_Loginbtn->enabled(false);
 		}
-
 	}
 
 	void LogInOut()

@@ -93,7 +93,7 @@ namespace NLogicLib
 		m_pServerConfig = std::make_unique<NServerNetLib::ServerConfig>();
 		
 		wchar_t sPath[MAX_PATH] = { 0, };
-		::GetCurrentDirectory(MAX_PATH, sPath);
+		GetCurrentDirectory(MAX_PATH, sPath);
 
 		wchar_t inipath[MAX_PATH] = { 0, };
 		_snwprintf_s(inipath, _countof(inipath), _TRUNCATE, L"%s\\ServerConfig.ini", sPath);
