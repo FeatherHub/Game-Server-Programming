@@ -3,8 +3,9 @@
 #include "../../Common/Packet.h"
 #include "../../Common/ErrorCode.h"
 
-#include "Lobby.h"
 #include "LobbyManager.h"
+
+#include "Lobby.h"
 
 using ERROR_CODE = NCommon::ERROR_CODE;
 using PACKET_ID = NCommon::PACKET_ID;

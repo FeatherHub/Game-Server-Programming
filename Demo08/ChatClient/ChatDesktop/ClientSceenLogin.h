@@ -61,7 +61,7 @@ public:
 
 				for (int i = 0; i < pktRes->LobbyCount; ++i)
 				{
-					auto& pLobby = pktRes->LobbyList[i];
+					auto& pLobby = pktRes->LobbyListInfoArr[i];
 
 					m_LobbyList->at(0).append({ std::to_string(pLobby.LobbyId),
 													std::to_string(pLobby.LobbyUserCount), 

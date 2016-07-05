@@ -35,9 +35,9 @@ namespace NLogicLib
 		using ILog = NServerNetLib::ILog;
 
 	public:
-		PacketProcess() = default;
+		PacketProcess() {}
 
-		~PacketProcess() = default;
+		~PacketProcess() {}
 
 		void Init(TcpNet* pNetwork, UserManager* pUserMgr, LobbyManager* pLobbyMgr, ILog* pLogger);
 

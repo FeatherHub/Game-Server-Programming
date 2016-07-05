@@ -6,6 +6,8 @@
 #include "Room.h"
 #include "Lobby.h"
 #include "LobbyManager.h"
+
+
 #include "PacketProcess.h"
 
 using LOG_TYPE = NServerNetLib::LOG_TYPE;
@@ -30,16 +32,16 @@ namespace NLogicLib
 			PacketFuncArray[i] = nullptr;
 		}
 
-		PacketFuncArray[NetLibPacketId::NTF_SYS_CLOSE_SESSION] = PacketProcess::NtfSysCloseSesson;
-		PacketFuncArray[CommonPacketId::LOGIN_IN_REQ] = PacketProcess::Login;
-		PacketFuncArray[CommonPacketId::LOBBY_LIST_REQ] = PacketProcess::LobbyList;
-		PacketFuncArray[CommonPacketId::LOBBY_ENTER_REQ] = PacketProcess::LobbyEnter;
-		PacketFuncArray[CommonPacketId::LOBBY_ENTER_ROOM_LIST_REQ] = PacketProcess::LobbyRoomList;
-		PacketFuncArray[CommonPacketId::LOBBY_ENTER_USER_LIST_REQ] = PacketProcess::LobbyUserList;
-		PacketFuncArray[CommonPacketId::LOBBY_LEAVE_REQ] = PacketProcess::LobbyLeave;
-		PacketFuncArray[CommonPacketId::ROOM_ENTER_REQ] = PacketProcess::RoomEnter;
-		PacketFuncArray[CommonPacketId::ROOM_LEAVE_REQ] = PacketProcess::RoomLeave;
-		PacketFuncArray[CommonPacketId::ROOM_CHAT_REQ] = PacketProcess::RoomChat;
+		PacketFuncArray[NetLibPacketId::NTF_SYS_CLOSE_SESSION] = &PacketProcess::NtfSysCloseSesson;
+		PacketFuncArray[CommonPacketId::LOGIN_IN_REQ] = &PacketProcess::Login;
+		PacketFuncArray[CommonPacketId::LOBBY_LIST_REQ] = &PacketProcess::LobbyList;
+		PacketFuncArray[CommonPacketId::LOBBY_ENTER_REQ] = &PacketProcess::LobbyEnter;
+		PacketFuncArray[CommonPacketId::LOBBY_ENTER_ROOM_LIST_REQ] = &PacketProcess::LobbyRoomList;
+		PacketFuncArray[CommonPacketId::LOBBY_ENTER_USER_LIST_REQ] = &PacketProcess::LobbyUserList;
+		PacketFuncArray[CommonPacketId::LOBBY_LEAVE_REQ] = &PacketProcess::LobbyLeave;
+		PacketFuncArray[CommonPacketId::ROOM_ENTER_REQ] = &PacketProcess::RoomEnter;
+		PacketFuncArray[CommonPacketId::ROOM_LEAVE_REQ] = &PacketProcess::RoomLeave;
+		PacketFuncArray[CommonPacketId::ROOM_CHAT_REQ] = &PacketProcess::RoomChat;
 	}
 
 	void PacketProcess::Process(PacketInfo packetInfo)

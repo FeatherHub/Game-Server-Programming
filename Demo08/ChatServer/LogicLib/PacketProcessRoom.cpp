@@ -1,6 +1,7 @@
 #include "../../Common/Packet.h"
 #include "../ServerNetLib/TcpNetwork.h"
 #include "../../Common/ErrorCode.h"
+
 #include "User.h"
 #include "UserManager.h"
 #include "LobbyManager.h"
@@ -71,7 +72,7 @@ namespace NLogicLib
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_ENTER_RES, sizeof(resPkt), (char*)&resPkt);
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_ENTER_RES, sizeof(resPkt), (char*)&resPkt);
 		return (ERROR_CODE)__result;
@@ -134,7 +135,7 @@ namespace NLogicLib
 
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, 
 			(short)PACKET_ID::ROOM_LEAVE_RES, 
@@ -180,7 +181,7 @@ namespace NLogicLib
 		
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
 		return (ERROR_CODE)__result;

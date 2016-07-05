@@ -10,7 +10,7 @@
 #include <nana/gui.hpp>
 
 #ifdef NDEBUG
-#pragma comment(lib, "nana_v140_Release_x86.lib")
+#pragma comment(lib, "nana_v140_Release_x64.lib")
 #else
 #pragma comment(lib, "nana_v140_Debug_x64.lib")
 #endif
@@ -46,8 +46,6 @@ private:
 
 	bool m_IsLogined = false;
 
-
-private:
 	std::unique_ptr<form> m_fm;
 
 	timer m_timer;

@@ -1,4 +1,3 @@
-#include "PacketProcess.h"
 
 #include "../../Common/Packet.h"
 #include "../ServerNetLib/TcpNetwork.h"
@@ -9,6 +8,7 @@
 
 #include "LobbyManager.h"
 #include "Lobby.h"
+#include "PacketProcess.h"
 
 using PACKET_ID = NCommon::PACKET_ID;
 
@@ -17,6 +17,8 @@ namespace NLogicLib
 	ERROR_CODE PacketProcess::LobbyEnter(PacketInfo packetInfo)
 	{
 	CHECK_START
+		NCommon::PktLobbyEnterRes pktToSend;
+
 		auto pktReceived = (NCommon::PktLobbyEnterReq*)packetInfo.pRefData;
 
 		auto pUserRet = m_pRefUserMgr->GetUser(packetInfo.SessionIndex);
@@ -43,7 +45,6 @@ namespace NLogicLib
 		//로비 정보에 유저 정보를 전달하여 로티로비엔터유저를 호출한다
 		pLobby->NotifyLobbyEnterUserInfo(pUser);
 
-		NCommon::PktLobbyEnterRes pktToSend;
 		pktToSend.MaxUserCount = pLobby->MaxUserCount();
 		pktToSend.MaxRoomCount = pLobby->MaxRoomCount();
 

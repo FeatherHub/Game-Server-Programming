@@ -1,18 +1,16 @@
+
+#include "../ServerNetLib/ServerNetErrorCode.h"
+#include "../ServerNetLib/Define.h"
+#include "../ServerNetLib/TcpNetwork.h"
 #include "Main.h"
 
 #include <thread>
 #include <chrono>
 
-#include "../ServerNetLib/ServerNetErrorCode.h"
-#include "../ServerNetLib/Define.h"
-#include "../ServerNetLib/TcpNetwork.h"
-
 #include "ConsoleLogger.h"
 
 #include "PacketProcess.h"
 
-#include "LobbyManager.h"
-#include "UserManager.h"
 
 using LOG_TYPE = NServerNetLib::LOG_TYPE;
 using NET_ERROR_CODE = NServerNetLib::NET_ERROR_CODE;

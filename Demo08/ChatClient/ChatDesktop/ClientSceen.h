@@ -132,7 +132,7 @@ private:
 			char szPW[64] = { 0, };
 			UnicodeToAnsi(m_PWtxt->caption_wstring().c_str(), 64, szPW);
 
-			NCommon::PktLogInReq reqPkt;
+			NCommon::PktLoginReq reqPkt;
 			strncpy_s(reqPkt.szID, NCommon::MAX_USER_ID_SIZE + 1, szID, NCommon::MAX_USER_ID_SIZE);
 			strncpy_s(reqPkt.szPW, NCommon::MAX_USER_PASSWORD_SIZE + 1, szPW, NCommon::MAX_USER_PASSWORD_SIZE);
 

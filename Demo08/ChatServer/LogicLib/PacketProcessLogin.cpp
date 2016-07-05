@@ -1,4 +1,3 @@
-#include "PacketProcess.h"
 
 #include "../ServerNetLib/TcpNetwork.h"
 #include "../../Common/Packet.h"
@@ -7,6 +6,7 @@
 #include "User.h"
 #include "UserManager.h"
 #include "LobbyManager.h"
+#include "PacketProcess.h"
 
 using PACKET_ID = NCommon::PACKET_ID;
 
@@ -18,6 +18,8 @@ namespace NLogicLib
 		//TO-DO
 		//1. 로그인 패킷 크기 검사
 		//2. 아이디-비밀번호 일치 검사
+		
+		NCommon::PktLogInRes resPkt;
 
 		auto loginPkt = (NCommon::PktLoginReq*)packetInfo.pRefData;
 		
@@ -25,7 +27,6 @@ namespace NLogicLib
 
 		if (ret != ERROR_CODE::NONE) CHECK_ERROR(ret);
 
-		NCommon::PktLogInRes resPkt;
 		resPkt.ErrorCode = (short)ret;
 
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOGIN_IN_RES, sizeof(NCommon::PktLogInRes), (char*)&resPkt);

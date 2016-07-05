@@ -1,10 +1,11 @@
 #pragma once
+
 #include <vector>
 #include <unordered_map>
 
 namespace NServerNetLib
 {
-	class TcpNetwork;
+	class ITcpNetwork;
 }
 
 namespace NServerNetLib
@@ -47,15 +48,10 @@ namespace NLogicLib
 	public:
 		void SendLobbyListInfo(const int sessionIndex);
 
-
-	
-
-
 	private:
 		ILog* m_pRefLogger;
 		TcpNet* m_pRefNetwork;
 
-		std::vector<Lobby> m_LobbyList;
-		
+		std::vector<Lobby> m_LobbyList;		
 	};
 }

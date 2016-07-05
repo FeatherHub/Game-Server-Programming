@@ -3,6 +3,7 @@
 #pragma comment(lib, "ws2_32")
 #include <winsock2.h>
 #include <ws2tcpip.h>
+
 #include <deque>
 #include <memory>
 #include <thread>
@@ -11,10 +12,6 @@
 #include "../../Common/ErrorCode.h"
 #include "../../Common/PacketID.h"
 #include "../../Common/Packet.h"
-
-
-const int MAX_PACKET_SIZE = 1024;
-const int MAX_SOCK_RECV_BUFFER = 8016;
 		
 #pragma pack(push, 1)
 struct PacketHeader
@@ -25,11 +22,11 @@ struct PacketHeader
 #pragma pack(pop)
 
 const int PACKET_HEADER_SIZE = sizeof(PacketHeader);
+const int MAX_PACKET_SIZE = 1024;
+const int MAX_SOCK_RECV_BUFFER = 8016;
 
 struct RecvPacketInfo
-{
-	RecvPacketInfo() {}
-	
+{	
 	short PacketId = 0;
 	short PacketBodySize = 0;
 	char* pData = nullptr;
