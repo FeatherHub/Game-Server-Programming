@@ -25,7 +25,7 @@ namespace NLogicLib
 		ERROR_CODE RemoveUser(const int sessionIndex);
 
 		std::tuple<ERROR_CODE,User*> GetUser(const int sessionIndex);
-
+		std::tuple<ERROR_CODE, User*> GetUser(char* Id);
 				
 	private:
 		User* AllocUserObjPoolIndex();

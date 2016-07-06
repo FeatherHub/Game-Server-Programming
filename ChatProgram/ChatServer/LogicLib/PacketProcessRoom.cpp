@@ -45,6 +45,11 @@ namespace NLogicLib
 		// 룸을 만드는 경우라면 룸을 만든다
 		if (reqPkt->IsCreate) 
 		{
+			pRoom = pLobby->CreateRoom();
+			if (pRoom == nullptr) {
+				return ERROR_CODE::LOBBY_ENTER_EMPTY_USER_LIST;
+			}
+
 			auto ret = pRoom->CreateRoom(reqPkt->RoomTitle);
 			if (ret != ERROR_CODE::NONE) {
 				CHECK_ERROR(ret);
@@ -71,7 +76,7 @@ namespace NLogicLib
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_ENTER_RES, sizeof(resPkt), (char*)&resPkt);
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_ENTER_RES, sizeof(resPkt), (char*)&resPkt);
 		return (ERROR_CODE)__result;
@@ -127,7 +132,7 @@ namespace NLogicLib
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_LEAVE_RES, sizeof(resPkt), (char*)&resPkt);
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_LEAVE_RES, sizeof(resPkt), (char*)&resPkt);
 		return (ERROR_CODE)__result;
@@ -168,7 +173,7 @@ namespace NLogicLib
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::ROOM_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
 		return (ERROR_CODE)__result;

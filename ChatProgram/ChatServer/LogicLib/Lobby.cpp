@@ -122,6 +122,17 @@ namespace NLogicLib
 		findIter->pUser = nullptr;
 	}
 
+	NLogicLib::Room* Lobby::CreateRoom()
+	{
+		for (int i = 0; i < m_RoomList.size(); i++)
+		{
+			if (m_RoomList[i].IsUsed() == false)
+				return &m_RoomList[i];
+		}
+
+		return nullptr;
+	}
+
 	short Lobby::GetUserCount()
 	{ 
 		return static_cast<short>(m_UserIndexDic.size()); 
@@ -267,5 +278,14 @@ namespace NLogicLib
 		}
 
 		SendToAllUser((short)PACKET_ID::ROOM_CHANGED_INFO_NTF, sizeof(pktNtf), (char*)&pktNtf);
+	}
+
+	void Lobby::NotifyChat(const int sessionIndex, const char* pszUserID, const wchar_t* pszMsg)
+	{
+		NCommon::PktLobbyChatNtf pkt;
+		strncpy_s(pkt.UserID, _countof(pkt.UserID), pszUserID, NCommon::MAX_USER_ID_SIZE);
+		wcsncpy_s(pkt.Msg, NCommon::MAX_LOBBY_CHAT_MSG_SIZE + 1, pszMsg, NCommon::MAX_LOBBY_CHAT_MSG_SIZE);
+	
+		SendToAllUser((short)PACKET_ID::LOBBY_CHAT_NTF, sizeof(pkt), (char*)&pkt, sessionIndex);
 	}
 }

@@ -500,6 +500,4 @@ namespace NServerNetLib
 
 		return result;
 	}
-
-	
 }

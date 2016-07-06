@@ -51,7 +51,7 @@ namespace NLogicLib
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_ENTER_RES, sizeof(NCommon::PktLobbyEnterRes), (char*)&resPkt);
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_ENTER_RES, sizeof(NCommon::PktLobbyEnterRes), (char*)&resPkt);
 		return (ERROR_CODE)__result;
@@ -86,7 +86,7 @@ namespace NLogicLib
 		pLobby->SendRoomList(pUser->GetSessioIndex(), reqPkt->StartRoomIndex);
 
 		return ERROR_CODE::NONE;
-	CHECK_ERR :
+	PROCESS_ERROR :
 		NCommon::PktLobbyRoomListRes resPkt;
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_ENTER_ROOM_LIST_RES, sizeof(NCommon::PktBase), (char*)&resPkt);
@@ -122,7 +122,7 @@ namespace NLogicLib
 		pLobby->SendUserList(pUser->GetSessioIndex(), reqPkt->StartUserIndex);
 
 		return ERROR_CODE::NONE;
-	CHECK_ERR:
+	PROCESS_ERROR:
 		NCommon::PktLobbyUserListRes resPkt;
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_ENTER_USER_LIST_RES, sizeof(NCommon::PktBase), (char*)&resPkt);
@@ -166,9 +166,86 @@ namespace NLogicLib
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_LEAVE_RES, sizeof(NCommon::PktLobbyLeaveRes), (char*)&resPkt);
 
 		return ERROR_CODE::NONE;
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_LEAVE_RES, sizeof(NCommon::PktLobbyLeaveRes), (char*)&resPkt);
+		return (ERROR_CODE)__result;
+	}
+
+	ERROR_CODE PacketProcess::LobbyChat(PacketInfo packetInfo)
+	{
+	CHECK_START
+		auto reqPkt = (NCommon::PktLobbyChatReq*)packetInfo.pRefData;
+		NCommon::PktLobbyChatRes resPkt;
+
+		auto pUserRet = m_pRefUserMgr->GetUser(packetInfo.SessionIndex);
+		auto errorCode = std::get<0>(pUserRet);
+
+		if (errorCode != ERROR_CODE::NONE) {
+			CHECK_ERROR(errorCode);
+		}
+
+		auto pUser = std::get<1>(pUserRet);
+
+		if (pUser->IsCurDomainInLobby() == false) {
+			CHECK_ERROR(ERROR_CODE::LOBBY_CHAT_INVALID_DOMAIN);
+		}
+
+		auto lobbyIndex = pUser->GetLobbyIndex();
+		auto pLobby = m_pRefLobbyMgr->GetLobby(lobbyIndex);
+		if (pLobby == nullptr) {
+			CHECK_ERROR(ERROR_CODE::LOBBY_CHAT_INVALID_LOBBY_INDEX);
+		}
+
+		pLobby->NotifyChat(pUser->GetSessioIndex(), pUser->GetID().c_str(), reqPkt->Msg);
+
+		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
+		return ERROR_CODE::NONE;
+
+	PROCESS_ERROR:
+		resPkt.SetError(__result);
+		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
+		return (ERROR_CODE)__result;
+	}
+
+	ERROR_CODE PacketProcess::LobbyWhisper(PacketInfo packetInfo)
+	{
+	CHECK_START
+		auto reqPkt = (NCommon::PktLobbyWhisperReq*)packetInfo.pRefData;
+		NCommon::PktLobbyChatRes resPkt;
+
+		auto pUserRet = m_pRefUserMgr->GetUser(packetInfo.SessionIndex);
+		auto errorCode = std::get<0>(pUserRet);
+
+		if (errorCode != ERROR_CODE::NONE) {
+			CHECK_ERROR(errorCode);
+		}
+
+		auto pUser = std::get<1>(pUserRet);
+
+		if (pUser->IsCurDomainInLobby() == false) {
+			CHECK_ERROR(ERROR_CODE::LOBBY_CHAT_INVALID_DOMAIN);
+		}
+
+		auto targetId = m_pRefUserMgr->GetUser(reqPkt->UserID);
+
+		auto lobbyIndex = pUser->GetLobbyIndex();
+		auto pLobby = m_pRefLobbyMgr->GetLobby(lobbyIndex);
+		if (pLobby == nullptr) {
+			CHECK_ERROR(ERROR_CODE::LOBBY_CHAT_INVALID_LOBBY_INDEX);
+		}
+
+		//귓속말 부분
+		//NTF패킷 만들어서 보내는 함수 구현
+		//NotifyTargetUser
+		m_pRefNetwork->SendData(pUser->GetSessioIndex(), (short)packetInfo.PacketId, sizeof(reqPkt), (char*)&reqPkt);
+
+		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
+		return ERROR_CODE::NONE;
+
+	PROCESS_ERROR:
+		resPkt.SetError(__result);
+		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_CHAT_RES, sizeof(resPkt), (char*)&resPkt);
 		return (ERROR_CODE)__result;
 	}
 }

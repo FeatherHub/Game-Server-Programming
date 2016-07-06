@@ -123,6 +123,24 @@ namespace NCommon
 		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
 	};
 
+	//로비에서 귓속말 요청
+	struct PktLobbyWhisperReq
+	{
+		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
+		wchar_t Message[100] = { 0, };
+	};
+
+	//로비에서 귓속말 결과
+	struct PktLobbyWhisperRes : PktBase
+	{
+	};
+
+	//로비에서 귓속말 통보
+	struct PktLobbyWhisperNtf
+	{
+		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
+		wchar_t Message[100] = { 0, };
+	};
 
 	//- 룸에 들어가기 요청
 	struct PktRoomEnterReq
@@ -136,7 +154,6 @@ namespace NCommon
 	{
 	};
 
-
 	//- 변경된 룸 정보 통보
 	struct PktChangedRoomInfoNtf
 	{
@@ -148,7 +165,6 @@ namespace NCommon
 	{
 		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
 	};
-
 
 	//- 룸 나가기 요청
 	struct PktRoomLeaveReq {};
@@ -162,7 +178,6 @@ namespace NCommon
 	{
 		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
 	};
-	
 
 	//- 룸 채팅
 	const int MAX_ROOM_CHAT_MSG_SIZE = 256;
@@ -180,8 +195,24 @@ namespace NCommon
 		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
 		wchar_t Msg[MAX_ROOM_CHAT_MSG_SIZE + 1] = { 0, };
 	};
-#pragma pack(pop)
 
 
-	
+	//- 로비 채팅
+	const int MAX_LOBBY_CHAT_MSG_SIZE = 256;
+	struct PktLobbyChatReq
+	{
+		wchar_t Msg[MAX_LOBBY_CHAT_MSG_SIZE + 1] = { 0, };
+	};
+
+	struct PktLobbyChatRes : PktBase
+	{
+
+	};
+
+	struct PktLobbyChatNtf
+	{
+		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
+		wchar_t Msg[MAX_LOBBY_CHAT_MSG_SIZE + 1] = { 0, };
+	};
+	#pragma pack(pop)
 }

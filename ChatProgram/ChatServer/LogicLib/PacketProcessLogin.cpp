@@ -34,7 +34,7 @@ namespace NLogicLib
 
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOGIN_IN_RES, sizeof(NCommon::PktLogInRes), (char*)&resPkt);
 		return (ERROR_CODE)__result;
@@ -63,7 +63,7 @@ namespace NLogicLib
 		
 		return ERROR_CODE::NONE;
 
-	CHECK_ERR:
+	PROCESS_ERROR:
 		NCommon::PktLobbyListRes resPkt;
 		resPkt.SetError(__result);
 		m_pRefNetwork->SendData(packetInfo.SessionIndex, (short)PACKET_ID::LOBBY_LIST_RES, sizeof(resPkt), (char*)&resPkt);

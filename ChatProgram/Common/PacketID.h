@@ -2,6 +2,14 @@
 
 namespace NCommon
 {
+	//Naming: XXX_YYY_ZZZ
+	//XXX: logic scene
+	//YYY: process function
+	//ZZZ: REQ ^ RES ^ NTF
+	//		REQ: Requester send it
+	//		RES: Requester get it
+	//		NTF: Other get it
+
 	// 21 이상부터 시작해야 한다!!!
 	enum class PACKET_ID : short
 	{
@@ -25,13 +33,21 @@ namespace NCommon
 		LOBBY_LEAVE_RES = 47,
 		LOBBY_LEAVE_USER_NTF = 48,
 
-		ROOM_ENTER_REQ = 61,
-		ROOM_ENTER_RES = 62,
-		ROOM_ENTER_USER_NTF = 63,
-
 		ROOM_LEAVE_REQ = 66,
 		ROOM_LEAVE_RES = 67,
 		ROOM_LEAVE_USER_NTF = 68,
+
+		LOBBY_CHAT_REQ = 85,
+		LOBBY_CHAT_RES = 86,
+		LOBBY_CHAT_NTF = 87,
+
+		LOBBY_WHISPER_REQ = 88, 
+		LOBBY_WHISPER_RES = 89,
+		LOBBY_WHISPER_NTF = 90,
+
+		ROOM_ENTER_REQ = 61,
+		ROOM_ENTER_RES = 62,
+		ROOM_ENTER_USER_NTF = 63,
 
 		ROOM_CHANGED_INFO_NTF = 71,
 
@@ -39,7 +55,7 @@ namespace NCommon
 		ROOM_CHAT_RES = 77,
 		ROOM_CHAT_NTF = 78,
 
+
 		MAX = 256
 	};
-
 }

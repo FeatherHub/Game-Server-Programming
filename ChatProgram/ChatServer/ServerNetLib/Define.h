@@ -58,6 +58,7 @@ namespace NServerNetLib
 		short PacketBodySize = 0;
 		char* pRefData = 0;
 	};
+
 	struct RecvPacketInfo2
 	{
 		int SessionIndex = 0;
@@ -93,7 +94,6 @@ namespace NServerNetLib
 	};
 
 	const int PACKET_HEADER_SIZE = sizeof(PacketHeader);
-
 
 	struct PktNtfSysCloseSession : PacketHeader
 	{

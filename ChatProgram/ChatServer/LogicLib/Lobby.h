@@ -61,7 +61,8 @@ namespace NLogicLib
 
 		void NotifyLobbyLeaveUserInfo(User* pUser);
 
-		
+		void NotifyChat(const int sessionIndex, const char* pszUserID, const wchar_t* pszMsg);
+
 		Room* GetRoom(const short roomIndex);
 
 		void NotifyChangedRoomInfo(const short roomIndex);
@@ -69,6 +70,8 @@ namespace NLogicLib
 		auto MaxUserCount() { return (short)m_MaxUserCount; }
 
 		auto MaxRoomCount() { return (short)m_RoomList.size(); }
+
+		Room* CreateRoom();
 
 	protected:
 		void SendToAllUser(const short packetId, const short dataSize, char* pData, const int passUserindex = -1);
@@ -82,11 +85,10 @@ namespace NLogicLib
 
 		void RemoveUser(const int userIndex);
 
-
 	protected:
 		ILog* m_pRefLogger;
 		TcpNet* m_pRefNetwork;
-
+		
 
 		short m_LobbyIndex = 0;
 

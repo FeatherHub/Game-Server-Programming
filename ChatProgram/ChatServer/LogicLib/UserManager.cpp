@@ -94,6 +94,21 @@ namespace NLogicLib
 		return{ ERROR_CODE::NONE, pUser };
 	}
 
+	std::tuple<ERROR_CODE, User*> UserManager::GetUser(char* id)
+	{
+		auto pUser = FindUser(id);
+
+		if (pUser == nullptr) {
+			return{ ERROR_CODE::USER_MGR_INVALID_SESSION_INDEX, nullptr };
+		}
+
+		if (pUser->IsConfirm() == false) {
+			return{ ERROR_CODE::USER_MGR_NOT_CONFIRM_USER, nullptr };
+		}
+
+		return{ ERROR_CODE::NONE, pUser };
+	}
+
 	User* UserManager::FindUser(const int sessionIndex)
 	{
 		auto findIter = m_UserSessionDic.find(sessionIndex);
