@@ -139,6 +139,7 @@ namespace NLogicLib
 	}
 
 
+	//다른클라들에게 입장클라의 정보를 전송한다.
 	void Lobby::NotifyLobbyEnterUserInfo(User* pUser)
 	{
 		NCommon::PktLobbyNewUserInfoNtf pkt;
@@ -147,6 +148,7 @@ namespace NLogicLib
 		SendToAllUser((short)PACKET_ID::LOBBY_ENTER_USER_NTF, sizeof(pkt), (char*)&pkt, pUser->GetIndex());
 	}
 
+	//다른클라들에게 요청클라의 유저아이디를 전송한다
 	void Lobby::NotifyLobbyLeaveUserInfo(User* pUser)
 	{
 		NCommon::PktLobbyLeaveUserInfoNtf pkt;
@@ -155,6 +157,7 @@ namespace NLogicLib
 		SendToAllUser((short)PACKET_ID::LOBBY_LEAVE_USER_NTF, sizeof(pkt), (char*)&pkt, pUser->GetIndex());
 	}
 
+	//해당 클라에게 룸리스트를 전송한다
 	ERROR_CODE Lobby::SendRoomList(const int sessionId, const short startRoomId)
 	{
 		if (startRoomId < 0 || startRoomId >= (m_RoomList.size() - 1)) {
@@ -187,10 +190,12 @@ namespace NLogicLib
 
 		pktRes.Count = roomCount;
 
+		//룸 리스트를 다 입력했으면 결과패킷에 표시한다
 		if (roomCount <= 0 || (lastCheckedIndex + 1) == m_RoomList.size()) {
 			pktRes.IsEnd = true;
 		}
 
+		//결과패킷을 해당클라에게 전송한다
 		m_pRefNetwork->SendData(sessionId, (short)PACKET_ID::LOBBY_ENTER_ROOM_LIST_RES, sizeof(pktRes), (char*)&pktRes);
 
 		return ERROR_CODE::NONE;
@@ -231,6 +236,9 @@ namespace NLogicLib
 			pktRes.IsEnd = true;
 		}
 
+		//요청클라가 결과패킷의 작업완료 여부를 확인하고 재전송 여부를 결정한다.
+		//작업완료됨 -> 요청전송 종료
+		//작업완료 안 됨 -> 다시 요청전송
 		m_pRefNetwork->SendData(sessionId, (short)PACKET_ID::LOBBY_ENTER_USER_LIST_RES, sizeof(pktRes), (char*)&pktRes);
 
 		return ERROR_CODE::NONE;
@@ -280,6 +288,7 @@ namespace NLogicLib
 		SendToAllUser((short)PACKET_ID::ROOM_CHANGED_INFO_NTF, sizeof(pktNtf), (char*)&pktNtf);
 	}
 
+	//모든클라에게 요청클라의 아이디와 메시지를 전송한다.
 	void Lobby::NotifyChat(const int sessionIndex, const char* pszUserID, const wchar_t* pszMsg)
 	{
 		NCommon::PktLobbyChatNtf pkt;

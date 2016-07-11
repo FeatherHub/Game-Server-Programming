@@ -35,10 +35,11 @@ namespace NLogicLib
 		using TcpNet = NServerNetLib::ITcpNetwork;
 		using ILog = NServerNetLib::ILog;
 
+		//소켓번호, 패킷코드, 패킷크기, 데이터를 저장한다.
 		using PacketInfo = NServerNetLib::RecvPacketInfo;
-		//통신 상황에서 발생한 에러코드를 반환하고
+
 		//사용할 데이터로 바꿀 패킷을 전달받는다
-		//어떤 데이터인지는 호출시점에서 결정되어 있다. 
+		//어떤 데이터인지는 배열에 의해 연결되어있다. 
 		typedef ERROR_CODE(PacketProcess::*PacketFunc)(PacketInfo);
 		PacketFunc PacketFuncArray[(int)NCommon::PACKET_ID::MAX];
 
@@ -82,20 +83,6 @@ namespace NLogicLib
 
 		ERROR_CODE LobbyChat(PacketInfo packetInfo);
 
-		//Packet Diagram
-		//Requester	: ToWhom(Id), Msg
-		//ToWhom	: Requester Id, Msg
-		//Requester	: Whisper Success/Fail
-
-		//Packet structure
-		//PacketChatReq -> PacketWhisperReq
-		//				[userId, msg]
-		//PacketChatRes -> PacketWhisperRes
-		//				[errorCode]
-		//PacketChatNtf
-		//				[RequesterId, msg]
-		//Process Whisper
-		//Chat -> NotifyAllUser: NotifyTargetUser
 		ERROR_CODE LobbyWhisper(PacketInfo packetInfo);
 
 		ERROR_CODE RoomEnter(PacketInfo packetInfo);

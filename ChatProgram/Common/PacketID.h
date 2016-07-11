@@ -12,7 +12,7 @@ namespace NCommon
 
 	// 21 이상부터 시작해야 한다!!!
 	enum class PACKET_ID : short
-	{
+	{ //로직단위로 분류
 		LOGIN_IN_REQ = 21,
 		LOGIN_IN_RES = 22,
 
@@ -33,10 +33,6 @@ namespace NCommon
 		LOBBY_LEAVE_RES = 47,
 		LOBBY_LEAVE_USER_NTF = 48,
 
-		ROOM_LEAVE_REQ = 66,
-		ROOM_LEAVE_RES = 67,
-		ROOM_LEAVE_USER_NTF = 68,
-
 		LOBBY_CHAT_REQ = 85,
 		LOBBY_CHAT_RES = 86,
 		LOBBY_CHAT_NTF = 87,
@@ -49,12 +45,15 @@ namespace NCommon
 		ROOM_ENTER_RES = 62,
 		ROOM_ENTER_USER_NTF = 63,
 
+		ROOM_LEAVE_REQ = 66,
+		ROOM_LEAVE_RES = 67,
+		ROOM_LEAVE_USER_NTF = 68,
+
 		ROOM_CHANGED_INFO_NTF = 71,
 
 		ROOM_CHAT_REQ = 76,
 		ROOM_CHAT_RES = 77,
 		ROOM_CHAT_NTF = 78,
-
 
 		MAX = 256
 	};

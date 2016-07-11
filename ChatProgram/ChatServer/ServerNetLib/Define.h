@@ -53,10 +53,10 @@ namespace NServerNetLib
 
 	struct RecvPacketInfo
 	{
-		int SessionIndex = 0;
-		short PacketId = 0;
-		short PacketBodySize = 0;
-		char* pRefData = 0;
+		int SessionIndex = 0; //->Client(user) 
+		short PacketId = 0; //->code to packet structure 
+		short PacketBodySize = 0;//->size of packet structure
+		char* pRefData = 0;//->pointer to packet structure
 	};
 
 	struct RecvPacketInfo2

@@ -39,13 +39,16 @@ namespace NLogicLib
 
 		return &m_LobbyList[lobbyId];
 	}
-		
+	
+	//해당 번호를 가진 클라에게 로비리스트를 전송한다.
 	void LobbyManager::SendLobbyListInfo(const int sessionIndex)
 	{
+		//결과패킷에 내용을 입력한다. 
 		NCommon::PktLobbyListRes resPkt;
 		resPkt.ErrorCode = (short)ERROR_CODE::NONE;
 		resPkt.LobbyCount = static_cast<short>(m_LobbyList.size());
 
+		//모든 로비의 정보를 입력한다.
 		int index = 0;
 		for (auto& lobby : m_LobbyList)
 		{
@@ -55,7 +58,7 @@ namespace NLogicLib
 			++index;
 		}
 
-		// 보낼 데이터를 줄이기 위해 사용하지 않은 LobbyListInfo 크기는 빼고 보내도 된다.
+		//보낼 데이터를 줄이기 위해 사용하지 않은 LobbyListInfo 크기는 빼고 보내도 된다.
 		m_pRefNetwork->SendData(sessionIndex, (short)PACKET_ID::LOBBY_LIST_RES, sizeof(resPkt), (char*)&resPkt);
 	}
 

@@ -98,7 +98,7 @@ namespace NCommon
 	struct UserSmallInfo
 	{
 		short LobbyUserIndex;
-		char UserID[MAX_USER_ID_SIZE+1] = { 0, };
+		char UserID[MAX_USER_ID_SIZE + 1] = { 0, };
 	};
 
 	const int MAX_SEND_LOBBY_USER_LIST_COUNT = 32;
@@ -108,7 +108,6 @@ namespace NCommon
 		short Count = 0;
 		UserSmallInfo UserInfo[MAX_SEND_LOBBY_USER_LIST_COUNT];
 	};
-
 
 	//- 로비에서 나가기 요청
 	struct PktLobbyLeaveReq {};

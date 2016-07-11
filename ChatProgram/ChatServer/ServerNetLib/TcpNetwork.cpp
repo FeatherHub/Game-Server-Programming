@@ -163,6 +163,8 @@ namespace NServerNetLib
 		return true;
 	}
 
+	//해당클라의 전송할 데이터 배열에 패킷코드와 패킷크기, 데이터를 복사한다.
+	//이것은 네트워크 처리단계에서 전송된다. (OS의 전송버퍼에 복사된다) 
 	NET_ERROR_CODE TcpNetwork::SendData(const int sessionIndex, const short packetId, const short size, const char* pMsg)
 	{
 		auto& session = m_ClientSessionPool[sessionIndex];
@@ -173,9 +175,14 @@ namespace NServerNetLib
 			return NET_ERROR_CODE::CLIENT_SEND_BUFFER_FULL;
 		}
 				
+		//패킷코드와 패킷크기는 패킷헤더에 기입된다
 		PacketHeader pktHeader{ packetId, size };
 		memcpy(&session.pSendBuffer[pos], (char*)&pktHeader, PACKET_HEADER_SIZE);
+
+		//알맹이 데이터는 바로 뒷부분에 기입된다
 		memcpy(&session.pSendBuffer[pos + PACKET_HEADER_SIZE], pMsg, size);
+
+		//전송버퍼의 크기를 갱신한다
 		session.SendSize += (size + PACKET_HEADER_SIZE);
 
 		return NET_ERROR_CODE::NONE;
