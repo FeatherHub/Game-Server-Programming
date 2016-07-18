@@ -9,7 +9,7 @@
 
 using namespace std;
 
-const string SERVER_IP = "10.73.43.217";
+const string SERVER_IP = "127.0.0.1";
 const int SERVER_PORT = 23452;
 const int BUFFER_SIZE = 512;
 
@@ -62,6 +62,8 @@ int main()
 {
 	int returnValue;
 
+	cout << "[TCP Client] " << endl;
+
 	//윈속 세팅
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -93,7 +95,7 @@ int main()
 	}
 
 	//통신 준비
-	char buf[BUFFER_SIZE] = { 0, };
+	char buf[BUFFER_SIZE];
 	int len = 0;
 
 	while (true)
@@ -121,7 +123,9 @@ int main()
 		cout << "[TCP Client] : Send " << returnValue << " byte" << endl;
 
 		//데이터 수신
-		returnValue = ReceiveNumber(sock, buf, returnValue, 0);
+		//returnValue = ReceiveNumber(sock, buf, returnValue, 0);
+		returnValue = recv(sock, buf, sizeof(buf), 0);
+
 
 		//데이터 예외
 		if (returnValue == SOCKET_ERROR)
@@ -131,7 +135,7 @@ int main()
 		}
 		else if (returnValue == 0)
 		{
-			break;
+			//break;
 		}
 
 		//데이터 출력
