@@ -7,6 +7,23 @@ using System.Net.Sockets;
 using System.IO;
 using System.Net;
 
+/*
+-Initialization
+  Make socket
+  Register endpoint 
+  Connect
+-Network Functions
+  Send
+  Receive 
+*/
+
+//네트워킹의 가장 하부에 있는 모듈이다
+//byte 단위의 수신/전송을 담당한다
+
+//패킷
+//로직은 이 모듈을 사용하여 byte stream를 보내고 얻는다
+//로직은 byte를 양자 간에 약속한 절단/채취 방법에 따라 가공한다
+
 namespace ChatClient1
 {
     class ClientSimpleTcp
@@ -15,17 +32,18 @@ namespace ChatClient1
         public string LatestErrorMsg;
         byte[] ReadBuffer = new byte[4096];
 
-
-
         //소켓연결        
         public bool Connect(string ip, int port)
         {
             try
             {
-                IPAddress serverIP = IPAddress.Parse(ip);
+                //host byte order -> net byte order
+                IPAddress serverIP = IPAddress.Parse(ip); 
                 int serverPort = port;
 
                 Sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                //EndPoint = IP + Port
                 Sock.Connect(new IPEndPoint(serverIP, serverPort));
 
                 if (Sock == null || Sock.Connected == false)
@@ -42,6 +60,8 @@ namespace ChatClient1
             }
         }
 
+        //왜 반환하지? 
+        //반환되는 것은 새로운 변수 
         public ArraySegment<byte> Receive()
         {
             try
@@ -68,6 +88,8 @@ namespace ChatClient1
         {
             try
             {
+                //클라인데 소켓이 통신 중에 제거되는 일도 있나?
+                //(closesocket이 통신 중에 호출되는 일)
                 if (Sock != null && Sock.Connected) //연결상태 유무 확인
                 {
                     Sock.Send(sendData, 0, sendData.Length, SocketFlags.None);
@@ -93,7 +115,18 @@ namespace ChatClient1
             }
         }
 
-        public bool IsConnected() { return (Sock != null && Sock.Connected) ? true : false; }
+        public bool IsConnected()
+        {
+            if (Sock != null && Sock.Connected == true)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
+            //return (Sock != null && Sock.Connected) ? true : false;
+        }
     }
 }

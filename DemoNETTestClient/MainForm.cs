@@ -11,7 +11,6 @@ using System.Windows.Forms;
 /*
  * Data encoding & decoding 
  * 
- * Methods
  *  - Component Event Callbacks
  *  - 
  * 
@@ -54,8 +53,6 @@ namespace ChatClient1
 
         CLIENT_STATUS ClientStatus = new CLIENT_STATUS();
         
-
-
         public MainForm()
         {
             InitializeComponent();
@@ -81,6 +78,8 @@ namespace ChatClient1
             PacketHandler.Init(this);
 
             DevLog.Write("프로그램 시작 !!!", LOG_LEVEL.INFO);
+
+
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

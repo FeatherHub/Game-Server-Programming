@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-const int SERVER_PORT = 9000;
+const int SERVER_PORT = 23452;
 const int BUFFER_SIZE = 512;
 const char* SERVER_IP = "127.0.0.1";
 
