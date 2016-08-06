@@ -119,7 +119,8 @@ NETCODE Network::ProcessClient()
 		{
 			if (FD_ISSET(client.s, &m_readFds))
 			{	
-				if(Recv(id) == NETCODE::INFO_CLIENT_LEFT)
+				auto res = Recv(id);
+				if(res == NETCODE::INFO_CLIENT_LEFT)
 				{
 					continue;
 				}
@@ -194,13 +195,32 @@ void Network::RecvBuffProc(int id)
 	}
 }
 
-bool Network::Send(int id)
+NETCODE Network::Send(int id)
 {
-	return true;
+	Client& c = m_clientPool[id];
+
+	int sentSize = 0;
+	sentSize = send(c.s, c.sendBuff, c.sendSize, 0);
+	if (sentSize < 0)
+	{
+		return NETCODE::ERROR_SEND_SOCKET;
+	}
+	else
+	{
+		c.sentSize = sentSize;
+	}
+
+	return NETCODE::NONE;
 }
 
 bool Network::SendBuffProc(int id)
 {
+	Client& c = m_clientPool[id];
+
+	CopyMemory(c.sendBuff, c.sendBuff + c.sentSize, c.sendSize - c.sentSize);
+	
+	c.sendSize -= c.sentSize;
+
 	return true;
 }
 
@@ -215,7 +235,7 @@ Packet Network::GetPacket()
 	}
 	else
 	{
-		return Packet();
+		return Packet{0, 0, nullptr};
 	}
 }
 

@@ -20,7 +20,7 @@ public:
 
 	char sendBuff[MAX_BUFF_SIZE];
 	int sendSize = 0;
-
+	int sentSize = 0;
 private:
 	bool isConnected = false;
 };

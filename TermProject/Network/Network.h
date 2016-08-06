@@ -39,7 +39,7 @@ private:
 	NETCODE ProcessClient();
 	NETCODE Recv(int id);
 	void RecvBuffProc(int id);
-	bool Send(int id);
+	NETCODE Send(int id);
 	bool SendBuffProc(int id);
 
 	void AddToRecvPktQueue(Packet&& packet);

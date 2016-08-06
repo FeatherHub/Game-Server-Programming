@@ -5,11 +5,11 @@
     <ClInclude Include="Client.h">
       <Filter>Net Data</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
-      <Filter>Net Data</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.h" />
     <ClInclude Include="NetCode.h">
+      <Filter>Net Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
       <Filter>Net Data</Filter>
     </ClInclude>
   </ItemGroup>
