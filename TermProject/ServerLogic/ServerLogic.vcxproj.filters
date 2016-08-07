@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="..\Common\Packet.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Common\Packetid.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketProcessor.h" />
+    <ClInclude Include="..\Common\ErrorCode.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="LogicMain.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PacketProcessor.cpp" />
+    <ClCompile Include="LogicMain.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{d48c76f3-a310-4079-8859-7593e3f206a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{8b117848-5bcf-41d0-9e97-85e4910fbeef}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

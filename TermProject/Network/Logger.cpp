@@ -39,5 +39,7 @@ void Logger::Write(Level lv, const char* fmt, ...)
 		}
 	}
 
+	std::cout << std::endl;
+
 	va_end(args);
 }

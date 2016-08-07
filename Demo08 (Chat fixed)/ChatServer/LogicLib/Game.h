@@ -34,7 +34,6 @@ namespace NLogicLib
 		std::chrono::system_clock::time_point m_selectTime 
 			= std::chrono::system_clock::now();
 
-		__int64 m_
 		int m_select1; //가 0 바 1 보 2 무 3
 		int m_select2;
 	};

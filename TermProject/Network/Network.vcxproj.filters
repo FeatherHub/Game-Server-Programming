@@ -9,7 +9,7 @@
     <ClInclude Include="NetCode.h">
       <Filter>Net Data</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
+    <ClInclude Include="NetPacket.h">
       <Filter>Net Data</Filter>
     </ClInclude>
   </ItemGroup>

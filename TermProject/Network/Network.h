@@ -6,56 +6,60 @@
 #include <queue>
 
 #include "Client.h"
-#include "Packet.h"
+#include "NetPacket.h"
 #include "NetCode.h"
 
-class Client;
-
-//Subject : Server
-//Transport : TCP
-//Socket I/O Model : Select
-
-class Network
+namespace NNetworkLib
 {
-public:
-	Network() = default;
-	~Network();
-	bool Init(unsigned short port, const char* ip);
-	bool Run();
+	class Client;
 
-	NETCODE SendPacket(int id, Packet& packet);
-	Packet GetPacket();
+	//Subject : Server
+	//Transport : TCP
+	//Socket I/O Model : Select
 
-private:
-	//INIT//
-	void InitClientStuff();
+	class Network
+	{
+	public:
+		Network() = default;
+		~Network();
+		bool Init(unsigned short port, const char* ip);
+		bool Run();
 
-	//RUN//
-	bool ProcessSelect();
+		NETCODE SendPacket(int receiverId, Packet& packet);
+		RecvPacket GetPacket();
+		bool PacketQueueEmpty() { return m_recvPktQueue.empty(); }
 
-	NETCODE ProcessAccept();
-	void AddClient(SOCKET s, SOCKADDR_IN& addr);
+	private:
+		//INIT//
+		void InitClientStuff();
 
-	NETCODE ProcessClient();
-	NETCODE Recv(int id);
-	void RecvBuffProc(int id);
-	NETCODE Send(int id);
-	bool SendBuffProc(int id);
+		//RUN//
+		bool ProcessSelect();
 
-	void AddToRecvPktQueue(Packet&& packet);
+		NETCODE ProcessAccept();
+		void AddClient(SOCKET s, SOCKADDR_IN& addr);
 
-	void CloseClient(int id);
+		NETCODE ProcessClient();
+		NETCODE Recv(int id);
+		void RecvBuffProc(int id);
+		NETCODE Send(int id);
+		bool SendBuffProc(int id);
 
-private:
-	Client m_clientPool[FD_SETSIZE];
-	std::queue<int> m_clientIndexPool;
-	const int MAX_CLIENT_NUM = FD_SETSIZE;
-	int m_clientNum = 0;
+		void AddToRecvPktQueue(RecvPacket&& packet);
 
-	fd_set m_writeFds;
-	fd_set m_readFds;
+		void CloseClient(int id);
 
-	std::queue<Packet> m_recvPktQueue;
+	private:
+		Client m_clientPool[FD_SETSIZE];
+		std::queue<int> m_clientIndexPool;
+		const int MAX_CLIENT_NUM = FD_SETSIZE;
+		int m_clientNum = 0;
 
-	SOCKET m_listenSock;
-};
+		fd_set m_writeFds;
+		fd_set m_readFds;
+
+		std::queue<RecvPacket> m_recvPktQueue;
+
+		SOCKET m_listenSock;
+	};
+}
