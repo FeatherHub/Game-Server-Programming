@@ -4,16 +4,17 @@
 struct PktHeader
 {
 	unsigned short id;
-	unsigned short bodySize;
 };
 
 const int PACKET_HEADER_SIZE = sizeof(PktHeader);
 
-struct Packet
+struct TestReqPkt
 {
-	unsigned short id;
-	unsigned short bodySize;
-	char* data;
+	int num;
 };
 
+struct TestResPkt
+{
+	int num;
+};
 #pragma pack(pop)
