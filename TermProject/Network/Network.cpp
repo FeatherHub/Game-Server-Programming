@@ -33,6 +33,8 @@ namespace NNetworkLib
 		if (listen(m_listenSock, SOMAXCONN) == SOCKET_ERROR)
 			return false;
 
+		FD_SET(m_listenSock, &m_fds);
+
 		Logger::Write(Logger::INFO, "Server run");
 
 		return true;
@@ -51,26 +53,10 @@ namespace NNetworkLib
 
 	bool Network::ProcessSelect()
 	{
-		FD_ZERO(&m_readFds);
-		FD_ZERO(&m_writeFds);
+		auto readFds = m_fds;
+		auto writeFds = m_fds;
 
-		if (m_clientNum < FD_SETSIZE)
-			FD_SET(m_listenSock, &m_readFds);
-
-		for (int i = 0; i < FD_SETSIZE; i++)
-		{
-			if (m_clientPool[i].IsConnected())
-			{
-				FD_SET(m_clientPool[i].s, &m_readFds);
-
-				if (m_clientPool[i].sendSize > 0)
-				{
-					FD_SET(m_clientPool[i].s, &m_writeFds);
-				}
-			}
-		}
-
-		auto res = select(0, &m_readFds, &m_writeFds, nullptr, nullptr);
+		auto res = select(0, &readFds, &writeFds, nullptr, nullptr);
 
 		if (res == SOCKET_ERROR)
 			return false;
@@ -86,11 +72,12 @@ namespace NNetworkLib
 			return NETCODE::INFO_CLIENT_POOL_FULL;
 		}
 
-		if (FD_ISSET(m_listenSock, &m_readFds))
+		if (FD_ISSET(m_listenSock, &m_fds))
 		{
 			SOCKADDR_IN clientAddr;
 			int addrLen = sizeof(clientAddr);
 			SOCKET clientSock;
+			int acceptCnt = 0;
 
 			do
 			{
@@ -106,8 +93,8 @@ namespace NNetworkLib
 				}
 
 				AddClient(clientSock, clientAddr);
-
-			} while (m_clientNum < FD_SETSIZE);
+			} while (++acceptCnt < MAX_ACCEPT_AT_ONCE &&
+					m_clientNum < FD_SETSIZE);
 		}
 
 		return NETCODE::NONE;
@@ -121,7 +108,7 @@ namespace NNetworkLib
 
 			if (client.IsConnected())
 			{
-				if (FD_ISSET(client.s, &m_readFds))
+				if (FD_ISSET(client.s, &m_fds))
 				{
 					auto res = Recv(id);
 					if (res == NETCODE::INFO_CLIENT_LEFT)
@@ -132,7 +119,7 @@ namespace NNetworkLib
 					RecvBuffProc(id);
 				}
 
-				if (FD_ISSET(client.s, &m_writeFds))
+				if (FD_ISSET(client.s, &m_fds))
 				{
 					Send(id);
 
@@ -265,6 +252,8 @@ namespace NNetworkLib
 		m_clientPool[id].Connect();
 		inet_ntop(AF_INET, &(addr.sin_addr.s_addr), m_clientPool[id].IP, INET_ADDRSTRLEN);
 
+		FD_SET(s, &m_fds);
+
 		Logger::Write(Logger::INFO, "Client %s connected", m_clientPool[id].IP);
 
 		m_clientNum++;
@@ -273,6 +262,8 @@ namespace NNetworkLib
 	void Network::CloseClient(int id)
 	{
 		auto& target = m_clientPool[id];
+
+		FD_CLR(target.s, &m_fds);
 
 		closesocket(target.s);
 		target.Disconnect();

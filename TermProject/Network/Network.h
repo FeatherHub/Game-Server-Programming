@@ -52,14 +52,19 @@ namespace NNetworkLib
 	private:
 		Client m_clientPool[FD_SETSIZE];
 		std::queue<int> m_clientIndexPool;
-		const int MAX_CLIENT_NUM = FD_SETSIZE;
 		int m_clientNum = 0;
 
-		fd_set m_writeFds;
-		fd_set m_readFds;
+		fd_set m_fds;
 
 		std::queue<RecvPacket> m_recvPktQueue;
 
 		SOCKET m_listenSock;
+
+	private:
+		enum 
+		{ 
+			MAX_ACCEPT_AT_ONCE = 30,
+			MAX_CLIENT_NUM = FD_SETSIZE
+		};
 	};
 }
