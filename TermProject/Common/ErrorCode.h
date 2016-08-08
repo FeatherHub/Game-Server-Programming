@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ErrorCode
+enum ERRORCODE : int
 {
 	NONE = 0
 };
