@@ -1,5 +1,4 @@
 #include "PacketManager.h"
-#include "PacketProcessor.h"
 
 void PacketManager::Init()
 {
@@ -20,6 +19,12 @@ void PacketManager::ProcessPacket(RecvPacket recvPkt)
 		return;
 	}
 
+	if (m_pktFuncArray[pktId] == nullptr)
+	{
+		return;
+	}
 
+	Packet pkt{ recvPkt.id, recvPkt.bodySize, recvPkt.data };
+
+	(m_pktProcessor.*m_pktFuncArray[pktId])(pkt, pktId);
 }
-

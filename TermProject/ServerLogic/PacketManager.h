@@ -1,16 +1,17 @@
 #pragma once
 
-#include "..\Network\NetPacket.h"
-#include "..\Common\Packetid.h"
-#include "..\Common\Packet.h"
-#include "..\Common\ErrorCode.h"
+#include "PacketProcessor.h"
 
-class PacketProcessor;
+#include "..\Network\NetPacket.h"
+#include "..\Common\Packet.h"
+#include "..\Common\Packetid.h"
+#include "..\Common\ErrorCode.h"
 
 class PacketManager
 {
 	using RecvPacket = NNetworkLib::RecvPacket;
 	using PktProcFunc = ErrorCode(PacketProcessor::*)(Packet&, int);
+	PktProcFunc m_pktFuncArray[PacketId::MAX];
 
 public:
 	void Init();
@@ -18,5 +19,5 @@ public:
 	void ProcessPacket(RecvPacket recvPkt);
 
 private:
-	PktProcFunc m_pktFuncArray[PacketId::MAX];
+	PacketProcessor m_pktProcessor;
 };
