@@ -23,12 +23,14 @@
     <ClInclude Include="..\..\Common\Packet.h" />
     <ClInclude Include="..\..\Common\Packetid.h" />
     <ClInclude Include="..\..\Common\Util\BodySizeMananger.h" />
+    <ClInclude Include="..\..\Common\Util\Logger.h" />
     <ClInclude Include="LogicMain.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="PacketProcessor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp" />
+    <ClCompile Include="..\..\Common\Util\Logger.cpp" />
     <ClCompile Include="LogicMain.cpp" />
     <ClCompile Include="PacketManager.cpp" />
     <ClCompile Include="PacketProcessor.cpp" />
