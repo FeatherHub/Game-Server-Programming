@@ -9,7 +9,7 @@ class PacketManager;
 
 class LogicMain
 {
-	using SelectNetwork = NNetworkLib::SelectNetwork;
+	using Network = NNetworkLib::SelectNetwork;
 	
 public:
 	LogicMain() = default;
@@ -19,7 +19,7 @@ public:
 	void StopRun() { m_isRun = false; }
 
 private:
-	SelectNetwork* m_network;
+	Network* m_network;
 	PacketManager* m_pktMgr;
 
 	bool m_isRun;

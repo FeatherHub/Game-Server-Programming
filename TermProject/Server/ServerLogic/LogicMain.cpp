@@ -7,11 +7,11 @@ void LogicMain::Init()
 	m_isRun = true;
 
 	//여기서 네트워크를 공유.
-	m_network = new SelectNetwork();
+	m_network = new Network();
 	m_network->Init(23452, "127.0.0.1");
 
 	m_pktMgr = new PacketManager();
-	m_pktMgr->Init();
+	m_pktMgr->Init(m_network);
 }
 
 void LogicMain::Run()

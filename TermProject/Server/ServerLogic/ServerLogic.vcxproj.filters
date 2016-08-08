@@ -1,21 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="..\Common\Packet.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Common\Packetid.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="PacketProcessor.h" />
-    <ClInclude Include="..\Common\ErrorCode.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="LogicMain.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="PacketManager.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\ErrorCode.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Packet.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Packetid.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Util\BodySizeMananger.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +29,9 @@
     <ClCompile Include="PacketManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -33,6 +39,9 @@
     </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{8b117848-5bcf-41d0-9e97-85e4910fbeef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{f40d0942-39f6-486b-8c39-f7af45dc35fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

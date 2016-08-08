@@ -1,6 +1,9 @@
 #include <WS2tcpip.h>
 
 #include "SelectNetwork.h"
+#include "NetCode.h"
+
+#include "..\..\Common\Util\BodySizeMananger.h"
 #include "Logger.h"
 
 namespace NNetworkLib
@@ -34,6 +37,9 @@ namespace NNetworkLib
 			return false;
 
 		FD_SET(m_listenSock, &m_fds);
+
+		m_bodySizeMgr = new BodySizeManager();
+		m_bodySizeMgr->Init();
 
 		Logger::Write(Logger::INFO, "Server run");
 
@@ -113,6 +119,8 @@ namespace NNetworkLib
 					auto res = Recv(id);
 					if (res == NETCODE::INFO_CLIENT_LEFT)
 					{
+						CloseClient(id);
+
 						continue;
 					}
 
@@ -143,8 +151,6 @@ namespace NNetworkLib
 
 		if (res == 0)
 		{
-			CloseClient(id);
-
 			return NETCODE::INFO_CLIENT_LEFT;
 		}
 		else if (res < 0) //SOCKET_ERROR
@@ -159,9 +165,9 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	void SelectNetwork::RecvBuffProc(int id)
+	void SelectNetwork::RecvBuffProc(int clientId)
 	{
-		Client& c = m_clientPool[id];
+		Client& c = m_clientPool[clientId];
 
 		while (true)
 		{
@@ -173,17 +179,19 @@ namespace NNetworkLib
 			PktHeader pktH;
 			CopyMemory(&pktH, c.recvBuff + c.readPos, PACKET_HEADER_SIZE);
 
-			if (c.recvSize < PACKET_HEADER_SIZE + pktH.bodySize)
+			int bodySize = m_bodySizeMgr->Get(pktH.id);
+
+			if (c.recvSize < PACKET_HEADER_SIZE + bodySize)
 			{
 				break;
 			}
 
 			char* dataPos = c.recvBuff + c.readPos + PACKET_HEADER_SIZE;
 
-			AddToRecvPktQueue(RecvPacket{ pktH.id, pktH.bodySize, dataPos, id });
+			AddToRecvPktQueue(RecvPacket{ pktH.id, dataPos, clientId });
 
-			c.readPos += PACKET_HEADER_SIZE + pktH.bodySize;
-			c.recvSize -= PACKET_HEADER_SIZE + pktH.bodySize;
+			c.readPos += PACKET_HEADER_SIZE + bodySize;
+			c.recvSize -= PACKET_HEADER_SIZE + bodySize;
 		}
 	}
 
@@ -232,13 +240,14 @@ namespace NNetworkLib
 	NETCODE SelectNetwork::SendPacket(int receiverId, Packet& packet)
 	{
 		Client& c = m_clientPool[receiverId];
+		int bodySize = m_bodySizeMgr->Get(packet.id);
 
-		if (c.sendSize + PACKET_HEADER_SIZE + packet.bodySize > Client::MAX_BUFF_SIZE)
+		if (c.sendSize + PACKET_HEADER_SIZE + bodySize > Client::MAX_BUFF_SIZE)
 		{
 			return NETCODE::ERROR_SENDBUFFER_FULL;
 		}
 
-		CopyMemory(c.sendBuff + c.sendSize, &packet, PACKET_HEADER_SIZE + packet.bodySize);
+		CopyMemory(c.sendBuff + c.sendSize, &packet, PACKET_HEADER_SIZE + bodySize);
 
 		return NETCODE::NONE;
 	}
@@ -249,7 +258,6 @@ namespace NNetworkLib
 		m_clientIndexPool.pop();
 
 		m_clientPool[id].s = s;
-		m_clientPool[id].Connect();
 		inet_ntop(AF_INET, &(addr.sin_addr.s_addr), m_clientPool[id].IP, INET_ADDRSTRLEN);
 
 		FD_SET(s, &m_fds);
@@ -266,7 +274,6 @@ namespace NNetworkLib
 		FD_CLR(target.s, &m_fds);
 
 		closesocket(target.s);
-		target.Disconnect();
 		target.recvSize = 0;
 		target.sendSize = 0;
 

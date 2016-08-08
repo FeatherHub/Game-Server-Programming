@@ -7,10 +7,13 @@
 
 #include "Client.h"
 #include "NetPacket.h"
-#include "NetCode.h"
+
+class BodySizeManager;
 
 namespace NNetworkLib
 {
+	enum NETCODE : int;
+
 	class Client;
 
 	//Subject : Server
@@ -29,6 +32,7 @@ namespace NNetworkLib
 		RecvPacket GetPacket();
 		bool PacketQueueEmpty() { return m_recvPktQueue.empty(); }
 
+		void BanClient(int id) { CloseClient(id); }
 	private:
 		//INIT//
 		void InitClientStuff();
@@ -41,7 +45,7 @@ namespace NNetworkLib
 
 		NETCODE ProcessClient();
 		NETCODE Recv(int id);
-		void RecvBuffProc(int id);
+		void RecvBuffProc(int clientId);
 		NETCODE Send(int id);
 		bool SendBuffProc(int id);
 
@@ -60,6 +64,7 @@ namespace NNetworkLib
 
 		SOCKET m_listenSock;
 
+		BodySizeManager* m_bodySizeMgr;
 	private:
 		enum 
 		{ 
