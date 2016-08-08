@@ -4,7 +4,7 @@
 #include "NetCode.h"
 
 #include "..\..\Common\Util\BodySizeMananger.h"
-#include "Logger.h"
+#include "..\..\Common\Util\Logger.h"
 
 namespace NNetworkLib
 {
@@ -59,10 +59,13 @@ namespace NNetworkLib
 
 	bool SelectNetwork::ProcessSelect()
 	{
-		auto readFds = m_fds;
-		auto writeFds = m_fds;
+		FD_ZERO(&m_readFds);
+		FD_ZERO(&m_writeFds);
 
-		auto res = select(0, &readFds, &writeFds, nullptr, nullptr);
+		m_readFds = m_fds;
+		m_writeFds = m_fds;
+
+		auto res = select(0, &m_readFds, &m_writeFds, nullptr, nullptr);
 
 		if (res == SOCKET_ERROR)
 			return false;
@@ -78,7 +81,7 @@ namespace NNetworkLib
 			return NETCODE::INFO_CLIENT_POOL_FULL;
 		}
 
-		if (FD_ISSET(m_listenSock, &m_fds))
+		if (FD_ISSET(m_listenSock, &m_readFds))
 		{
 			SOCKADDR_IN clientAddr;
 			int addrLen = sizeof(clientAddr);
@@ -114,7 +117,7 @@ namespace NNetworkLib
 
 			if (client.IsConnected())
 			{
-				if (FD_ISSET(client.s, &m_fds))
+				if (FD_ISSET(client.s, &m_readFds))
 				{
 					auto res = Recv(id);
 					if (res == NETCODE::INFO_CLIENT_LEFT)
@@ -127,7 +130,7 @@ namespace NNetworkLib
 					RecvBuffProc(id);
 				}
 
-				if (FD_ISSET(client.s, &m_fds))
+				if (FD_ISSET(client.s, &m_writeFds))
 				{
 					Send(id);
 
@@ -176,10 +179,9 @@ namespace NNetworkLib
 				break;
 			}
 
-			PktHeader pktH;
-			CopyMemory(&pktH, c.recvBuff + c.readPos, PACKET_HEADER_SIZE);
+			PktHeader* pktH = (PktHeader*)(c.recvBuff + c.readPos);
 
-			int bodySize = m_bodySizeMgr->Get(pktH.id);
+			int bodySize = m_bodySizeMgr->Get(pktH->id);
 
 			if (c.recvSize < PACKET_HEADER_SIZE + bodySize)
 			{
@@ -188,7 +190,7 @@ namespace NNetworkLib
 
 			char* dataPos = c.recvBuff + c.readPos + PACKET_HEADER_SIZE;
 
-			AddToRecvPktQueue(RecvPacket{ pktH.id, dataPos, clientId });
+			AddToRecvPktQueue(RecvPacket{ pktH->id, dataPos, clientId });
 
 			c.readPos += PACKET_HEADER_SIZE + bodySize;
 			c.recvSize -= PACKET_HEADER_SIZE + bodySize;
@@ -229,12 +231,33 @@ namespace NNetworkLib
 		RecvPacket pkt = m_recvPktQueue.front();
 		m_recvPktQueue.pop();
 
+		Logger::Write(Logger::INFO, "Give a packet");
+
 		return pkt;
 	}
 
-	void SelectNetwork::AddToRecvPktQueue(RecvPacket&& packet)
+	void SelectNetwork::AddToRecvPktQueue(RecvPacket packet)
 	{
-		m_recvPktQueue.emplace(std::move(packet));
+		m_recvPktQueue.push(packet);
+
+		Logger::Write(Logger::INFO, "Add a packet to queue");
+		if (PacketQueueEmpty() == false)
+		{
+			Logger::Write(Logger::INFO, "I am not empty!");
+		}
+		else
+		{
+			Logger::Write(Logger::INFO, "Though I am empty");
+		}
+
+		if (m_recvPktQueue.empty() == false)
+		{
+			Logger::Write(Logger::INFO, "I am not empty!2");
+		}
+		else
+		{
+			Logger::Write(Logger::INFO, "Though I am empty2");
+		}
 	}
 
 	NETCODE SelectNetwork::SendPacket(int receiverId, Packet& packet)

@@ -49,7 +49,7 @@ namespace NNetworkLib
 		NETCODE Send(int id);
 		bool SendBuffProc(int id);
 
-		void AddToRecvPktQueue(RecvPacket&& packet);
+		void AddToRecvPktQueue(RecvPacket packet);
 
 		void CloseClient(int id);
 
@@ -59,6 +59,8 @@ namespace NNetworkLib
 		int m_clientNum = 0;
 
 		fd_set m_fds;
+		fd_set m_readFds;
+		fd_set m_writeFds;
 
 		std::queue<RecvPacket> m_recvPktQueue;
 
