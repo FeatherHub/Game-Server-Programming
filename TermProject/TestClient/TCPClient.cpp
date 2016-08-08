@@ -65,34 +65,38 @@ int main(int argc, char *argv[])
 		err_quit("connect()");
 	}
 
-	// 데이터 통신에 사용할 변수
-	char buf[BUFSIZE+1];
-	int len;
-
 	//개별
 	TestReqPkt reqPkt;
 	reqPkt.num = 10;
 
 	//포장
 	NNetworkLib::Packet pkt;
-	pkt.id = TestReq;
+	pkt.id = PacketId::TestReq;
 	int bodySize = sizeof(TestReqPkt);
 	pkt.data = (char*)&reqPkt;
 
 	send(sock, (char*)&pkt, PACKET_HEADER_SIZE + bodySize, 0);
+	printf("send p id %d size %d data %d \n", pkt.id, bodySize, reqPkt.num);
 
 	char recvBuf[512] = { 0, };
 	int readPos = 0;
 	int recvNum = 0;
 
-	while (1)
+	while (true)
 	{
 		//받기
 		int recvedNum = recv(sock, recvBuf + readPos, 512 - recvNum, 0);
+		if (recvedNum < 0)
+		{
+			printf("error \n");
+			break;
+		}
+
+		printf("recv %d \n", recvedNum);
 
 		recvNum += recvedNum;
 
-		while (recvNum < PACKET_HEADER_SIZE)
+		while (recvNum > PACKET_HEADER_SIZE)
 		{
 			//패킷화
 			NNetworkLib::Packet pkt;
