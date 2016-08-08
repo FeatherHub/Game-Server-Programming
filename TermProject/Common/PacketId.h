@@ -2,10 +2,10 @@
 
 enum PacketId : unsigned short
 {
-	TestReq = 20,
-	TestRes = 21,
-	LoginReq = 30,
-	LoginRes = 31,
+	TestReq = 30,
+	TestRes = 31,
+	LoginReq = 40,
+	LoginRes = 41,
 
 	MAX = 512
 };
