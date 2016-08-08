@@ -1,11 +1,11 @@
 #include <WS2tcpip.h>
 
-#include "Network.h"
+#include "SelectNetwork.h"
 #include "Logger.h"
 
 namespace NNetworkLib
 {
-	bool Network::Init(unsigned short port, const char* ip)
+	bool SelectNetwork::Init(unsigned short port, const char* ip)
 	{
 		WSADATA wsaData;
 		if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
@@ -40,7 +40,7 @@ namespace NNetworkLib
 		return true;
 	}
 
-	bool Network::Run()
+	bool SelectNetwork::Run()
 	{
 		ProcessSelect();
 
@@ -51,7 +51,7 @@ namespace NNetworkLib
 		return true;
 	}
 
-	bool Network::ProcessSelect()
+	bool SelectNetwork::ProcessSelect()
 	{
 		auto readFds = m_fds;
 		auto writeFds = m_fds;
@@ -64,7 +64,7 @@ namespace NNetworkLib
 		return true;
 	}
 
-	NETCODE Network::ProcessAccept()
+	NETCODE SelectNetwork::ProcessAccept()
 	{
 		if (m_clientNum >= FD_SETSIZE)
 		{
@@ -100,7 +100,7 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	NETCODE Network::ProcessClient()
+	NETCODE SelectNetwork::ProcessClient()
 	{
 		for (int id = 0; id < FD_SETSIZE; id++)
 		{
@@ -131,7 +131,7 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	NETCODE Network::Recv(int id)
+	NETCODE SelectNetwork::Recv(int id)
 	{
 		Client& c = m_clientPool[id];
 
@@ -159,7 +159,7 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	void Network::RecvBuffProc(int id)
+	void SelectNetwork::RecvBuffProc(int id)
 	{
 		Client& c = m_clientPool[id];
 
@@ -187,7 +187,7 @@ namespace NNetworkLib
 		}
 	}
 
-	NETCODE Network::Send(int id)
+	NETCODE SelectNetwork::Send(int id)
 	{
 		Client& c = m_clientPool[id];
 
@@ -205,7 +205,7 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	bool Network::SendBuffProc(int id)
+	bool SelectNetwork::SendBuffProc(int id)
 	{
 		Client& c = m_clientPool[id];
 
@@ -216,7 +216,7 @@ namespace NNetworkLib
 		return true;
 	}
 
-	RecvPacket Network::GetPacket()
+	RecvPacket SelectNetwork::GetPacket()
 	{
 		RecvPacket pkt = m_recvPktQueue.front();
 		m_recvPktQueue.pop();
@@ -224,12 +224,12 @@ namespace NNetworkLib
 		return pkt;
 	}
 
-	void Network::AddToRecvPktQueue(RecvPacket&& packet)
+	void SelectNetwork::AddToRecvPktQueue(RecvPacket&& packet)
 	{
 		m_recvPktQueue.emplace(std::move(packet));
 	}
 
-	NETCODE Network::SendPacket(int receiverId, Packet& packet)
+	NETCODE SelectNetwork::SendPacket(int receiverId, Packet& packet)
 	{
 		Client& c = m_clientPool[receiverId];
 
@@ -243,7 +243,7 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	void Network::AddClient(SOCKET s, SOCKADDR_IN& addr)
+	void SelectNetwork::AddClient(SOCKET s, SOCKADDR_IN& addr)
 	{
 		int id = m_clientIndexPool.front();
 		m_clientIndexPool.pop();
@@ -259,7 +259,7 @@ namespace NNetworkLib
 		m_clientNum++;
 	}
 
-	void Network::CloseClient(int id)
+	void SelectNetwork::CloseClient(int id)
 	{
 		auto& target = m_clientPool[id];
 
@@ -277,7 +277,7 @@ namespace NNetworkLib
 		Logger::Write(Logger::INFO, "Client %s has left", target.IP);
 	}
 
-	void Network::InitClientStuff()
+	void SelectNetwork::InitClientStuff()
 	{
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
@@ -287,7 +287,7 @@ namespace NNetworkLib
 		m_clientNum = 0;
 	}
 
-	Network::~Network()
+	SelectNetwork::~SelectNetwork()
 	{
 		WSACleanup();
 	}

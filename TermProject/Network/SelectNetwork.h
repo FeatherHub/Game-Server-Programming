@@ -17,11 +17,11 @@ namespace NNetworkLib
 	//Transport : TCP
 	//Socket I/O Model : Select
 
-	class Network
+	class SelectNetwork
 	{
 	public:
-		Network() = default;
-		~Network();
+		SelectNetwork() = default;
+		~SelectNetwork();
 		bool Init(unsigned short port, const char* ip);
 		bool Run();
 

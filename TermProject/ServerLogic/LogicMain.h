@@ -2,14 +2,14 @@
 
 namespace NNetworkLib
 {
-	class Network;
+	class SelectNetwork;
 }
 
 class PacketManager;
 
 class LogicMain
 {
-	using Network = NNetworkLib::Network;
+	using SelectNetwork = NNetworkLib::SelectNetwork;
 	
 public:
 	LogicMain() = default;
@@ -19,7 +19,7 @@ public:
 	void StopRun() { m_isRun = false; }
 
 private:
-	Network* m_network;
+	SelectNetwork* m_network;
 	PacketManager* m_pktMgr;
 
 	bool m_isRun;

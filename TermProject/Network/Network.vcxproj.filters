@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="Network.h" />
     <ClInclude Include="Client.h">
       <Filter>Net Data</Filter>
     </ClInclude>
@@ -12,10 +11,11 @@
     <ClInclude Include="NetPacket.h">
       <Filter>Net Data</Filter>
     </ClInclude>
+    <ClInclude Include="SelectNetwork.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Network.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="SelectNetwork.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Net Data">

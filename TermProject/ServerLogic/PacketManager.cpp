@@ -10,7 +10,7 @@ void PacketManager::Init()
 	m_pktFuncArray[PacketId::LoginReq] = &PacketProcessor::LoginReq;
 }
 
-void PacketManager::ProcessPacket(RecvPacket recvPkt)
+void PacketManager::ProcessPacket(RecvPacket& recvPkt)
 {
 	int pktId = recvPkt.id;
 

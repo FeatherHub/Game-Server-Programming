@@ -16,7 +16,7 @@ class PacketManager
 public:
 	void Init();
 
-	void ProcessPacket(RecvPacket recvPkt);
+	void ProcessPacket(RecvPacket& recvPkt);
 
 private:
 	PacketProcessor m_pktProcessor;

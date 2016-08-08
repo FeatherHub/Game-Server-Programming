@@ -1,5 +1,5 @@
 #include "LogicMain.h"
-#include "Network.h"
+#include "SelectNetwork.h"
 #include "PacketManager.h"
 
 void LogicMain::Init()
@@ -7,7 +7,7 @@ void LogicMain::Init()
 	m_isRun = true;
 
 	//여기서 네트워크를 공유.
-	m_network = new Network();
+	m_network = new SelectNetwork();
 	m_network->Init(23452, "127.0.0.1");
 
 	m_pktMgr = new PacketManager();
