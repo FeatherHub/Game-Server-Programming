@@ -4,7 +4,6 @@
     <ClInclude Include="Client.h">
       <Filter>Net Data</Filter>
     </ClInclude>
-    <ClInclude Include="Logger.h" />
     <ClInclude Include="NetCode.h">
       <Filter>Net Data</Filter>
     </ClInclude>
@@ -15,11 +14,16 @@
     <ClInclude Include="..\..\Common\Util\BodySizeMananger.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\Util\Logger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="SelectNetwork.cpp" />
     <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Util\Logger.cpp">
       <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>

@@ -152,15 +152,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\Util\BodySizeMananger.h" />
+    <ClInclude Include="..\..\Common\Util\Logger.h" />
     <ClInclude Include="Client.h" />
-    <ClInclude Include="Logger.h" />
     <ClInclude Include="SelectNetwork.h" />
     <ClInclude Include="NetCode.h" />
     <ClInclude Include="NetPacket.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp" />
-    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="..\..\Common\Util\Logger.cpp" />
     <ClCompile Include="SelectNetwork.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

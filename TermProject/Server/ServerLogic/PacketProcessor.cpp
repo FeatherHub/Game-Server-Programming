@@ -4,6 +4,7 @@
 #include "..\..\Common\ErrorCode.h"
 #include "..\..\Common\Packet.h"
 #include "..\..\Common\Packetid.h"
+#include "..\..\Common\Util\Logger.h"
 #include "..\Network\NetPacket.h"
 
 void PacketProcessor::Init(Network* network)
@@ -13,6 +14,8 @@ void PacketProcessor::Init(Network* network)
 
 ERRORCODE PacketProcessor::TestReq(char* data, int clientId)
 {
+	Logger::Write(Logger::INFO, "TestReq");
+
 	TestReqPkt* reqPkt = (TestReqPkt*)data;
 	int cnt = reqPkt->num;
 

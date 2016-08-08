@@ -2,6 +2,7 @@
 #include "SelectNetwork.h"
 
 #include "..\..\Common\ErrorCode.h"
+#include "..\..\Common\Util\Logger.h"
 
 void PacketManager::Init(Network* network)
 {
@@ -15,6 +16,8 @@ void PacketManager::Init(Network* network)
 
 	m_pktFuncArray[PacketId::TestReq] = &PacketProcessor::TestReq;
 	m_pktFuncArray[PacketId::LoginReq] = &PacketProcessor::LoginReq;
+
+	Logger::Write(Logger::INFO, "Packet Manager init success");
 }
 
 void PacketManager::ProcessPacket(RecvPacket& recvPkt)
@@ -34,6 +37,8 @@ void PacketManager::ProcessPacket(RecvPacket& recvPkt)
 
 		return;
 	}
+
+	Logger::Write(Logger::INFO, "Packet Manager got packet");
 
 	(m_pktProcessor.*m_pktFuncArray[pktId])(recvPkt.data, recvPkt.clientId);
 }
