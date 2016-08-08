@@ -3,6 +3,8 @@
 #include <Ws2tcpip.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "..\Server\Network\NetPacket.h"
 #include "..\Common\Packet.h"
 #include "..\Common\PacketId.h"
 
@@ -72,12 +74,12 @@ int main(int argc, char *argv[])
 	reqPkt.num = 10;
 
 	//포장
-	Packet pkt;
+	NNetworkLib::Packet pkt;
 	pkt.id = TestReq;
-	pkt.bodySize = sizeof(TestReqPkt);
+	int bodySize = sizeof(TestReqPkt);
 	pkt.data = (char*)&reqPkt;
 
-	send(sock, (char*)&pkt, PACKET_HEADER_SIZE + pkt.bodySize, 0);
+	send(sock, (char*)&pkt, PACKET_HEADER_SIZE + bodySize, 0);
 
 	char recvBuf[512] = { 0, };
 	int readPos = 0;
@@ -93,17 +95,18 @@ int main(int argc, char *argv[])
 		while (recvNum < PACKET_HEADER_SIZE)
 		{
 			//패킷화
-			Packet pkt;
+			NNetworkLib::Packet pkt;
 			CopyMemory(&pkt, recvBuf + readPos, sizeof(pkt));
 
-			if (recvNum < PACKET_HEADER_SIZE + pkt.bodySize)
+			int bodySize = sizeof(TestResPkt);
+			if (recvNum < PACKET_HEADER_SIZE + bodySize)
 			{
 				break;
 			}
 
 			//버퍼 상태 갱신
-			readPos += PACKET_HEADER_SIZE + pkt.bodySize;
-			recvNum -= PACKET_HEADER_SIZE + pkt.bodySize;
+			readPos += PACKET_HEADER_SIZE + bodySize;
+			recvNum -= PACKET_HEADER_SIZE + bodySize;
 
 			//데이터 추출
 			TestResPkt* resPkt = (TestResPkt*)pkt.data;
