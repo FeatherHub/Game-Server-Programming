@@ -24,12 +24,19 @@ void Logger::Write(Level lv, const char* fmt, ...)
 	{
 		if (*fmt == '%')
 		{
-			if (*(fmt + 1) == 's')
+			switch (*(fmt + 1))
 			{
+			case 's':
 				std::cout << va_arg(args, const char*);
 
 				fmt += 2;
-			}
+				break;
+			case 'd':
+				std::cout << va_arg(args, int);
+
+				fmt += 2;
+				break;
+			}			
 		}
 		else
 		{
