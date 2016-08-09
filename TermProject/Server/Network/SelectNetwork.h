@@ -30,7 +30,15 @@ namespace NNetworkLib
 
 		NETCODE SendPacket(int receiverId, Packet& packet);
 		RecvPacket GetPacket();
-		bool PacketQueueEmpty() { return m_recvPktQueue.empty(); }
+		bool PacketQueueEmpty();
+/*
+		{
+			static int i = 1;
+			if(i++ < 5)
+				Logger::Write(Logger::INFO, "PQE is called");
+			return m_recvPktQueue.empty(); 
+		}
+*/
 
 		void BanClient(int id) { CloseClient(id); }
 	private:

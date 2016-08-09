@@ -241,6 +241,8 @@ namespace NNetworkLib
 		m_recvPktQueue.push(packet);
 
 		Logger::Write(Logger::INFO, "Add a packet to queue");
+
+	/*
 		if (PacketQueueEmpty() == false)
 		{
 			Logger::Write(Logger::INFO, "I am not empty!");
@@ -258,6 +260,7 @@ namespace NNetworkLib
 		{
 			Logger::Write(Logger::INFO, "Though I am empty2");
 		}
+	*/
 	}
 
 	NETCODE SelectNetwork::SendPacket(int receiverId, Packet& packet)
@@ -315,6 +318,11 @@ namespace NNetworkLib
 		}
 
 		m_clientNum = 0;
+	}
+
+	bool SelectNetwork::PacketQueueEmpty()
+	{
+		return m_recvPktQueue.empty();
 	}
 
 	SelectNetwork::~SelectNetwork()
