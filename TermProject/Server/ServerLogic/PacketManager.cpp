@@ -17,7 +17,7 @@ void PacketManager::Init(Network* network)
 	m_pktFuncArray[PacketId::TestReq] = &PacketProcessor::TestReq;
 	m_pktFuncArray[PacketId::LoginReq] = &PacketProcessor::LoginReq;
 
-	Logger::Write(Logger::INFO, "Packet Manager init success");
+	Logger::Write(Logger::INFO, "Version2.0 Packet Manager init success");
 }
 
 void PacketManager::ProcessPacket(RecvPacket& recvPkt)

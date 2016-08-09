@@ -19,7 +19,25 @@ void LogicMain::Run()
 {
 	while (m_isRun)
 	{
+		if (m_network->PacketQueueEmpty() == false)
+		{
+			Logger::Write(Logger::INFO, "PacketQueue is not empty before run");
+		}
+		else
+		{
+			Logger::Write(Logger::INFO, "PacketQueue is empty before run");
+		}
+
 		m_network->Run();
+
+		if (m_network->PacketQueueEmpty() == false)
+		{
+			Logger::Write(Logger::INFO, "PacketQueue is not empty after run");
+		}
+		else
+		{
+			Logger::Write(Logger::INFO, "PacketQueue is empty before run");
+		}
 
 		while (m_network->PacketQueueEmpty() == false)
 		{
