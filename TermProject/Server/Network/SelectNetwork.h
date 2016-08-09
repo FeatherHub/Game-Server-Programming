@@ -2,6 +2,7 @@
 
 #define FD_SETSIZE 1024
 #include <WinSock2.h>
+#include <WS2tcpip.h>
 
 #include <queue>
 
