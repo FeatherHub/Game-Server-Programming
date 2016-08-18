@@ -14,15 +14,15 @@ void PacketProcessor::Init(Network* network)
 
 ERRORCODE PacketProcessor::TestReq(char* data, int clientId)
 {
-	Logger::Write(Logger::INFO, "TestReq");
-
 	TestReqPkt* reqPkt = (TestReqPkt*)data;
 	int cnt = reqPkt->num;
+
+	Logger::Write(Logger::INFO, "Get is %d", cnt);
 
 	while (cnt > 0)
 	{
 		TestResPkt resPkt;
-		resPkt.num;
+		resPkt.num = cnt;
 
 		m_pRefNetwork->SendPacket(clientId, Packet{PacketId::TestRes, (char*)&resPkt});
 
