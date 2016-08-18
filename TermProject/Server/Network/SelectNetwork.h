@@ -48,7 +48,8 @@ namespace NNetworkLib
 
 		NETCODE ProcessClient();
 		NETCODE Recv(int id);
-		void RecvBuffProc(int clientId);
+		void RecvBuffProc1(int id);
+		void RecvBuffProc2(int clientId);
 		NETCODE Send(int id);
 		bool SendBuffProc(int id);
 
