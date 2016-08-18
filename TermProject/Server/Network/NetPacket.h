@@ -13,14 +13,14 @@ namespace NNetworkLib
 	struct Packet
 	{
 		unsigned short id;
-		char* data;
+		char* pData;
 	};
 	#pragma pack(pop)
 
 	struct RecvPacket
 	{
 		unsigned short id;
-		char* data;
+		char* pDataAtBuff;
 		int clientId;
 	};
 }
