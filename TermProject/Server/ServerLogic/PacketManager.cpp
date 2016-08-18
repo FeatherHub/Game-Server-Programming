@@ -38,5 +38,5 @@ void PacketManager::ProcessPacket(RecvPacket& recvPkt)
 		return;
 	}
 
-	(m_pktProcessor.*m_pktFuncArray[pktId])(recvPkt.data, recvPkt.clientId);
+	(m_pktProcessor.*m_pktFuncArray[pktId])(recvPkt.pDataAtBuff, recvPkt.clientId);
 }
