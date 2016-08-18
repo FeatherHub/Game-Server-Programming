@@ -231,39 +231,15 @@ namespace NNetworkLib
 		RecvPacket pkt = m_recvPktQueue.front();
 		m_recvPktQueue.pop();
 
-		Logger::Write(Logger::INFO, "Give a packet");
-
 		return pkt;
 	}
 
 	void SelectNetwork::AddToRecvPktQueue(RecvPacket packet)
 	{
 		m_recvPktQueue.push(packet);
-
-		Logger::Write(Logger::INFO, "Add a packet to queue");
-
-	/*
-		if (PacketQueueEmpty() == false)
-		{
-			Logger::Write(Logger::INFO, "I am not empty!");
-		}
-		else
-		{
-			Logger::Write(Logger::INFO, "Though I am empty");
-		}
-
-		if (m_recvPktQueue.empty() == false)
-		{
-			Logger::Write(Logger::INFO, "I am not empty!2");
-		}
-		else
-		{
-			Logger::Write(Logger::INFO, "Though I am empty2");
-		}
-	*/
 	}
 
-	NETCODE SelectNetwork::SendPacket(int receiverId, Packet& packet)
+	NNetworkLib::NETCODE SelectNetwork::SendPacket(int receiverId, Packet&& packet)
 	{
 		Client& c = m_clientPool[receiverId];
 		int bodySize = m_bodySizeMgr->Get(packet.id);

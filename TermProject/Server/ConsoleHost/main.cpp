@@ -1,4 +1,4 @@
-#include "LogicMain.h"
+#include "..\ServerLogic\LogicMain.h"
 
 int main()
 {

@@ -1,5 +1,5 @@
 #include "PacketProcessor.h"
-#include "SelectNetwork.h"
+#include "..\Network\SelectNetwork.h"
 
 #include "..\..\Common\ErrorCode.h"
 #include "..\..\Common\Packet.h"

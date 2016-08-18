@@ -10,7 +10,7 @@ namespace NNetworkLib
 		enum { MAX_BUFF_SIZE = 1024 };
 
 	public:
-		unsigned int s;
+		unsigned long long s;
 		char IP[32];
 
 		char recvBuff[MAX_BUFF_SIZE];

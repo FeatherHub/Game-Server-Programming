@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma comment(lib, "ws2_32.lib")
+
 #define FD_SETSIZE 1024
 #include <WinSock2.h>
 #include <WS2tcpip.h>
@@ -29,17 +31,9 @@ namespace NNetworkLib
 		bool Init(unsigned short port, const char* ip);
 		bool Run();
 
-		NETCODE SendPacket(int receiverId, Packet& packet);
+		NETCODE SendPacket(int receiverId, Packet&& packet);
 		RecvPacket GetPacket();
 		bool PacketQueueEmpty();
-/*
-		{
-			static int i = 1;
-			if(i++ < 5)
-				Logger::Write(Logger::INFO, "PQE is called");
-			return m_recvPktQueue.empty(); 
-		}
-*/
 
 		void BanClient(int id) { CloseClient(id); }
 	private:
