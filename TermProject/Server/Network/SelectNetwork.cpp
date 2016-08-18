@@ -60,10 +60,16 @@ namespace NNetworkLib
 	bool SelectNetwork::ProcessSelect()
 	{
 		FD_ZERO(&m_readFds);
-		FD_ZERO(&m_writeFds);
-
 		m_readFds = m_fds;
-		m_writeFds = m_fds;
+
+		FD_ZERO(&m_writeFds);
+		for (int id = 0; id < MAX_CLIENT_NUM; id++)
+		{
+			if (m_clientPool[id].sendSize > 0)
+			{
+				FD_SET(m_clientPool[id].s, &m_writeFds);
+			}
+		}
 
 		auto res = select(0, &m_readFds, &m_writeFds, nullptr, nullptr);
 
@@ -119,6 +125,8 @@ namespace NNetworkLib
 			{
 				if (FD_ISSET(client.s, &m_readFds))
 				{
+					RecvBuffProc1(id);
+
 					auto res = Recv(id);
 					if (res == NETCODE::INFO_CLIENT_LEFT)
 					{
@@ -126,8 +134,12 @@ namespace NNetworkLib
 
 						continue;
 					}
+					else if (res == NETCODE::ERROR_RECV_SOCKET)
+					{
+						return NETCODE::ERROR_RECV_SOCKET;
+					}
 
-					RecvBuffProc(id);
+					RecvBuffProc2(id);
 				}
 
 				if (FD_ISSET(client.s, &m_writeFds))
@@ -145,9 +157,6 @@ namespace NNetworkLib
 	NETCODE SelectNetwork::Recv(int id)
 	{
 		Client& c = m_clientPool[id];
-
-		CopyMemory(c.recvBuff, c.recvBuff + c.readPos, c.recvSize);
-		c.readPos = 0;
 
 		int res = recv(c.s, c.recvBuff + c.recvSize,
 			Client::MAX_BUFF_SIZE - c.recvSize, 0);
@@ -168,7 +177,15 @@ namespace NNetworkLib
 		return NETCODE::NONE;
 	}
 
-	void SelectNetwork::RecvBuffProc(int clientId)
+	void SelectNetwork::RecvBuffProc1(int id)
+	{
+		Client& c = m_clientPool[id];
+
+		CopyMemory(c.recvBuff, c.recvBuff + c.readPos, c.recvSize);
+		c.readPos = 0;
+	}
+
+	void SelectNetwork::RecvBuffProc2(int clientId)
 	{
 		Client& c = m_clientPool[clientId];
 
@@ -187,7 +204,7 @@ namespace NNetworkLib
 			{
 				break;
 			}
-
+			
 			char* dataPos = c.recvBuff + c.readPos + PACKET_HEADER_SIZE;
 
 			AddToRecvPktQueue(RecvPacket{ pktH->id, dataPos, clientId });
@@ -212,6 +229,8 @@ namespace NNetworkLib
 			c.sentSize = sentSize;
 		}
 
+		Logger::Write(Logger::INFO, "Network send");
+
 		return NETCODE::NONE;
 	}
 
@@ -222,6 +241,7 @@ namespace NNetworkLib
 		CopyMemory(c.sendBuff, c.sendBuff + c.sentSize, c.sendSize - c.sentSize);
 
 		c.sendSize -= c.sentSize;
+		c.sentSize = 0;
 
 		return true;
 	}
@@ -239,7 +259,7 @@ namespace NNetworkLib
 		m_recvPktQueue.push(packet);
 	}
 
-	NNetworkLib::NETCODE SelectNetwork::SendPacket(int receiverId, Packet&& packet)
+	NETCODE SelectNetwork::SendPacket(int receiverId, Packet&& packet)
 	{
 		Client& c = m_clientPool[receiverId];
 		int bodySize = m_bodySizeMgr->Get(packet.id);
