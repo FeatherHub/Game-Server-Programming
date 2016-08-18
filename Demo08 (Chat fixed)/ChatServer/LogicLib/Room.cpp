@@ -7,7 +7,6 @@
 
 #include "User.h"
 #include "Room.h"
-#include "Game.h"
 
 using PACKET_ID = NCommon::PACKET_ID;
 
@@ -22,7 +21,6 @@ namespace NLogicLib
 	{
 		m_Index = index;
 		m_MaxUserCount = maxUserCount;
-		m_pGame = std::make_unique<Game>();
 	}
 
 	void Room::SetNetwork(TcpNet* pNetwork, ILog* pLogger)
@@ -137,17 +135,5 @@ namespace NLogicLib
 
 	void Room::Update()
 	{
-		if (GameState::PLAYING == m_pGame->GetState())
-		{
-			if (m_pGame->CheckSelectTime())
-			{
-				//선택 안하는 사람이 지도록 한다
-			}
-		}
-	}
-
-	Game* Room::GetGameObject()
-	{
-		return m_pGame.get();
 	}
 }

@@ -80,7 +80,7 @@ namespace NLogicLib
 		m_IsRun = true;
 
 		//Main-초기화 완료
-		m_pLogger->Write(LOG_TYPE::L_INFO, "%s | Init Complete. Server Run", __FUNCTION__);
+		m_pLogger->Write(LOG_TYPE::L_INFO, "%s | Version2.0 Init Complete. Server Run", __FUNCTION__);
 		
 		return ERROR_CODE::NONE;
 	}

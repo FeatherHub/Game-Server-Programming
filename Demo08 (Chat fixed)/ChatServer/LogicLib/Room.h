@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "Game.h"
 #include "User.h"
 
 namespace NServerNetLib { class ITcpNetwork; }
@@ -62,8 +61,6 @@ namespace NLogicLib
 		//시간 대기 체크
 		void Update();
 
-		//이것때문에 헤더에도 파일을 포함시켜줘야한다.
-		Game* GetGameObject();
 	private:
 		ILog* m_pRefLogger;
 		TcpNet* m_pRefNetwork;
@@ -75,6 +72,5 @@ namespace NLogicLib
 		std::wstring m_Title;
 		std::vector<User*> m_UserList;
 
-		std::unique_ptr<Game> m_pGame;
 	};
 }

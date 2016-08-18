@@ -218,17 +218,6 @@ namespace NLogicLib
 			CHECK_ERROR(ERROR_CODE::ROOM_MASTER_GAME_START_INVALID_USER_COUNT);
 		}
 
-		//방의 상태가 게임 아무 것도 안 하고 있는지?
-		if (pRoom->GetGameObject()->GetState() != GameState::NONE) {
-			CHECK_ERROR(ERROR_CODE::ROOM_MASTER_GAME_START_INVALID_GAME_STATE);
-		}
-
-		// 방의 게임 상태 변경
-		pRoom->GetGameObject()->SetState(GameState::STARTING);
-
-		//TODO: 로비의 유저에게 방의 상태 변경 통보
-
-
 		//방의 다른 유저에게 방장이 게임시작요청했음 알림
 		pRoom->SendToAllUser((short)PACKET_ID::ROOM_MASTER_GAME_START_NTF,
 			0,
@@ -277,10 +266,7 @@ namespace NLogicLib
 
 		//검사는 비용이 싼 검사부터 먼저 한다
 
-		//방의 상태가 게임 시작 중인지?
-		if (pRoom->GetGameObject()->GetState() != GameState::NONE) {
-			CHECK_ERROR(ERROR_CODE::ROOM_MASTER_GAME_START_INVALID_GAME_STATE);
-		}
+
 
 		//이미 요청을 한 유저인가?
 		//TODO

@@ -68,7 +68,6 @@ namespace NServerNetLib
 		ServerConfig m_Config;
 				
 		SOCKET m_ServerSockfd;
-
 		fd_set m_Readfds;
 		size_t m_ConnectedSessionCount = 0;
 		
