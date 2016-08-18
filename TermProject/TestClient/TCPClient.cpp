@@ -65,17 +65,22 @@ int main(int argc, char *argv[])
 		err_quit("connect()");
 	}
 
-	//개별
+	//내용물
 	TestReqPkt reqPkt;
 	reqPkt.num = 10;
 
 	//포장
 	NNetworkLib::Packet pkt;
 	pkt.id = PacketId::TestReq;
-	int bodySize = sizeof(TestReqPkt);
-	pkt.data = (char*)&reqPkt;
+	//pkt.pData = new char[bodySize];
+	//CopyMemory(pkt.pData, &reqPkt, bodySize);
 
-	send(sock, (char*)&pkt, PACKET_HEADER_SIZE + bodySize, 0);
+	char sendBuff[512] = { 0, };
+	CopyMemory(sendBuff, &pkt.id, sizeof(pkt.id));
+	CopyMemory(sendBuff + sizeof(pkt.id), &reqPkt, sizeof(TestReqPkt));
+
+	int bodySize = sizeof(TestReqPkt);
+	send(sock, sendBuff, PACKET_HEADER_SIZE + bodySize, 0);
 	printf("send p id %d size %d data %d \n", pkt.id, bodySize, reqPkt.num);
 
 	char recvBuf[512] = { 0, };
@@ -113,7 +118,7 @@ int main(int argc, char *argv[])
 			recvNum -= PACKET_HEADER_SIZE + bodySize;
 
 			//데이터 추출
-			TestResPkt* resPkt = (TestResPkt*)pkt.data;
+			TestResPkt* resPkt = (TestResPkt*)pkt.pData;
 
 			//출력
 			printf("%d \n", resPkt->num);
@@ -121,7 +126,7 @@ int main(int argc, char *argv[])
 			if (resPkt->num == 0)
 			{
 				printf("test success \n");
-				break;
+				return 0;
 			}
 
 			//앞의 데이터는 사용했으니 버퍼 당기기
