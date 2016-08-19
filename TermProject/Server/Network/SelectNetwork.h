@@ -31,7 +31,7 @@ namespace NNetworkLib
 		bool Init(unsigned short port, const char* ip);
 		bool Run();
 
-		NETCODE SendPacket(int receiverId, Packet&& packet);
+		NETCODE SendPacket(int receiverId, unsigned short pktId, char* dataPos);
 		RecvPacket GetPacket();
 		bool PacketQueueEmpty();
 

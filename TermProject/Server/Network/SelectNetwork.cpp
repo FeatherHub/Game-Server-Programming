@@ -259,17 +259,25 @@ namespace NNetworkLib
 		m_recvPktQueue.push(packet);
 	}
 
-	NETCODE SelectNetwork::SendPacket(int receiverId, Packet&& packet)
+	NNetworkLib::NETCODE SelectNetwork::SendPacket(int receiverId, unsigned short pktId, char* dataPos)
 	{
 		Client& c = m_clientPool[receiverId];
-		int bodySize = m_bodySizeMgr->Get(packet.id);
+		int bodySize = m_bodySizeMgr->Get(pktId);
 
 		if (c.sendSize + PACKET_HEADER_SIZE + bodySize > Client::MAX_BUFF_SIZE)
 		{
 			return NETCODE::ERROR_SENDBUFFER_FULL;
 		}
 
-		CopyMemory(c.sendBuff + c.sendSize, &packet, PACKET_HEADER_SIZE + bodySize);
+		PktHeader pktHeader{pktId};
+
+		//header
+		CopyMemory(c.sendBuff + c.sendSize, &pktHeader, PACKET_HEADER_SIZE);
+
+		//body data
+		CopyMemory(c.sendBuff + c.sendSize + PACKET_HEADER_SIZE, dataPos, bodySize);
+
+		c.sendSize += PACKET_HEADER_SIZE + bodySize;
 
 		return NETCODE::NONE;
 	}
