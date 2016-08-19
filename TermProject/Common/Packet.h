@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Constants.h"
+
 #pragma pack(push, 1)
 struct PktHeader
 {
@@ -18,8 +20,6 @@ struct TestResPkt
 	int num;
 };
 
-const int MAX_USER_ID_LEN = 16;
-const int MAX_USER_PW_LEN = 16;
 
 struct LoginReqPkt
 {
