@@ -12,9 +12,9 @@ void PacketProcessor::Init(Network* network)
 	m_pRefNetwork = network;
 }
 
-ERRORCODE PacketProcessor::TestReq(char* data, int clientId)
+ERRORCODE PacketProcessor::TestReq(char* pData, int clientId)
 {
-	TestReqPkt* reqPkt = (TestReqPkt*)data;
+	TestReqPkt* reqPkt = (TestReqPkt*)pData;
 	int cnt = reqPkt->num;
 
 	Logger::Write(Logger::INFO, "Get is %d", cnt);
@@ -24,15 +24,19 @@ ERRORCODE PacketProcessor::TestReq(char* data, int clientId)
 		TestResPkt resPkt;
 		resPkt.num = cnt;
 
-		m_pRefNetwork->SendPacket(clientId, Packet{PacketId::TestRes, (char*)&resPkt});
+		m_pRefNetwork->SendPacket(clientId, PacketId::TestRes, (char*)&resPkt);
+
+		Logger::Write(Logger::INFO, "cnt %d", cnt);
 
 		cnt--;
 	}
 
+	Logger::Write(Logger::INFO, "Done");
+
 	return ERRORCODE::NONE;
 }
 
-ERRORCODE PacketProcessor::LoginReq(char* data, int clientId)
+ERRORCODE PacketProcessor::LoginReq(char* pData, int clientId)
 {
 	return ERRORCODE::NONE;
 }

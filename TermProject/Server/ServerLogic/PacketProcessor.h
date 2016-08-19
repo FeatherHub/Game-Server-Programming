@@ -18,8 +18,8 @@ public:
 	void Init(Network* network);
 
 private:
-	ERRORCODE TestReq(char* data, int clientId);
-	ERRORCODE LoginReq(char* data, int clientId);
+	ERRORCODE TestReq(char* pData, int clientId);
+	ERRORCODE LoginReq(char* pData, int clientId);
 
 private:
 	Network* m_pRefNetwork;
