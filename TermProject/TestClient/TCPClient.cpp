@@ -104,21 +104,18 @@ int main(int argc, char *argv[])
 		while (recvNum > PACKET_HEADER_SIZE)
 		{
 			//패킷화
-			NNetworkLib::Packet pkt;
-			CopyMemory(&pkt, recvBuf + readPos, sizeof(pkt));
+			PktHeader pktHeader;
+			CopyMemory(&pktHeader, recvBuf + readPos, sizeof(pktHeader));
 
+			//바디가 얼마인지 알았다
 			int bodySize = sizeof(TestResPkt);
 			if (recvNum < PACKET_HEADER_SIZE + bodySize)
 			{
 				break;
 			}
 
-			//버퍼 상태 갱신
-			readPos += PACKET_HEADER_SIZE + bodySize;
-			recvNum -= PACKET_HEADER_SIZE + bodySize;
-
 			//데이터 추출
-			TestResPkt* resPkt = (TestResPkt*)pkt.pData;
+			TestResPkt* resPkt = (TestResPkt*)(recvBuf+readPos+PACKET_HEADER_SIZE);
 
 			//출력
 			printf("%d \n", resPkt->num);
@@ -128,6 +125,10 @@ int main(int argc, char *argv[])
 				printf("test success \n");
 				return 0;
 			}
+
+			//버퍼 상태 갱신
+			readPos += PACKET_HEADER_SIZE + bodySize;
+			recvNum -= PACKET_HEADER_SIZE + bodySize;
 
 			//앞의 데이터는 사용했으니 버퍼 당기기
 			CopyMemory(recvBuf, recvBuf + readPos, recvNum);
