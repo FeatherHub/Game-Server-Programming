@@ -6,6 +6,8 @@ namespace NNetworkLib
 	struct Packet;
 }
 
+class UserManager;
+
 enum ERRORCODE : int;
 
 class PacketProcessor
@@ -23,4 +25,5 @@ private:
 
 private:
 	Network* m_pRefNetwork;
+	UserManager* m_pUserManager;
 };
