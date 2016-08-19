@@ -16,6 +16,8 @@
 [Rr]elease.win32/
 [Rr]elease/
 [Rr]eleases/
+cocos2d
+
 x64/
 x86/
 build/
