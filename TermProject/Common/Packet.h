@@ -10,6 +10,12 @@ struct PktHeader
 
 const int PACKET_HEADER_SIZE = sizeof(PktHeader);
 
+struct Packet
+{
+	unsigned short id;
+	char* pDataAtBuff;
+};
+
 struct TestReqPkt
 {
 	int num;

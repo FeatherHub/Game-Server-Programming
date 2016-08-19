@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Common\Util\BodySizeMananger.h" />
+    <ClInclude Include="..\..\Common\Util\Logger.h" />
+    <ClInclude Include="NetCode.h" />
+    <ClInclude Include="Network.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp" />
+    <ClCompile Include="..\..\Common\Util\Logger.cpp" />
+    <ClCompile Include="Network.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9C9E918A-0BA7-4BEA-ABF0-9065B37FB2AA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -74,7 +85,7 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>

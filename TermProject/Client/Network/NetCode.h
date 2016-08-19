@@ -1,0 +1,12 @@
+#pragma once
+
+enum NETCODE : int
+{
+	NONE,
+
+	SELECT_NO_CHANGE,
+
+	RECV_CONNECTION_CLOSED,
+	RECV_SOCKET_ERROR,
+
+};
