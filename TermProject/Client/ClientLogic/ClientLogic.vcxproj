@@ -18,6 +18,17 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Network\Network.vcxproj">
+      <Project>{9c9e918a-0ba7-4bea-abf0-9065b37fb2aa}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Dummy.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dummy.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8F0D0900-EFE4-441D-84BF-804F10073DA2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

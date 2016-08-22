@@ -32,8 +32,9 @@ bool Network::Connect(char* ip, unsigned short port)
 	ZeroMemory(&serverAddr, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons(port);
-	serverAddr.sin_addr.s_addr = inet_addr(ip);
-
+	//serverAddr.sin_addr.s_addr = inet_addr(ip);
+	inet_pton(AF_INET, ip, (PVOID)&serverAddr.sin_addr.s_addr);
+	
 	int res = connect(m_socket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
 	if (res == SOCKET_ERROR) return false;
 
@@ -44,9 +45,22 @@ bool Network::Connect(char* ip, unsigned short port)
 	return true;
 }
 
-void Network::SendPacket(unsigned short pktId, char* pData)
+NETCODE Network::SendPacket(unsigned short pktId, char* pData)
 {
+	int bodySize = m_bodySizeMgr->Get(pktId);
 
+	if (m_sendSize + PACKET_HEADER_SIZE + bodySize > MAX_BUFF_SIZE)
+	{
+		return NETCODE::SEND_BUFFER_FULL;
+	}
+
+	//Copy pkt header
+	CopyMemory(m_sendBuff + m_sendSize, &pktId, PACKET_HEADER_SIZE);
+
+	//Copy body data right back
+	CopyMemory(m_sendBuff + m_sendSize + PACKET_HEADER_SIZE, pData, bodySize);
+
+	return NETCODE::NONE;
 }
 
 void Network::Run()
@@ -56,7 +70,7 @@ void Network::Run()
 		return;
 	}
 
-	auto res = Select();
+	NETCODE res = Select();
 	if (res == NETCODE::SELECT_NO_CHANGE)
 	{
 		return;
@@ -64,19 +78,21 @@ void Network::Run()
 
 	if (FD_ISSET(m_socket, &m_readFd))
 	{
-		auto res = Recv();
+		res = Recv();
 		if (res == NETCODE::RECV_CONNECTION_CLOSED)
 		{
 			CloseConnect();
 
 			return;
 		}
+
 		RecvBuffProc();
 	}
 
 	if (FD_ISSET(m_socket, &m_writeFd))
 	{
 		Send();
+
 		SendBuffProc();
 	}
 }
@@ -96,6 +112,8 @@ NETCODE Network::Select()
 	{
 		return NETCODE::SELECT_NO_CHANGE;
 	}
+
+	return NETCODE::NONE;
 }
 
 NETCODE Network::Recv()
@@ -113,9 +131,11 @@ NETCODE Network::Recv()
 	}
 
 	m_recvSize += res;
+
+	return NETCODE::NONE;
 }
 
-//Cut data into packet
+//Cut byte stream into packet
 void Network::RecvBuffProc()
 {
 	while (true)
@@ -144,17 +164,30 @@ void Network::RecvBuffProc()
 
 NETCODE Network::Send()
 {
+	m_sentSize = 0; //init sentSize
 
+	int res = send(m_socket, m_sendBuff, m_sendSize, 0);
+	if (res == SOCKET_ERROR)
+	{
+		return NETCODE::SEND_SOCKET_ERROR;
+	}
+
+	m_sentSize = res;
+
+	return NETCODE::NONE;
 }
 
-NETCODE Network::SendBuffProc()
+void Network::SendBuffProc()
 {
+	m_sendSize -= m_sentSize;
 
+	//pull rest forward
+	CopyMemory(m_sendBuff, m_sendBuff + m_sentSize, m_sendSize);
 }
 
 void Network::AddToPktQueue(Packet&& pkt)
 {
-	m_pktQueue.push(pkt);
+	m_pktQueue.emplace(pkt);
 }
 
 Packet Network::GetPacket()

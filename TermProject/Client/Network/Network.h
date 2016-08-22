@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma comment(lib, "ws2_32.lib")
+
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
@@ -18,7 +20,7 @@ public:
 	bool Init();
 	bool Connect(char* ip, unsigned short port);
 	void Run();
-	void SendPacket(unsigned short pktId, char* pData);
+	NETCODE SendPacket(unsigned short pktId, char* pData);
 	Packet GetPacket();
 	bool PktQueueEmpty() { return m_pktQueue.empty(); }
 	void CloseConnect();
@@ -28,7 +30,7 @@ private:
 	NETCODE Recv();
 	void RecvBuffProc();
 	NETCODE Send();
-	NETCODE SendBuffProc();
+	void SendBuffProc();
 
 	void AddToPktQueue(Packet&& pkt);
 
