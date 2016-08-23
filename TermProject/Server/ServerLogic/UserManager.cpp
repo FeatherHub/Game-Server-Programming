@@ -8,7 +8,7 @@ void UserManager::Init()
 	}
 }
 
-void UserManager::AddUser(wchar_t* id, int clientIdx)
+void UserManager::AddUser(char* id, int clientIdx)
 {
 	int userIdx = GetUserPoolIdx();
 	
@@ -16,7 +16,8 @@ void UserManager::AddUser(wchar_t* id, int clientIdx)
 	
 	user.isConnected = true;
 	user.clientIdx = clientIdx;
-	wcsncpy(user.id, id, wcslen(id));
+//	wcsncpy(user.id, id, wcslen(id));
+	strncpy(user.id, id, strlen(id));
 }
 
 int UserManager::GetUserPoolIdx()

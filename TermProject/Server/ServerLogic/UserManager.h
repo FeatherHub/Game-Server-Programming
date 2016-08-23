@@ -8,7 +8,7 @@ class UserManager
 {
 public:
 	void Init();
-	void AddUser(wchar_t* id, int clientIdx);
+	void AddUser(char* id, int clientIdx);
 	//void RemoveUser(int)
 	//void RemoveUser(wchar_t)
 private:
