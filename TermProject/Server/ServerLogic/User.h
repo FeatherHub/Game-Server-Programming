@@ -8,7 +8,7 @@ struct User
 	
 	bool Connected() { return isConnected; }
 
-	wchar_t id[MAX_USER_ID_LEN];
+	char id[MAX_USER_ID_LEN];
 	int clientIdx;
 	bool isConnected = false;
 };

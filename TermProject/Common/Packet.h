@@ -29,8 +29,8 @@ struct TestResPkt
 
 struct LoginReqPkt
 {
-	wchar_t id[MAX_USER_ID_LEN];
-	wchar_t pw[MAX_USER_PW_LEN];
+	char id[MAX_USER_ID_LEN];
+	char pw[MAX_USER_PW_LEN];
 };
 
 struct LoginResPkt

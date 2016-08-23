@@ -1,0 +1,15 @@
+#pragma once
+
+enum ERRORCODE : int
+{
+	NONE = 0,
+
+	CONNECT_REQ_OK = 10,
+	CONNECT_REQ_FAIL = 11,
+
+	LOGIN_REQ_OK = 20,
+	LOGIN_REQ_ID_OR_PW_EMPTY = 21,
+	LOGIN_RES_OK = 25,
+	LOGIN_RES_NO = 26,
+
+};

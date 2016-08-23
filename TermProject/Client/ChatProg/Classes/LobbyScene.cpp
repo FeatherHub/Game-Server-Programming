@@ -1,6 +1,4 @@
-#include "LoginScene.h"
 #include "LobbyScene.h"
-
 #include "Constants.h"
 
 #include "..\Network\Network.h"
@@ -8,27 +6,27 @@
 #include "..\ClientLogic\RequestManager.h"
 #include "..\ClientLogic\ProcessManager.h"
 
-Scene* LoginScene::createScene()
+Scene* LobbyScene::createScene()
 {
 	auto scene = Scene::create();
-	auto layer = LoginScene::create();
+	auto layer = LobbyScene::create();
 	scene->addChild(layer);
 
 	return scene;
 }
 
-bool LoginScene::init()
+bool LobbyScene::init()
 {
 	auto winSizeHalf = Director::getInstance()->getWinSize().width / 2;
 
 	m_tfMsg = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfMsg->setPosition(Point(winSizeHalf, 250));
-	m_tfMsg->setString("Login Scene");
+	m_tfMsg->setString("Lobby Scene");
 	m_tfMsg->setEnabled(false);
 
 	addChild(m_tfMsg);
 
-	m_tfID = ui::TextField::create("*Your ID*", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfID = ui::TextField::create("***", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfID->setPosition(Point(winSizeHalf, 200));
 	m_tfID->setColor(Color3B(100, 100, 100));
 	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
@@ -38,7 +36,7 @@ bool LoginScene::init()
 
 	addChild(m_tfID);
 
-	m_tfPW = ui::TextField::create("*Your Password*", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfPW = ui::TextField::create("***", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfPW->setPasswordEnabled(true);
 	m_tfPW->setPasswordStyleText("*");
 	m_tfPW->setPosition(Point(winSizeHalf, 150));
@@ -52,7 +50,7 @@ bool LoginScene::init()
 
 	m_btnLogin = ui::Button::create("ButtonSelect.png", "ButtonSelected.png");
 	m_btnLogin->setPosition(Point(winSizeHalf, 80));
-	m_btnLogin->addTouchEventListener(CC_CALLBACK_2(LoginScene::OnLoginBtnTouched, this));
+	m_btnLogin->addTouchEventListener(CC_CALLBACK_2(LobbyScene::OnLoginBtnTouched, this));
 
 	addChild(m_btnLogin);
 
@@ -61,7 +59,7 @@ bool LoginScene::init()
 	return true;
 }
 
-void LoginScene::update(float delta)
+void LobbyScene::update(float delta)
 {
 	//이후에 delta 값을 이용하여 
 	//네트워크 실행 횟수를 최적화한다.
@@ -78,7 +76,7 @@ void LoginScene::update(float delta)
 			switch (res)
 			{
 			case LOGIN_RES_OK:
-				Director::getInstance()->replaceScene(LobbyScene::createScene());
+				//Change to lobby scene
 				break;
 			case LOGIN_RES_NO:
 				m_tfMsg->setString("Login failed");
@@ -88,7 +86,7 @@ void LoginScene::update(float delta)
 	}
 }
 
-void LoginScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type)
+void LobbyScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type)
 {
 	switch (type)
 	{
@@ -109,7 +107,7 @@ void LoginScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type
 	}
 }
 
-void LoginScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType)
+void LobbyScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType)
 {
 	auto textField = (ui::TextField*)pSender;
 

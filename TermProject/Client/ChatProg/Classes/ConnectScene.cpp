@@ -1,6 +1,8 @@
 #include "ConnectScene.h"
 #include "LoginScene.h"
 
+#include "Constants.h"
+
 #include "..\ClientLogic\RequestManager.h"
 
 Scene* ConnectScene::createScene()
@@ -21,16 +23,17 @@ bool ConnectScene::init()
 
 	auto winSizeHalf = Director::getInstance()->getWinSize().width / 2;
 
-	m_tfMsg = ui::TextField::create("", "fonts/Marker Felt.ttf", 24);
+	m_tfMsg = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfMsg->setPosition(Point(winSizeHalf, 250));
-	m_tfMsg->setText("Connect Scene");
+	m_tfMsg->setString("Connect Scene");
 	m_tfMsg->setEnabled(false);
 
 	addChild(m_tfMsg);
 
-	m_tfIP = ui::TextField::create("", "fonts/Marker Felt.ttf", 24);
+	m_tfIP = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfIP->setString("127.0.0.1");
 	m_tfIP->setPosition(Point(winSizeHalf, 200));
+	m_tfIP->setColor(Color3B(100, 100, 100));
 	m_tfIP->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -38,9 +41,10 @@ bool ConnectScene::init()
 
 	addChild(m_tfIP);
 
-	m_tfPort = ui::TextField::create("", "fonts/Marker Felt.ttf", 24);
+	m_tfPort = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfPort->setString("23452");
 	m_tfPort->setPosition(Point(winSizeHalf, 150));
+	m_tfPort->setColor(Color3B(100, 100, 100));
 	m_tfPort->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);

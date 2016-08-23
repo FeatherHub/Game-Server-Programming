@@ -24,9 +24,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ProcessManager.h" />
     <ClInclude Include="RequestManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ProcessManager.cpp" />
     <ClCompile Include="RequestManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

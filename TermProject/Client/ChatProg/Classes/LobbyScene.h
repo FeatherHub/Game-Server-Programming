@@ -7,11 +7,11 @@ USING_NS_CC;
 
 class Network;
 
-class LoginScene : public Layer
+class LobbyScene : public Layer
 {
 public:
 	static Scene* createScene();
-	CREATE_FUNC(LoginScene);
+	CREATE_FUNC(LobbyScene);
 	virtual bool init() override;
 private:
 	void update(float delta);

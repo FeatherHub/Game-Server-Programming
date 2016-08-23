@@ -1,6 +1,9 @@
 #include "RequestManager.h"
 #include "..\Network\Network.h"
 
+#include "..\..\Common\Packet.h"
+#include "..\..\Common\PacketId.h"
+
 RequestManager* RequestManager::m_instance = nullptr;
 
 RequestManager* RequestManager::GetInstance()
@@ -36,5 +39,25 @@ ERRORCODE RequestManager::RequestConnect(const std::string& port, const std::str
 
 ERRORCODE RequestManager::RequestLogin(const std::string& id, const std::string& pw)
 {
-	return ERRORCODE::NONE;
+	if (id.length() == 0 || pw.length() == 0)
+	{
+		return ERRORCODE::LOGIN_REQ_ID_OR_PW_EMPTY;
+	}
+
+	LoginReqPkt reqPkt;
+
+	/* 이후에 최적화하기
+	/* SendPacket에 가변인자로 데이터의 위치를 받아서
+	/* 복사작업은 SendPacket에서 일괄적으로 처리한다
+	*/
+
+	CopyMemory(&reqPkt.id, &id, id.length());
+	reqPkt.id[id.length()] = '\0';
+
+	CopyMemory(&reqPkt.pw, &pw, pw.length());
+	reqPkt.id[pw.length()] = '\0';
+
+	m_refNetwork->SendPacket(PacketId::LoginReq, (char*)&reqPkt);
+	
+	return ERRORCODE::LOGIN_REQ_OK;
 }

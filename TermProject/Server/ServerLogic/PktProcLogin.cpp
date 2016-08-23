@@ -2,6 +2,8 @@
 
 ERRORCODE PacketProcessor::LoginReq(char* pData, int clientId)
 {
+	Logger::Write(Logger::Level::INFO, "LoginReq In");
+
 	//Get data from pkt
 	LoginReqPkt* reqPkt = (LoginReqPkt*)pData;
 

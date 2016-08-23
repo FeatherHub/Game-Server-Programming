@@ -20,32 +20,38 @@ public:
 private:
 	Network();
 	static Network* m_instance;
+
 public:
 	bool Init();
-	bool ConnectTo(const char* ip, unsigned short port);
+
 	void Run();
+	
+	bool ConnectTo(const char* ip, unsigned short port);
+	void CloseConnect();
+
 	NETCODE SendPacket(unsigned short pktId, char* pData);
 	Packet GetPacket();
 	bool PktQueueEmpty() { return m_pktQueue.empty(); }
-	void CloseConnect();
+
 private:
 	NETCODE Select();
+
 	NETCODE Recv();
 	void RecvBuffProc();
+
 	NETCODE Send();
 	void SendBuffProc();
 
 	void AddToPktQueue(Packet&& pkt);
-private:
+
 	void DisplayErrorMsg(const char* msg);
+
 private:
 	SOCKET m_socket;
 	fd_set m_readFd;
 	fd_set m_writeFd;
 	
 	std::queue<Packet> m_pktQueue;
-
-	bool m_isConnected;
 
 	BodySizeManager* m_bodySizeMgr;
 
@@ -56,11 +62,13 @@ private:
 		SELECT_WAIT_MILLSEC = 100 
 	};
 
-	char m_recvBuff[MAX_BUFF_SIZE];
-	int m_readPos;
-	int m_recvSize;
+	bool m_isConnected = false;
 
-	char m_sendBuff[MAX_BUFF_SIZE];
-	int m_sendSize;
-	int m_sentSize;
+	char m_recvBuff[MAX_BUFF_SIZE] = { 0, };
+	int m_readPos = 0;
+	int m_recvSize = 0;
+
+	char m_sendBuff[MAX_BUFF_SIZE] = { 0, };
+	int m_sendSize = 0;
+	int m_sentSize = 0;
 };
