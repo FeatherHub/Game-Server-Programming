@@ -5,6 +5,7 @@
 class BodySizeManager
 {
 public:
+	BodySizeManager();
 	void Init();
 	int Get(unsigned short pktId);
 

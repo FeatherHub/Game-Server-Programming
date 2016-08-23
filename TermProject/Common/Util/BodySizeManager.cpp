@@ -2,6 +2,11 @@
 
 #include "..\Packet.h"
 
+BodySizeManager::BodySizeManager()
+{
+	Init();
+}
+
 void BodySizeManager::Init()
 {
 	m_bodySizeArr[PacketId::TestReq] = sizeof(TestReqPkt);
