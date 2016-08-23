@@ -16,15 +16,18 @@ class BodySizeManager;
 class Network
 {
 public:
+	static Network* GetInstance();
+private:
 	Network();
+	static Network* m_instance;
+public:
 	bool Init();
-	bool Connect(char* ip, unsigned short port);
+	bool ConnectTo(const char* ip, unsigned short port);
 	void Run();
 	NETCODE SendPacket(unsigned short pktId, char* pData);
 	Packet GetPacket();
 	bool PktQueueEmpty() { return m_pktQueue.empty(); }
 	void CloseConnect();
-
 private:
 	NETCODE Select();
 	NETCODE Recv();
@@ -33,17 +36,19 @@ private:
 	void SendBuffProc();
 
 	void AddToPktQueue(Packet&& pkt);
-
+private:
+	void DisplayErrorMsg(const char* msg);
 private:
 	SOCKET m_socket;
 	fd_set m_readFd;
 	fd_set m_writeFd;
-
+	
 	std::queue<Packet> m_pktQueue;
 
 	bool m_isConnected;
 
 	BodySizeManager* m_bodySizeMgr;
+
 	enum Config
 	{ 
 		MAX_BUFF_SIZE = 1024, 

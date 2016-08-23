@@ -1,5 +1,3 @@
-
-
 #include "SelectNetwork.h"
 #include "NetCode.h"
 
@@ -36,6 +34,7 @@ namespace NNetworkLib
 		if (listen(m_listenSock, SOMAXCONN) == SOCKET_ERROR)
 			return false;
 
+		FD_ZERO(&m_fds);
 		FD_SET(m_listenSock, &m_fds);
 
 		m_bodySizeMgr = new BodySizeManager();

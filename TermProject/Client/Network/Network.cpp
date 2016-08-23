@@ -3,9 +3,22 @@
 
 #include "..\..\Common\Util\BodySizeMananger.h"
 
-Network::Network() 
+Network* Network::m_instance = nullptr;
+
+Network* Network::GetInstance()
+{
+	if (m_instance == nullptr)
+	{
+		m_instance = new Network();
+	}
+
+	return m_instance;
+}
+
+Network::Network()
 : m_readPos(0), m_recvSize(0), m_sendSize(0), m_sentSize(0), m_isConnected(false)
 {
+	Init();
 }
 
 bool Network::Init()
@@ -19,26 +32,33 @@ bool Network::Init()
 	m_socket = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_socket == INVALID_SOCKET) return false;
 
-	unsigned long mode = 1;	//non-blocking socket
-	res = ioctlsocket(m_socket, FIONBIO, &mode);
-	if (res != 0) return false;
+//	unsigned long mode = 1;	//non-blocking socket
+//	res = ioctlsocket(m_socket, FIONBIO, &mode);
+//	if (res != 0) return false;
 
 	return true;
 }
 
-bool Network::Connect(char* ip, unsigned short port)
+bool Network::ConnectTo(const char* ip, unsigned short port)
 {
 	SOCKADDR_IN serverAddr;
 	ZeroMemory(&serverAddr, sizeof(serverAddr));
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons(port);
-	//serverAddr.sin_addr.s_addr = inet_addr(ip);
 	inet_pton(AF_INET, ip, (PVOID)&serverAddr.sin_addr.s_addr);
 	
 	int res = connect(m_socket, (SOCKADDR*)&serverAddr, sizeof(serverAddr));
-	if (res == SOCKET_ERROR) return false;
+	if (res == SOCKET_ERROR)
+	{
+//		if (WSAGetLastError() != WSAEWOULDBLOCK)
+
+		return false;
+	}
 
 	m_isConnected = true;
+
+	FD_ZERO(&m_readFd);
+	FD_ZERO(&m_writeFd);
 
 	FD_SET(m_socket, &m_readFd);
 
@@ -213,5 +233,22 @@ void Network::CloseConnect()
 	m_readPos = 0;
 	m_sendSize = 0;
 	m_sentSize = 0;
+}
+
+void Network::DisplayErrorMsg(const char* msg)
+{
+	LPVOID lpMsgBuf;
+
+	FormatMessageA(
+		FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL,
+		WSAGetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPSTR)&lpMsgBuf,
+		0,
+		NULL);
+
+	MessageBoxA(NULL, (LPCSTR)lpMsgBuf, (LPCSTR)msg, MB_ICONERROR);
+	LocalFree(lpMsgBuf);
 }
 

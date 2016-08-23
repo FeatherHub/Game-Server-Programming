@@ -6,17 +6,15 @@
 
 USING_NS_CC;
 
-class ConnectScene : public cocos2d::Layer
+class ConnectScene : public Layer
 {
 public:
-    static cocos2d::Scene* createScene();
+    static Scene* createScene();
 	CREATE_FUNC(ConnectScene);
     virtual bool init() override;
 private:
-	void OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType);
 	void OnConnectBtnTouched(Ref *pSender, ui::Widget::TouchEventType type);
-private:
-
+	void OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType);
 private:
 	ui::TextField* m_tfPort;
 	ui::TextField* m_tfIP;

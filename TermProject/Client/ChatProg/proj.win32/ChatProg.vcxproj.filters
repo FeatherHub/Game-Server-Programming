@@ -10,6 +10,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{571103c5-adf1-40b7-929c-e9b64717ac05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -19,7 +22,10 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ConnectScene.cpp">
-      <Filter>src</Filter>
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LoginScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +36,10 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ConnectScene.h">
-      <Filter>src</Filter>
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoginScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

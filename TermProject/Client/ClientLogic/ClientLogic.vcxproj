@@ -24,10 +24,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dummy.h" />
+    <ClInclude Include="RequestManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Dummy.cpp" />
+    <ClCompile Include="RequestManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8F0D0900-EFE4-441D-84BF-804F10073DA2}</ProjectGuid>
