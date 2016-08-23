@@ -36,6 +36,8 @@ bool Network::Init()
 //	res = ioctlsocket(m_socket, FIONBIO, &mode);
 //	if (res != 0) return false;
 
+	m_bodySizeMgr = new BodySizeManager();
+
 	return true;
 }
 
@@ -79,6 +81,9 @@ NETCODE Network::SendPacket(unsigned short pktId, char* pData)
 
 	//Copy body data right back
 	CopyMemory(m_sendBuff + m_sendSize + PACKET_HEADER_SIZE, pData, bodySize);
+
+	//Update member
+	m_sendSize += PACKET_HEADER_SIZE + bodySize;
 
 	return NETCODE::NONE;
 }
@@ -125,12 +130,18 @@ NETCODE Network::Select()
 		FD_SET(m_socket, &m_writeFd);
 	}
 
+	FD_SET(m_socket, &m_readFd);
+
 	timeval tv{ SELECT_WAIT_SEC, SELECT_WAIT_MILLSEC };
 
 	int res = select(0, &m_readFd, &m_writeFd, nullptr, &tv);
-	if (res == 0 || res == SOCKET_ERROR)
+	if (res == 0)
 	{
 		return NETCODE::SELECT_NO_CHANGE;
+	}
+	else if (res == SOCKET_ERROR)
+	{
+		return NETCODE::SELECT_SOCKET_ERROR;
 	}
 
 	return NETCODE::NONE;
@@ -184,7 +195,7 @@ void Network::RecvBuffProc()
 
 NETCODE Network::Send()
 {
-	m_sentSize = 0; //init sentSize
+	m_sentSize = 0;
 
 	int res = send(m_socket, m_sendBuff, m_sendSize, 0);
 	if (res == SOCKET_ERROR)
@@ -199,6 +210,7 @@ NETCODE Network::Send()
 
 void Network::SendBuffProc()
 {
+	//update member
 	m_sendSize -= m_sentSize;
 
 	//pull rest forward
