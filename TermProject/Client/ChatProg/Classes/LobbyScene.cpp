@@ -54,7 +54,16 @@ bool LobbyScene::init()
 
 	addChild(m_btnLogin);
 
-	m_RefNetwork = Network::GetInstance();
+	m_nodeUserName = Node::create();
+	m_nodeUserName->setPosition(Point(winSizeHalf*1.5f, 30));
+
+	addChild(m_nodeUserName);
+
+	m_pRefNetwork = Network::GetInstance();
+	
+	scheduleUpdate();
+
+	RequestManager::GetInstance()->RequestUserIdList();
 
 	return true;
 }
@@ -64,48 +73,50 @@ void LobbyScene::update(float delta)
 	//이후에 delta 값을 이용하여 
 	//네트워크 실행 횟수를 최적화한다.
 
-	m_RefNetwork->Run();
+	m_pRefNetwork->Run();
 
-	while (m_RefNetwork->PktQueueEmpty() == false)
+	while (m_pRefNetwork->PktQueueEmpty() == false)
 	{
-		auto pkt = m_RefNetwork->GetPacket();
+		auto pkt = m_pRefNetwork->GetPacket();
 		switch (pkt.id)
 		{
-		case PacketId::LoginRes:
-			auto res = ProcessManager::GetInstance()->ProcessLogin(pkt.pDataAtBuff);
-			switch (res)
-			{
-			case LOGIN_RES_OK:
-				//Change to lobby scene
-				break;
-			case LOGIN_RES_NO:
-				m_tfMsg->setString("Login failed");
-				break;
-			}
+		case PacketId::LoginNtf:
+			LoginNtf(pkt.pDataAtBuff);
+			break;
+		case PacketId::LobbyUserNameListRes:
+			LobbyUserNameListRes(pkt.pDataAtBuff);
+			break;
+		case PacketId::LobbyChatRes:
+
+			break;
+		case PacketId::LobbyChatNtf:
+
+			break;
 		}
 	}
 }
 
 void LobbyScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type)
 {
-	switch (type)
-	{
-	case cocos2d::ui::Widget::TouchEventType::BEGAN:
-		auto& id = m_tfID->getString();
-		auto& pw = m_tfPW->getString();
+	//switch (type)
+	//{
+	//case cocos2d::ui::Widget::TouchEventType::BEGAN:
+	//	auto& id = m_tfID->getString();
+	//	auto& pw = m_tfPW->getString();
 
-		auto res = RequestManager::GetInstance()->RequestLogin(id, pw);
-		switch (res)
-		{
-		case LOGIN_REQ_OK:
-			scheduleUpdate();
-			break;
-		case LOGIN_REQ_ID_OR_PW_EMPTY:
-			m_tfMsg->setString("ID or PW is empty");
-			break;
-		}
-	}
+	//	auto res = RequestManager::GetInstance()->RequestLogin(id, pw);
+	//	switch (res)
+	//	{
+	//	case LOGIN_REQ_OK:
+	//		break;
+	//	case LOGIN_REQ_ID_OR_PW_EMPTY:
+	//		m_tfMsg->setString("ID or PW is empty");
+	//		break;
+	//	}
+	//}
 }
+
+
 
 void LobbyScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType)
 {
