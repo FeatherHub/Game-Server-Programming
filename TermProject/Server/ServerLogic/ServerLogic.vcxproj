@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Common\Constants.h" />
     <ClInclude Include="..\..\Common\ErrorCode.h" />
     <ClInclude Include="..\..\Common\Packet.h" />
     <ClInclude Include="..\..\Common\Packetid.h" />
     <ClInclude Include="..\..\Common\Util\BodySizeMananger.h" />
     <ClInclude Include="..\..\Common\Util\Logger.h" />
-    <ClInclude Include="Constants.h" />
     <ClInclude Include="LogicMain.h" />
     <ClInclude Include="PacketManager.h" />
     <ClInclude Include="PacketProcessor.h" />
@@ -37,6 +37,7 @@
     <ClCompile Include="..\..\Common\Util\Logger.cpp" />
     <ClCompile Include="LogicMain.cpp" />
     <ClCompile Include="PacketManager.cpp" />
+    <ClCompile Include="PktProcLobby.cpp" />
     <ClCompile Include="PktProcLogin.cpp" />
     <ClCompile Include="PacketProcessor.cpp" />
     <ClCompile Include="UserManager.cpp" />
