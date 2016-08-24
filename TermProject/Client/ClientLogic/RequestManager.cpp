@@ -37,9 +37,9 @@ ERRORCODE RequestManager::RequestConnect(const std::string& port, const std::str
 	}
 }
 
-ERRORCODE RequestManager::RequestLogin(const std::string& id, const std::string& pw)
+ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::string& pw)
 {
-	if (id.length() == 0 || pw.length() == 0)
+	if (name.length() == 0 || pw.length() == 0)
 	{
 		return ERRORCODE::LOGIN_REQ_ID_OR_PW_EMPTY;
 	}
@@ -51,13 +51,22 @@ ERRORCODE RequestManager::RequestLogin(const std::string& id, const std::string&
 	/* 복사작업은 SendPacket에서 일괄적으로 처리한다
 	*/
 
-	CopyMemory(&reqPkt.id, &id, id.length());
-	reqPkt.id[id.length()] = '\0';
+	CopyMemory(&reqPkt.name, &name, name.length());
+	reqPkt.name[name.length()] = '\0';
 
 	CopyMemory(&reqPkt.pw, &pw, pw.length());
-	reqPkt.id[pw.length()] = '\0';
+	reqPkt.name[pw.length()] = '\0';
 
 	m_refNetwork->SendPacket(PacketId::LoginReq, (char*)&reqPkt);
 	
 	return ERRORCODE::LOGIN_REQ_OK;
+}
+
+ERRORCODE RequestManager::RequestUserIdList()
+{
+	LobbyUserIdListReqPkt reqPkt;
+	
+	m_refNetwork->SendPacket(PacketId::LobbyUserIdListReq, (char*)&reqPkt);
+	
+	return ERRORCODE::LOBBY_USER_ID_LIST_REQ_OK;
 }
