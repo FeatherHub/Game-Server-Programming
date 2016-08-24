@@ -8,6 +8,8 @@ void PacketManager::Init(Network* network)
 	m_pRefNetwork = network;
 	m_pktProcessor.Init(network);
 
+	Logger::Write(Logger::INFO, "Packet Processor init success");
+
 	for (int i = 0; i < PacketId::MAX; i++)
 	{
 		m_pktFuncArray[i] = nullptr;
@@ -15,8 +17,9 @@ void PacketManager::Init(Network* network)
 
 	m_pktFuncArray[PacketId::TestReq] = &PacketProcessor::TestReq;
 	m_pktFuncArray[PacketId::LoginReq] = &PacketProcessor::LoginReq;
+	m_pktFuncArray[PacketId::LobbyUserNameListReq] = &PacketProcessor::LobbyUserListReq;
 
-	Logger::Write(Logger::INFO, "Packet Manager init success");
+	Logger::Write(Logger::INFO, "Packet Func Array init success");
 }
 
 void PacketManager::ProcessPacket(RecvPacket& recvPkt)
