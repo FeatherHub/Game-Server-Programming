@@ -5,10 +5,10 @@ void PacketProcessor::Init(Network* network)
 	m_pRefNetwork = network;
 
 	m_pUserManager = new UserManager();
-	m_pUserManager->Init();
+	m_pUserManager->Init(network);
 }
 
-ERRORCODE PacketProcessor::TestReq(char* pData, int clientId)
+ERRORCODE PacketProcessor::TestReq(char* pData, int clientIdx)
 {
 	//데이터 추출
 	TestReqPkt* reqPkt = (TestReqPkt*)pData;
@@ -19,7 +19,7 @@ ERRORCODE PacketProcessor::TestReq(char* pData, int clientId)
 	resPkt.num = cnt;
 
 	//데이터 전송
-	m_pRefNetwork->SendPacket(clientId, PacketId::TestRes, (char*)&resPkt);
+	m_pRefNetwork->SendPacket(clientIdx, PacketId::TestRes, (char*)&resPkt);
 
 	return ERRORCODE::NONE;
 }

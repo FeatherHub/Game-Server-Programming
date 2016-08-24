@@ -3,7 +3,6 @@
 namespace NNetworkLib
 {
 	class SelectNetwork;
-	struct Packet;
 }
 
 class UserManager;
@@ -14,14 +13,13 @@ class PacketProcessor
 {
 	friend class PacketManager;
 	using Network = NNetworkLib::SelectNetwork;
-	using Packet = NNetworkLib::Packet;
-
 public:
 	void Init(Network* network);
 
 private:
-	ERRORCODE TestReq(char* pData, int clientId);
-	ERRORCODE LoginReq(char* pData, int clientId);
+	ERRORCODE TestReq(char* pData, int clientIdx);
+	ERRORCODE LoginReq(char* pData, int clientIdx);
+	ERRORCODE LobbyUserListReq(char* pData, int clientIdx);
 
 private:
 	Network* m_pRefNetwork;
