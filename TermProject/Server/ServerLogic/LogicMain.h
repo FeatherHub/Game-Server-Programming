@@ -20,7 +20,9 @@ public:
 	void StopRun() { m_isRun = false; }
 
 private:
-	Network* m_network;
+	void PostProcess();
+private:
+	Network* m_pNetwork;
 	PacketProcArray* m_pktProcArr;
 	UserManager* m_pUserMgr;
 

@@ -33,7 +33,8 @@ static int register_all_packages()
     return 0; //flag for packages manager
 }
 
-bool AppDelegate::applicationDidFinishLaunching() {
+bool AppDelegate::applicationDidFinishLaunching() 
+{
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
@@ -75,24 +76,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     auto scene = ConnectScene::createScene();
 
-    // run
     director->runWithScene(scene);
 
     return true;
 }
 
-// This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
-void AppDelegate::applicationDidEnterBackground() {
+void AppDelegate::applicationDidEnterBackground() 
+{
     Director::getInstance()->stopAnimation();
-
-    // if you use SimpleAudioEngine, it must be paused
-    // SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
-// this function will be called when the app is active again
-void AppDelegate::applicationWillEnterForeground() {
+void AppDelegate::applicationWillEnterForeground() 
+{
     Director::getInstance()->startAnimation();
-
-    // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }
