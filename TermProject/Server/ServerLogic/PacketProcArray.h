@@ -12,7 +12,7 @@ namespace NNetworkLib
 
 enum ERRORCODE : int;
 
-class PacketManager
+class PacketProcArray
 {
 	using Network = NNetworkLib::SelectNetwork;
 	using RecvPacket = NNetworkLib::RecvPacket;
@@ -22,9 +22,9 @@ class PacketManager
 
 public:
 	void Init(Network* network);
-
 	void ProcessPacket(RecvPacket& recvPkt);
-
+private:
+	void RegisterPktProcArr();
 private:
 	PacketProcessor m_pktProcessor;
 	Network* m_pRefNetwork;

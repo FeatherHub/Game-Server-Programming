@@ -86,6 +86,7 @@ void LobbyScene::update(float delta)
 			break;
 		case PacketId::LobbyUserNameListRes:
 			LobbyUserNameListRes(pkt.pDataAtBuff);
+
 			break;
 		case PacketId::LobbyChatRes:
 
