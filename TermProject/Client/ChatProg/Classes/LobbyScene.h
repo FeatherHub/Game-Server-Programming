@@ -38,7 +38,7 @@ private:
 	ui::Button* m_btnLogin;
 	
 	Node* m_nodeUserName;
-	char m_userNameArr[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN];
+	char m_userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN+1];
 	int m_userNum = 0;
 	
 	Network* m_pRefNetwork;

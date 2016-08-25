@@ -21,8 +21,6 @@ void UserManager::NotifyNewbieLogin(int newbieClientIdx, char* newbieName)
 		CopyMemory(ntfPkt.newbieName, newbieName, MAX_USER_NAME_LEN + 1);
 
 		m_pRefNetwork->SendPacket(otherClientIdx, (unsigned short)PacketId::LoginNtf, (char*)&ntfPkt);
-
-		Logger::Write(Logger::INFO, "Login Ntf Pkt sent!");
 	}
 }
 

@@ -12,19 +12,19 @@
 
 void LobbyScene::LoginNtf(char* pData)
 {
-	ProcessManager::GetInstance()->LoginNtf(pData, m_userNameArr[m_userNum]);
+	ProcessManager::GetInstance()->LoginNtf(pData, m_userNameList[m_userNum]);
 
-	AddUserNameToList(m_userNameArr[m_userNum]);
+	AddUserNameToList(m_userNameList[m_userNum]);
 }
 
 void LobbyScene::LobbyUserNameListRes(char* pData)
 {
-	int userNum = 0;
-	ProcessManager::GetInstance()->LobbyUserNameList(pData, (char*)m_userNameArr, &userNum);
+	int userListNum = 0;
+	ProcessManager::GetInstance()->LobbyUserNameList(pData, (char*)m_userNameList, &userListNum);
 
-	for (int i = 0; i < userNum; i++)
+	for (int i = 0; i < userListNum; i++)
 	{
-		AddUserNameToList(m_userNameArr[i]);
+		AddUserNameToList(m_userNameList[i]);
 	}
 }
 

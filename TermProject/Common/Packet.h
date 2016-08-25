@@ -49,9 +49,9 @@ struct LobbyUserNameListReqPkt
 {
 };
 
-struct LobbyUserNameListResPkt //받아서 저장할 때는 link<string> 에 저장
+struct LobbyUserNameListResPkt
 {
-	char userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN + 1]; //+1 for '\0'
+	char userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN + 1];
 	int userNum;
 };
 

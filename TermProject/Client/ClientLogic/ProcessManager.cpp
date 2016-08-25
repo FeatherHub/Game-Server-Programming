@@ -35,7 +35,7 @@ ERRORCODE ProcessManager::LobbyUserNameList(char* pData, char* userNameListBuff,
 {
 	auto* resPkt = (LobbyUserNameListResPkt*)pData;
 
-	CopyMemory(userNameListBuff, (char*)resPkt->userNameList, (resPkt->userNum * (MAX_USER_NAME_LEN+1)));
+	CopyMemory(userNameListBuff, resPkt->userNameList, resPkt->userNum*(MAX_USER_NAME_LEN + 1));
 	
 	*pUserNumBuff = resPkt->userNum;
 
