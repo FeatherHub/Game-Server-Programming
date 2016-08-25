@@ -56,8 +56,6 @@ namespace NNetworkLib
 
 		ProcessClient();
 
-		ProcessClient2();
-
 		return true;
 	}
 
@@ -260,21 +258,6 @@ namespace NNetworkLib
 		return true;
 	}
 
-	void SelectNetwork::ProcessClient2()
-	{
-		while (m_socketToClosePool.empty() == false)
-		{
-			auto& s = m_socketToClosePool.front();
-			m_socketToClosePool.pop();
-
-			FD_CLR(s, &m_fds);
-			FD_CLR(s, &m_writeFds);
-			FD_CLR(s, &m_readFds);
-
-			closesocket(s);
-		}
-	}
-
 	RecvPacket SelectNetwork::GetPacket()
 	{
 		RecvPacket pkt = m_recvPktQueue.front();
@@ -344,7 +327,7 @@ namespace NNetworkLib
 
 		target.isConnected = false;
 
-		m_socketToClosePool.push(target.s);
+		m_clientToClosePool.push(id);
 
 		target.recvSize = 0;
 		target.sendSize = 0;
@@ -353,6 +336,39 @@ namespace NNetworkLib
 		m_clientNum--;
 
 		Logger::Write(Logger::INFO, "Client %s has left", target.IP);
+	}
+
+	void SelectNetwork::ForceCloseClient(int clientIdx)
+	{
+		auto& target = m_clientPool[clientIdx];
+/*
+		auto res = shutdown(target.s, 2);
+		if (res == SOCKET_ERROR)
+		{
+			DisplayErrorMsg("shutdown");
+			return;
+		}
+*/
+		auto& s = m_clientPool[clientIdx].s;
+		FD_CLR(s, &m_fds);
+		FD_CLR(s, &m_writeFds);
+		FD_CLR(s, &m_readFds);
+
+		auto res = closesocket(s);
+		if (res == SOCKET_ERROR)
+		{
+			DisplayErrorMsg("closesocket");
+			return;
+		}
+
+		target.isConnected = false;
+		target.recvSize = 0;
+		target.sendSize = 0;
+
+		m_clientIndexPool.push(clientIdx);
+		m_clientNum--;
+
+		Logger::Write(Logger::INFO, "Force close client %s", target.IP);
 	}
 
 	void SelectNetwork::InitClientStuff()
@@ -391,4 +407,21 @@ namespace NNetworkLib
 		MessageBoxA(NULL, (LPCSTR)lpMsgBuf, (LPCSTR)msg, MB_ICONERROR);
 		LocalFree(lpMsgBuf);
 	}
+
+	/*
+	void SelectNetwork::ProcessClient2()
+	{
+		while (m_clientToClosePool.empty() == false)
+		{
+			auto& clientIdx = m_clientToClosePool.front();
+			m_clientToClosePool.pop();
+
+			auto& s = m_clientPool[clientIdx].s;
+			FD_CLR(s, &m_fds);
+			FD_CLR(s, &m_writeFds);
+			FD_CLR(s, &m_readFds);
+			closesocket(s);
+		}
+	}
+	*/
 }
