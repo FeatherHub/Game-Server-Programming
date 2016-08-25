@@ -19,7 +19,7 @@ ERRORCODE PacketProcessor::TestReq(char* pData, int clientIdx)
 	resPkt.num = cnt;
 
 	//데이터 전송
-	m_pRefNetwork->SendPacket(clientIdx, PacketId::TestRes, (char*)&resPkt);
+	m_pRefNetwork->SendPacket(clientIdx, (unsigned short)PacketId::TestRes, (char*)&resPkt);
 
 	return ERRORCODE::NONE;
 }

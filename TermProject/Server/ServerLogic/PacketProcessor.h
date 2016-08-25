@@ -20,7 +20,7 @@ private:
 	ERRORCODE TestReq(char* pData, int clientIdx);
 	ERRORCODE LoginReq(char* pData, int clientIdx);
 	ERRORCODE LobbyUserListReq(char* pData, int clientIdx);
-
+	ERRORCODE LobbyChatReq(char* pData, int clientIdx);
 private:
 	Network* m_pRefNetwork;
 	UserManager* m_pUserManager;

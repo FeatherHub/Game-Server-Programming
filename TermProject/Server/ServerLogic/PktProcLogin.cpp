@@ -8,12 +8,14 @@ ERRORCODE PacketProcessor::LoginReq(char* pData, int clientIdx)
 	//Process server data
 	m_pUserManager->AddUser(reqPkt->name, clientIdx);
 
+	Logger::Write(Logger::INFO, "User %s login", reqPkt->name);
+
 	//Make response pkt
 	LoginResPkt resPkt;
 	resPkt.isPermiited = true;
 
 	//Send resPkt
-	m_pRefNetwork->SendPacket(clientIdx, PacketId::LoginRes, (char*)&resPkt);
+	m_pRefNetwork->SendPacket(clientIdx, (unsigned short)PacketId::LoginRes, (char*)&resPkt);
 
 	//If permitted, Notify other clients
 	if (resPkt.isPermiited == true)

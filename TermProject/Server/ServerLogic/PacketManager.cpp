@@ -10,14 +10,14 @@ void PacketManager::Init(Network* network)
 
 	Logger::Write(Logger::INFO, "Packet Processor init success");
 
-	for (int i = 0; i < PacketId::MAX; i++)
+	for (int i = 0; i < (int)PacketId::MAX; i++)
 	{
 		m_pktFuncArray[i] = nullptr;
 	}
 
-	m_pktFuncArray[PacketId::TestReq] = &PacketProcessor::TestReq;
-	m_pktFuncArray[PacketId::LoginReq] = &PacketProcessor::LoginReq;
-	m_pktFuncArray[PacketId::LobbyUserNameListReq] = &PacketProcessor::LobbyUserListReq;
+	m_pktFuncArray[(int)PacketId::TestReq] = &PacketProcessor::TestReq;
+	m_pktFuncArray[(int)PacketId::LoginReq] = &PacketProcessor::LoginReq;
+	m_pktFuncArray[(int)PacketId::LobbyUserNameListReq] = &PacketProcessor::LobbyUserListReq;
 
 	Logger::Write(Logger::INFO, "Packet Func Array init success");
 }
@@ -26,7 +26,7 @@ void PacketManager::ProcessPacket(RecvPacket& recvPkt)
 {
 	int pktId = recvPkt.id;
 
-	if (pktId < 0 || pktId > PacketId::MAX)
+	if (pktId < 0 || pktId >(int)PacketId::MAX)
 	{
 		m_pRefNetwork->BanClient(recvPkt.clientId);
 
@@ -39,6 +39,8 @@ void PacketManager::ProcessPacket(RecvPacket& recvPkt)
 
 		return;
 	}
+
+	Logger::Write(Logger::INFO, "Got packet id %d", pktId);
 
 	(m_pktProcessor.*m_pktFuncArray[pktId])(recvPkt.pDataAtBuff, recvPkt.clientId);
 }

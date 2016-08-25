@@ -18,7 +18,7 @@ class PacketManager
 	using RecvPacket = NNetworkLib::RecvPacket;
 
 	using PktProcFunc = ERRORCODE(PacketProcessor::*)(char*, int);
-	PktProcFunc m_pktFuncArray[PacketId::MAX];
+	PktProcFunc m_pktFuncArray[(int)PacketId::MAX];
 
 public:
 	void Init(Network* network);
