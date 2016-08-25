@@ -31,6 +31,7 @@ bool LoginScene::init()
 	m_tfID = ui::TextField::create("*Your ID*", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfID->setPosition(Point(winWidthHalf, 200));
 	m_tfID->setColor(Color3B(100, 100, 100));
+	m_tfID->setMaxLengthEnabled(true);
 	m_tfID->setMaxLength(MAX_USER_NAME_LEN);
 
 	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
@@ -45,6 +46,7 @@ bool LoginScene::init()
 	m_tfPW->setPasswordStyleText("*");
 	m_tfPW->setPosition(Point(winWidthHalf, 150));
 	m_tfPW->setColor(Color3B(100, 100, 100));
+	m_tfPW->setMaxLengthEnabled(true);
 	m_tfPW->setMaxLength(MAX_USER_PW_LEN);
 	m_tfPW->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{

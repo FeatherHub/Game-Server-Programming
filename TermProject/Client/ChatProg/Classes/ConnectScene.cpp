@@ -32,6 +32,8 @@ bool ConnectScene::init()
 
 	m_tfIP = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfIP->setString("127.0.0.1");
+	m_tfIP->setMaxLengthEnabled(true);
+	m_tfIP->setMaxLength(Constants::MAX_IP_LEN);
 	m_tfIP->setPosition(Point(winSizeHalf, 200));
 	m_tfIP->setColor(Color3B(100, 100, 100));
 	m_tfIP->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
@@ -43,6 +45,8 @@ bool ConnectScene::init()
 
 	m_tfPort = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfPort->setString("23452");
+	m_tfPort->setMaxLengthEnabled(true);
+	m_tfPort->setMaxLength(Constants::MAX_PORT_LEN);
 	m_tfPort->setPosition(Point(winSizeHalf, 150));
 	m_tfPort->setColor(Color3B(100, 100, 100));
 	m_tfPort->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
