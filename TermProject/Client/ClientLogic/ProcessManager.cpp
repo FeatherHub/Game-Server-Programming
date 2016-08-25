@@ -1,7 +1,7 @@
 #include "ProcessManager.h"
 #include "..\..\Common\Packet.h"
 
-#include <WinBase.h> //CopyMemory
+#include <Windows.h> //CopyMemory
 
 ProcessManager* ProcessManager::m_instance = nullptr;
 
@@ -19,7 +19,7 @@ ERRORCODE ProcessManager::LoginRes(char* pData)
 {
 	auto* pkt = (LoginResPkt*)pData;
 
-	return pkt->isPermiited ? ERRORCODE::LOGIN_REQ_OK : ERRORCODE::LOGIN_RES_NO;
+	return pkt->isPermiited ? ERRORCODE::LOGIN_RES_OK : ERRORCODE::LOGIN_RES_NO;
 }
 
 ERRORCODE ProcessManager::LoginNtf(char* pData, char* newbieNameBuff)
@@ -31,11 +31,13 @@ ERRORCODE ProcessManager::LoginNtf(char* pData, char* newbieNameBuff)
 	return ERRORCODE::NONE;
 }
 
-ERRORCODE ProcessManager::LobbyUserNameList(char* pData, char** userIdListBuffer)
+ERRORCODE ProcessManager::LobbyUserNameList(char* pData, char* userNameListBuff, int* pUserNumBuff)
 {
-	auto* resPkt = (LobbyUserIdListResPkt*)pData;
+	auto* resPkt = (LobbyUserNameListResPkt*)pData;
 
-	CopyMemory(userIdListBuffer, resPkt->userIdList, (resPkt->userNum * MAX_USER_NAME_LEN));
+	CopyMemory(userNameListBuff, (char*)resPkt->userNameList, (resPkt->userNum * (MAX_USER_NAME_LEN+1)));
+	
+	*pUserNumBuff = resPkt->userNum;
 
 	return ERRORCODE::NONE;
 }
