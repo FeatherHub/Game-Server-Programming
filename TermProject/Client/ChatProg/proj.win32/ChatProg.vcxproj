@@ -146,8 +146,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ConnectScene.cpp" />
-    <ClCompile Include="..\Classes\LobbyScene.cpp" />
-    <ClCompile Include="..\Classes\LobbySceneReflect.cpp" />
+    <ClCompile Include="..\Classes\LobbyScene1.cpp" />
+    <ClCompile Include="..\Classes\LobbyScene2.cpp" />
     <ClCompile Include="..\Classes\LoginScene.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

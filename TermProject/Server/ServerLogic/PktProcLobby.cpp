@@ -2,7 +2,7 @@
 
 ERRORCODE PacketProcessor::LobbyUserListReq(char* pData, int clientIdx)
 {
-	auto reqPkt = (LobbyUserNameListReqPkt*)pData; //dummy packet
+//	auto reqPkt = (LobbyUserNameListReqPkt*)pData; //dummy packet
 	
 	//Ã³¸®
 	LobbyUserNameListResPkt resPkt;

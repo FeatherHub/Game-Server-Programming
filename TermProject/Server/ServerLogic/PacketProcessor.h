@@ -11,7 +11,7 @@ enum ERRORCODE : int;
 
 class PacketProcessor
 {
-	friend class PacketManager;
+	friend class PacketProcArray;
 	using Network = NNetworkLib::SelectNetwork;
 public:
 	void Init(Network* network);

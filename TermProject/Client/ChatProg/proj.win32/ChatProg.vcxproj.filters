@@ -1,62 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="win32">
-      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{571103c5-adf1-40b7-929c-e9b64717ac05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Starter">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\2.Login">
+      <UniqueIdentifier>{12d13ce3-dcc7-4b4a-939f-85682192d81f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\1.Connect">
+      <UniqueIdentifier>{b783b225-7ccc-428d-8b0b-6c0592fc4b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\3.Lobby">
+      <UniqueIdentifier>{653c848f-44f7-4600-a572-f81d6dfd0e5e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>win32</Filter>
+      <Filter>Starter</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
+      <Filter>Starter</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ConnectScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene\1.Connect</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\LoginScene.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene\2.Login</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LobbySceneReflect.cpp">
-      <Filter>Scene</Filter>
+    <ClCompile Include="..\Classes\LobbyScene1.cpp">
+      <Filter>Scene\3.Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LobbyScene.cpp">
-      <Filter>Scene</Filter>
+    <ClCompile Include="..\Classes\LobbyScene2.cpp">
+      <Filter>Scene\3.Lobby</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
-      <Filter>win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ConnectScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Starter</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Constants.h">
-      <Filter>resource</Filter>
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>Starter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ConnectScene.h">
+      <Filter>Scene\1.Connect</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LoginScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene\2.Login</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LobbyScene.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene\3.Lobby</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
-      <Filter>resource</Filter>
+      <Filter>Resource</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

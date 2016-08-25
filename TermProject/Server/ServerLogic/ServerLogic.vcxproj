@@ -26,7 +26,7 @@
     <ClInclude Include="..\..\Common\Util\BodySizeMananger.h" />
     <ClInclude Include="..\..\Common\Util\Logger.h" />
     <ClInclude Include="LogicMain.h" />
-    <ClInclude Include="PacketManager.h" />
+    <ClInclude Include="PacketProcArray.h" />
     <ClInclude Include="PacketProcessor.h" />
     <ClInclude Include="PktProcHeaders.h" />
     <ClInclude Include="User.h" />
@@ -36,11 +36,13 @@
     <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp" />
     <ClCompile Include="..\..\Common\Util\Logger.cpp" />
     <ClCompile Include="LogicMain.cpp" />
-    <ClCompile Include="PacketManager.cpp" />
+    <ClCompile Include="PacketProcArray.cpp" />
     <ClCompile Include="PktProcLobby.cpp" />
     <ClCompile Include="PktProcLogin.cpp" />
     <ClCompile Include="PacketProcessor.cpp" />
-    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="RegisterPktProcArr.cpp" />
+    <ClCompile Include="UserManager1.cpp" />
+    <ClCompile Include="UserManager2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Network\Network.vcxproj">

@@ -28,7 +28,7 @@ private:
 	void LobbyChatRes(char* pData);
 	void LobbyChatNtf(char* pData);
 
-	void AddUserNameList(const char* userName);
+	void AddUserNameToList(const char* userName);
 
 private:
 	//ui

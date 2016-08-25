@@ -1,6 +1,6 @@
 #include "LogicMain.h"
 #include "..\Network\SelectNetwork.h"
-#include "PacketManager.h"
+#include "PacketProcArray.h"
 
 #include "..\..\Common\Util\Logger.h"
 
@@ -16,7 +16,7 @@ void LogicMain::Init()
 		return;
 	}
 
-	m_pktMgr = new PacketManager();
+	m_pktMgr = new PacketProcArray();
 	m_pktMgr->Init(m_network);
 }
 
