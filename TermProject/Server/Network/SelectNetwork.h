@@ -2,7 +2,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-#define FD_SETSIZE 1024
+#define FD_SETSIZE 64
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
@@ -35,7 +35,8 @@ namespace NNetworkLib
 		RecvPacket GetPacket();
 		bool PacketQueueEmpty();
 
-		void BanClient(int id) { CloseClient(id); }
+		void ForceCloseClient(int clientIdx);
+		std::queue<int>& GetClosedClients() { return m_clientToClosePool; }
 	private:
 		//INIT//
 		void InitClientStuff();
@@ -53,8 +54,6 @@ namespace NNetworkLib
 		NETCODE Send(int id);
 		bool SendBuffProc(int id);
 
-		void ProcessClient2();
-
 		void AddToRecvPktQueue(RecvPacket packet);
 
 		void CloseClient(int id);
@@ -63,7 +62,7 @@ namespace NNetworkLib
 	private:
 		Client m_clientPool[FD_SETSIZE];
 		std::queue<int> m_clientIndexPool;
-		std::queue<SOCKET> m_socketToClosePool;
+		std::queue<int> m_clientToClosePool;
 		int m_clientNum = 0;
 
 		fd_set m_fds;

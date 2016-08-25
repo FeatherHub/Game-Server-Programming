@@ -29,7 +29,7 @@ void PacketProcArray::ProcessPacket(RecvPacket& recvPkt)
 	if (pktId < 0 || pktId >(int)PacketId::MAX ||
 		m_pktFuncArray[pktId] == nullptr)
 	{
-		m_pRefNetwork->BanClient(recvPkt.clientId);
+		m_pRefNetwork->ForceCloseClient(recvPkt.clientId);
 		
 		Logger::Write(Logger::INFO, "Unavailable Pkt id (%d)", pktId);
 

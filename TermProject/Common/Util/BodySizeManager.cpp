@@ -22,6 +22,8 @@ void BodySizeManager::Init()
 	m_bodySizeArr[(int)PacketId::LobbyChatReq] = sizeof(LobbyChatReqPkt);
 	m_bodySizeArr[(int)PacketId::LobbyChatRes] = sizeof(LobbyChatResPkt);
 	m_bodySizeArr[(int)PacketId::LobbyChatNtf] = sizeof(LobbyChatNtfPkt);
+
+	m_bodySizeArr[(int)PacketId::RemoveUserNtf] = sizeof(RemoveUserNtfPkt);
 }
 
 int BodySizeManager::Get(unsigned short pktId)

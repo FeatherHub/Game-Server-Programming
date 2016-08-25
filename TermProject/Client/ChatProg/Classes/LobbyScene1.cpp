@@ -93,6 +93,9 @@ void LobbyScene::update(float delta)
 		case PacketId::LobbyChatNtf:
 
 			break;
+		case PacketId::RemoveUserNtf:
+			RemoveUserNtf(pkt.pDataAtBuff);
+			break;
 		}
 	}
 }

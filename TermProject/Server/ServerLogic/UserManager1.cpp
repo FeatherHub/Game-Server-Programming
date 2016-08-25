@@ -4,18 +4,11 @@
 void UserManager::Init(Network* network)
 {
 	m_pRefNetwork = network;
-
-	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
-	{
-		m_userIdxPool.push(i);
-	}
 }
 
 void UserManager::AddUser(const char* name, int clientIdx)
 {
-	int userIdx = GetUserPoolIdx();
-	
-	User& user = m_userPool[userIdx];
+	User& user = m_userPool[clientIdx];
 	
 	user.isConnected = true;
 	user.clientIdx = clientIdx;
@@ -25,7 +18,7 @@ void UserManager::AddUser(const char* name, int clientIdx)
 
 	m_userNum++;
 
-	Logger::Write(Logger::INFO, "User Num : %d Cur Logined User %s ",m_userNum, name);
+	Logger::Write(Logger::INFO, "User Num : %d Name : %s ",m_userNum, name);
 }
 
 const char* UserManager::FindUserName(int clientIdx)
@@ -51,17 +44,8 @@ void UserManager::RemoveUser(int clientIdx)
 	user.isConnected = false;
 	user.clientIdx = -1;
 	
+	m_pRefNetwork->ForceCloseClient(clientIdx);
+	NotifyRemoveUser(clientIdx);
+
 	m_userNum--;
-	
-	m_userIdxPool.push(clientIdx);
-
-	m_pRefNetwork->BanClient(clientIdx);
-}
-
-int UserManager::GetUserPoolIdx()
-{
-	int idx = m_userIdxPool.front();
-	m_userIdxPool.pop();
-
-	return idx;
 }

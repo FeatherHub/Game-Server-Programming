@@ -46,3 +46,19 @@ void UserManager::NotifyLobbyChatMsg(int senderClientIdx, const char* senderName
 		m_pRefNetwork->SendPacket(user.GetClientIdx(), PacketId::LobbyChatNtf, (char*)&ntfPkt);
 	}
 }
+
+void UserManager::NotifyRemoveUser(int removedClientIdx)
+{
+	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
+	{
+		auto& user = m_userPool[i];
+		if (user.Connected() == false)
+		{
+			continue;
+		}
+
+		RemoveUserNtfPkt ntfPkt;
+		CopyMemory(ntfPkt.name, m_userPool[removedClientIdx].name, MAX_USER_NAME_LEN);
+		m_pRefNetwork->SendPacket(user.clientIdx, PacketId::RemoveUserNtf, (char*)&ntfPkt);
+	}
+}

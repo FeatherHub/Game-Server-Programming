@@ -22,21 +22,16 @@ public:
 	
 	//
 	User* GetUserList() { return m_userPool; }
-	
+
 	void RemoveUser(int clientIdx);
-	//void RemoveUser(char);
-	
+	//void RemoveUser(char* name);
+
+	void NotifyRemoveUser(int removedClientIdx);
 	void NotifyNewbieLogin(int newbieClientIdx, char* newbieName);
 	void NotifyLobbyChatMsg(int senderClientIdx, const char* senderName, const char* msg);
 private:
-	int GetUserPoolIdx();
-
-private:
-	std::queue<int> m_userIdxPool;
+	Network* m_pRefNetwork;
+	
 	User m_userPool[MAX_LOBBY_USER_NUM];
 	int m_userNum = 0;
-
-	Network* m_pRefNetwork;
-
-	//map for search
 };
