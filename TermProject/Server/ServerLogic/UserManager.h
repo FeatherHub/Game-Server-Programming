@@ -14,19 +14,26 @@ class UserManager
 	using Network = NNetworkLib::SelectNetwork;
 public:
 	void Init(Network* network);
-	void AddUser(char* id, int clientIdx);
+	void AddUser(const char* name, int clientIdx);
 	int GetUserNum() { return m_userNum; }
+
+	//return nullptr if no matching user
+	const char* FindUserName(int clientIdx);
+	
+	//
+	User* GetUserList() { return m_userPool; }
+	
 	void RemoveUser(int clientIdx);
-	//void RemoveUser(wchar_t);
+	//void RemoveUser(char);
 	
 	void NotifyNewbieLogin(int newbieClientIdx, char* newbieName);
-	User* GetUserList() { return m_userPool; }
+	void NotifyLobbyChatMsg(int senderClientIdx, const char* senderName, const char* msg);
 private:
 	int GetUserPoolIdx();
 
 private:
 	std::queue<int> m_userIdxPool;
-	User m_userPool[MAX_USER_NUM];
+	User m_userPool[MAX_LOBBY_USER_NUM];
 	int m_userNum = 0;
 
 	Network* m_pRefNetwork;
