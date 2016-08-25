@@ -12,5 +12,5 @@ private:
 public:
 	ERRORCODE LoginRes(char* pData);
 	ERRORCODE LoginNtf(char* pData, char* newbieNameBuff);
-	ERRORCODE LobbyUserNameList(char* pData, char** userIdListBuffer);
+	ERRORCODE LobbyUserNameList(char* pData, char* userNameListBuff, int* pUserNumBuff);
 };
