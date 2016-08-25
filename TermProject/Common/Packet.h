@@ -30,8 +30,8 @@ struct TestResPkt
 //Login
 struct LoginReqPkt
 {
-	char name[MAX_USER_NAME_LEN];
-	char pw[MAX_USER_PW_LEN];
+	char name[MAX_USER_NAME_LEN + 1];
+	char pw[MAX_USER_PW_LEN + 1];
 };
 
 struct LoginResPkt
@@ -41,19 +41,34 @@ struct LoginResPkt
 
 struct LoginNtfPkt
 {
-	char newbieName[MAX_USER_NAME_LEN];
+	char newbieName[MAX_USER_NAME_LEN + 1];
 };
 
 //LobbyUserList
-struct LobbyUserIdListReqPkt
+struct LobbyUserNameListReqPkt
 {
 };
 
-struct LobbyUserIdListResPkt //받아서 저장할 때는 link<string> 에 저장
+struct LobbyUserNameListResPkt //받아서 저장할 때는 link<string> 에 저장
 {
-	char userIdList[MAX_USER_NUM][MAX_USER_NAME_LEN];
+	char userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN + 1]; //+1 for '\0'
 	int userNum;
 };
 
 //LobbyChat
+struct LobbyChatReqPkt
+{
+	char msg[MAX_CHAT_MSG_LEN + 1];
+};
+
+struct LobbyChatResPkt
+{
+	bool permitted;
+};
+
+struct LobbyChatNtfPkt 
+{
+	char senderName[MAX_USER_NAME_LEN + 1];
+	char msg[MAX_CHAT_MSG_LEN + 1];
+};
 #pragma pack(pop)
