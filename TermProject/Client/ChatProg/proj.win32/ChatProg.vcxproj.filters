@@ -27,10 +27,10 @@
     <ClCompile Include="..\Classes\LoginScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LobbyScene.cpp">
+    <ClCompile Include="..\Classes\LobbySceneReflect.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\LobbySceneLogic.cpp">
+    <ClCompile Include="..\Classes\LobbyScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,11 +44,11 @@
     <ClInclude Include="..\Classes\ConnectScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\LoginScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Constants.h">
       <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoginScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\LobbyScene.h">
       <Filter>Scene</Filter>
