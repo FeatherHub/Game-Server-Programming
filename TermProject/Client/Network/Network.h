@@ -57,7 +57,7 @@ private:
 
 	enum Config
 	{ 
-		MAX_BUFF_SIZE = 1024, 
+		MAX_BUFF_SIZE = 2048, 
 		SELECT_WAIT_SEC = 0, 
 		SELECT_WAIT_MILLSEC = 100 
 	};
