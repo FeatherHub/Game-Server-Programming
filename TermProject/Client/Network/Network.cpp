@@ -150,6 +150,7 @@ NETCODE Network::Select()
 NETCODE Network::Recv()
 {
 	CopyMemory(m_recvBuff, m_recvBuff + m_readPos, m_recvSize);
+	m_readPos = 0;
 
 	int res = recv(m_socket, m_recvBuff + m_recvSize, MAX_BUFF_SIZE - m_recvSize, 0);
 	if (res == 0)
