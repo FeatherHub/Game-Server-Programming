@@ -7,7 +7,7 @@ namespace NNetworkLib
 		bool IsConnected() { return s > 0 ? true : false; }
 
 	public:
-		enum { MAX_BUFF_SIZE = 1024 };
+		enum { MAX_BUFF_SIZE = 2048 };
 
 	public:
 		unsigned long long s;
