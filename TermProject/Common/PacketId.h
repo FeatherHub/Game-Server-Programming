@@ -16,5 +16,7 @@ enum PacketId : unsigned short
 	LobbyUserNameListReq = 50,
 	LobbyUserNameListRes = 51,
 
+	RemoveUserNtf = 60,
+
 	MAX = 512
 };

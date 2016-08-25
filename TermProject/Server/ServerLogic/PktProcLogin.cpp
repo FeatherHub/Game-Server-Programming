@@ -6,7 +6,7 @@ ERRORCODE PacketProcessor::LoginReq(char* pData, int clientIdx)
 	LoginReqPkt* reqPkt = (LoginReqPkt*)pData;
 
 	//Process server data
-	m_pUserManager->AddUser(reqPkt->name, clientIdx);
+	m_pRefUserManager->AddUser(reqPkt->name, clientIdx);
 
 	//Make response pkt
 	LoginResPkt resPkt;
@@ -18,7 +18,7 @@ ERRORCODE PacketProcessor::LoginReq(char* pData, int clientIdx)
 	//If permitted, Notify other clients
 	if (resPkt.isPermiited == true)
 	{
-		m_pUserManager->NotifyNewbieLogin(clientIdx, reqPkt->name);
+		m_pRefUserManager->NotifyNewbieLogin(clientIdx, reqPkt->name);
 	}
 
 	return ERRORCODE::NONE;

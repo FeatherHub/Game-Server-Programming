@@ -22,6 +22,11 @@ struct TestReqPkt
 	int num;
 };
 
+struct RemoveUserNtfPkt
+{
+	char name[MAX_USER_NAME_LEN];
+};
+
 struct TestResPkt
 {
 	int num;

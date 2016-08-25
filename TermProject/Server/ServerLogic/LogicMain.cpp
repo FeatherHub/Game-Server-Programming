@@ -9,8 +9,8 @@ void LogicMain::Init()
 {
 	m_isRun = true;
 
-	m_network = new Network();
-	auto res = m_network->Init(23452, "127.0.0.1");
+	m_pNetwork = new Network();
+	auto res = m_pNetwork->Init(23452, "127.0.0.1");
 	if (res == false)
 	{
 		Logger::Write(Logger::ERR, "Server:: Network init fail");
@@ -18,23 +18,37 @@ void LogicMain::Init()
 	}
 
 	m_pUserMgr = new UserManager();
-	m_pUserMgr->Init(m_network);
+	m_pUserMgr->Init(m_pNetwork);
 
 	m_pktProcArr = new PacketProcArray();
-	m_pktProcArr->Init(m_network, m_pUserMgr);
+	m_pktProcArr->Init(m_pNetwork, m_pUserMgr);
 }
 
 void LogicMain::Run()
 {
 	while (m_isRun)
 	{
-		m_network->Run();
+		m_pNetwork->Run();
 
-		while (m_network->PacketQueueEmpty() == false)
+		while (m_pNetwork->PacketQueueEmpty() == false)
 		{
-			auto pkt = m_network->GetPacket();
+			auto pkt = m_pNetwork->GetPacket();
 
 			m_pktProcArr->ProcessPacket(pkt);
 		}
+
+		PostProcess();
+	}
+}
+
+void LogicMain::PostProcess()
+{
+	auto& clientIdxToClose = m_pNetwork->GetClosedClients();
+	while (clientIdxToClose.empty() == false)
+	{
+		auto clientIdx = clientIdxToClose.front();
+		clientIdxToClose.pop();
+
+		m_pUserMgr->RemoveUser(clientIdx);
 	}
 }

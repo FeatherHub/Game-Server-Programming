@@ -27,6 +27,7 @@ private:
 	void LobbyUserNameListRes(char* pData);
 	void LobbyChatRes(char* pData);
 	void LobbyChatNtf(char* pData);
+	void RemoveUserNtf(char* pData);
 
 	void AddUserNameToList(const char* userName);
 
@@ -38,6 +39,7 @@ private:
 	ui::Button* m_btnLogin;
 	
 	Node* m_nodeUserName;
+	Label* m_labelNameArr[MAX_LOBBY_USER_NUM];
 	char m_userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN+1];
 	int m_userNum = 0;
 	
