@@ -4,13 +4,14 @@ namespace NNetworkLib
 	class Client
 	{
 	public:
-		bool IsConnected() { return s > 0 ? true : false; }
+		bool IsConnected() { return isConnected; }
 
 	public:
 		enum { MAX_BUFF_SIZE = 2048 };
 
 	public:
 		unsigned long long s;
+		bool isConnected = false;
 		char IP[32];
 
 		char recvBuff[MAX_BUFF_SIZE];
