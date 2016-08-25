@@ -38,7 +38,6 @@ namespace NNetworkLib
 		FD_SET(m_listenSock, &m_fds);
 
 		m_bodySizeMgr = new BodySizeManager();
-		m_bodySizeMgr->Init();
 
 		Logger::Write(Logger::INFO, "Network Init Success");
 
@@ -47,11 +46,17 @@ namespace NNetworkLib
 
 	bool SelectNetwork::Run()
 	{
-		ProcessSelect();
+		auto res = ProcessSelect();
+		if (res == false)
+		{
+			DisplayErrorMsg("select");
+		}
 
 		ProcessAccept();
 
 		ProcessClient();
+
+		ProcessClient2();
 
 		return true;
 	}
@@ -78,7 +83,9 @@ namespace NNetworkLib
 		auto res = select(0, &m_readFds, &m_writeFds, nullptr, nullptr);
 
 		if (res == SOCKET_ERROR)
+		{
 			return false;
+		}
 
 		return true;
 	}
@@ -132,15 +139,12 @@ namespace NNetworkLib
 					RecvBuffProc1(id);
 
 					auto res = Recv(id);
-					if (res == NETCODE::INFO_CLIENT_LEFT)
+					if (res == NETCODE::INFO_CLIENT_LEFT ||
+						res == NETCODE::ERROR_RECV_SOCKET)
 					{
 						CloseClient(id);
 
 						continue;
-					}
-					else if (res == NETCODE::ERROR_RECV_SOCKET)
-					{
-						return NETCODE::ERROR_RECV_SOCKET;
 					}
 
 					RecvBuffProc2(id);
@@ -148,7 +152,13 @@ namespace NNetworkLib
 
 				if (FD_ISSET(client.s, &m_writeFds))
 				{
-					Send(id);
+					auto res = Send(id);
+					if (res == NETCODE::ERROR_SEND_SOCKET)
+					{
+						CloseClient(id);
+
+						continue;
+					}
 
 					SendBuffProc(id);
 				}
@@ -169,7 +179,7 @@ namespace NNetworkLib
 		{
 			return NETCODE::INFO_CLIENT_LEFT;
 		}
-		else if (res < 0) //SOCKET_ERROR
+		else if (res < 0)
 		{
 			return NETCODE::ERROR_RECV_SOCKET;
 		}
@@ -250,6 +260,21 @@ namespace NNetworkLib
 		return true;
 	}
 
+	void SelectNetwork::ProcessClient2()
+	{
+		while (m_socketToClosePool.empty() == false)
+		{
+			auto& s = m_socketToClosePool.front();
+			m_socketToClosePool.pop();
+
+			FD_CLR(s, &m_fds);
+			FD_CLR(s, &m_writeFds);
+			FD_CLR(s, &m_readFds);
+
+			closesocket(s);
+		}
+	}
+
 	RecvPacket SelectNetwork::GetPacket()
 	{
 		RecvPacket pkt = m_recvPktQueue.front();
@@ -293,27 +318,38 @@ namespace NNetworkLib
 		m_clientIndexPool.pop();
 
 		m_clientPool[id].s = s;
+		m_clientPool[id].isConnected = true;
 		inet_ntop(AF_INET, &(addr.sin_addr.s_addr), m_clientPool[id].IP, INET_ADDRSTRLEN);
 
 		FD_SET(s, &m_fds);
 
-		Logger::Write(Logger::INFO, "Client %s connected", m_clientPool[id].IP);
-
 		m_clientNum++;
+	
+		Logger::Write(Logger::INFO, "Client %s connected", m_clientPool[id].IP);
 	}
 
 	void SelectNetwork::CloseClient(int id)
 	{
 		auto& target = m_clientPool[id];
 
-		FD_CLR(target.s, &m_fds);
+		//http://stackoverflow.com/questions/15504016/c-winsock-socket-error-10038-wsaenotsock	
+		//https://msdn.microsoft.com/en-us/library/windows/desktop/ms740481(v=vs.85).aspx
 
-		closesocket(target.s);
+		auto res = shutdown(target.s, 2);
+		if (res == SOCKET_ERROR)
+		{
+			DisplayErrorMsg("shutdown");
+			return;
+		}
+
+		target.isConnected = false;
+
+		m_socketToClosePool.push(target.s);
+
 		target.recvSize = 0;
 		target.sendSize = 0;
 		
 		m_clientIndexPool.push(id);
-
 		m_clientNum--;
 
 		Logger::Write(Logger::INFO, "Client %s has left", target.IP);
@@ -337,5 +373,22 @@ namespace NNetworkLib
 	SelectNetwork::~SelectNetwork()
 	{
 		WSACleanup();
+	}
+
+	void SelectNetwork::DisplayErrorMsg(const char* msg)
+	{
+		LPVOID lpMsgBuf;
+
+		FormatMessageA(
+			FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+			NULL,
+			WSAGetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			(LPSTR)&lpMsgBuf,
+			0,
+			NULL);
+
+		MessageBoxA(NULL, (LPCSTR)lpMsgBuf, (LPCSTR)msg, MB_ICONERROR);
+		LocalFree(lpMsgBuf);
 	}
 }

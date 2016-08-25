@@ -53,13 +53,17 @@ namespace NNetworkLib
 		NETCODE Send(int id);
 		bool SendBuffProc(int id);
 
+		void ProcessClient2();
+
 		void AddToRecvPktQueue(RecvPacket packet);
 
 		void CloseClient(int id);
 
+		void DisplayErrorMsg(const char* msg);
 	private:
 		Client m_clientPool[FD_SETSIZE];
 		std::queue<int> m_clientIndexPool;
+		std::queue<SOCKET> m_socketToClosePool;
 		int m_clientNum = 0;
 
 		fd_set m_fds;
