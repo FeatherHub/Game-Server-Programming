@@ -9,20 +9,24 @@ BodySizeManager::BodySizeManager()
 
 void BodySizeManager::Init()
 {
-	m_bodySizeArr[PacketId::TestReq] = sizeof(TestReqPkt);
-	m_bodySizeArr[PacketId::TestRes] = sizeof(TestResPkt);
+	m_bodySizeArr[(int)PacketId::TestReq] = sizeof(TestReqPkt);
+	m_bodySizeArr[(int)PacketId::TestRes] = sizeof(TestResPkt);
 
-	m_bodySizeArr[PacketId::LoginReq] = sizeof(LoginReqPkt);
-	m_bodySizeArr[PacketId::LoginRes] = sizeof(LoginResPkt);
-	m_bodySizeArr[PacketId::LoginNtf] = sizeof(LoginNtfPkt);
+	m_bodySizeArr[(int)PacketId::LoginReq] = sizeof(LoginReqPkt);
+	m_bodySizeArr[(int)PacketId::LoginRes] = sizeof(LoginResPkt);
+	m_bodySizeArr[(int)PacketId::LoginNtf] = sizeof(LoginNtfPkt);
 	
-	m_bodySizeArr[PacketId::LobbyUserNameListReq] = sizeof(LobbyUserIdListReqPkt);
-	m_bodySizeArr[PacketId::LobbyUserNameListRes] = sizeof(LobbyUserIdListResPkt);
+	m_bodySizeArr[(int)PacketId::LobbyUserNameListReq] = sizeof(LobbyUserNameListReqPkt);
+	m_bodySizeArr[(int)PacketId::LobbyUserNameListRes] = sizeof(LobbyUserNameListResPkt);
+
+	m_bodySizeArr[(int)PacketId::LobbyChatReq] = sizeof(LobbyChatReqPkt);
+	m_bodySizeArr[(int)PacketId::LobbyChatRes] = sizeof(LobbyChatResPkt);
+	m_bodySizeArr[(int)PacketId::LobbyChatNtf] = sizeof(LobbyChatNtfPkt);
 }
 
 int BodySizeManager::Get(unsigned short pktId)
 {
-	if (pktId < 0 || pktId > PacketId::MAX)
+	if (pktId < 0 || pktId >(int)PacketId::MAX)
 	{
 		return 0;
 	}

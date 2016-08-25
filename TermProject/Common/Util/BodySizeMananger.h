@@ -10,5 +10,5 @@ public:
 	int Get(unsigned short pktId);
 
 private:
-	short m_bodySizeArr[PacketId::MAX];
+	short m_bodySizeArr[(int)PacketId::MAX];
 };
