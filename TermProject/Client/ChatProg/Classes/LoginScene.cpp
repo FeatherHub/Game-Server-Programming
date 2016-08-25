@@ -19,18 +19,20 @@ Scene* LoginScene::createScene()
 
 bool LoginScene::init()
 {
-	auto winSizeHalf = Director::getInstance()->getWinSize().width / 2;
+	auto winWidthHalf = Director::getInstance()->getWinSize().width / 2;
 
 	m_tfMsg = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
-	m_tfMsg->setPosition(Point(winSizeHalf, 250));
+	m_tfMsg->setPosition(Point(winWidthHalf, 250));
 	m_tfMsg->setString("Login Scene");
 	m_tfMsg->setEnabled(false);
 
 	addChild(m_tfMsg);
 
 	m_tfID = ui::TextField::create("*Your ID*", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
-	m_tfID->setPosition(Point(winSizeHalf, 200));
+	m_tfID->setPosition(Point(winWidthHalf, 200));
 	m_tfID->setColor(Color3B(100, 100, 100));
+	m_tfID->setMaxLength(MAX_USER_NAME_LEN);
+
 	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -41,8 +43,9 @@ bool LoginScene::init()
 	m_tfPW = ui::TextField::create("*Your Password*", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfPW->setPasswordEnabled(true);
 	m_tfPW->setPasswordStyleText("*");
-	m_tfPW->setPosition(Point(winSizeHalf, 150));
+	m_tfPW->setPosition(Point(winWidthHalf, 150));
 	m_tfPW->setColor(Color3B(100, 100, 100));
+	m_tfPW->setMaxLength(MAX_USER_PW_LEN);
 	m_tfPW->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -51,7 +54,7 @@ bool LoginScene::init()
 	addChild(m_tfPW);
 
 	m_btnLogin = ui::Button::create("ButtonSelect.png", "ButtonSelected.png");
-	m_btnLogin->setPosition(Point(winSizeHalf, 80));
+	m_btnLogin->setPosition(Point(winWidthHalf, 80));
 	m_btnLogin->addTouchEventListener(CC_CALLBACK_2(LoginScene::OnLoginBtnTouched, this));
 
 	addChild(m_btnLogin);
@@ -74,10 +77,11 @@ void LoginScene::update(float delta)
 		switch (pkt.id)
 		{
 		case PacketId::LoginRes:
-			auto res = ProcessManager::GetInstance()->ProcessLogin(pkt.pDataAtBuff);
+			auto res = ProcessManager::GetInstance()->LoginRes(pkt.pDataAtBuff);
 			switch (res)
 			{
 			case LOGIN_RES_OK:
+				unscheduleUpdate();
 				Director::getInstance()->replaceScene(LobbyScene::createScene());
 				break;
 			case LOGIN_RES_NO:
@@ -104,6 +108,8 @@ void LoginScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type
 			break;
 		case LOGIN_REQ_ID_OR_PW_EMPTY:
 			m_tfMsg->setString("ID or PW is empty");
+		case LOGIN_REQ_ID_OR_PW_OVERFLOW:
+			m_tfMsg->setString("ID or PW is overflowed");
 			break;
 		}
 	}

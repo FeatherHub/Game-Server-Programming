@@ -44,6 +44,11 @@ ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::strin
 		return ERRORCODE::LOGIN_REQ_ID_OR_PW_EMPTY;
 	}
 
+	if (name.length() > MAX_USER_NAME_LEN || pw.length() > MAX_USER_PW_LEN)
+	{
+		return ERRORCODE::LOGIN_REQ_ID_OR_PW_OVERFLOW;
+	}
+
 	LoginReqPkt reqPkt;
 
 	/* 이후에 최적화하기
@@ -51,10 +56,10 @@ ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::strin
 	/* 복사작업은 SendPacket에서 일괄적으로 처리한다
 	*/
 
-	CopyMemory(&reqPkt.name, &name, name.length());
+	CopyMemory(reqPkt.name, name.c_str(), name.length());
 	reqPkt.name[name.length()] = '\0';
 
-	CopyMemory(&reqPkt.pw, &pw, pw.length());
+	CopyMemory(reqPkt.pw, pw.c_str(), pw.length());
 	reqPkt.name[pw.length()] = '\0';
 
 	m_refNetwork->SendPacket(PacketId::LoginReq, (char*)&reqPkt);
@@ -62,11 +67,11 @@ ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::strin
 	return ERRORCODE::LOGIN_REQ_OK;
 }
 
-ERRORCODE RequestManager::RequestUserIdList()
+ERRORCODE RequestManager::RequestUserNameList()
 {
-	LobbyUserIdListReqPkt reqPkt;
+	LobbyUserNameListReqPkt reqPkt;
 	
-	m_refNetwork->SendPacket(PacketId::LobbyUserIdListReq, (char*)&reqPkt);
+	m_refNetwork->SendPacket(PacketId::LobbyUserNameListReq, (char*)&reqPkt);
 	
 	return ERRORCODE::LOBBY_USER_ID_LIST_REQ_OK;
 }
