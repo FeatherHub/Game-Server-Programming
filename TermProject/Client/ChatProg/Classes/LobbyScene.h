@@ -21,14 +21,14 @@ private:
 	void OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type);
 private:
 	//////////////////////////////////////////////////
-	// LobbySceneLogic.cpp
+	// LobbySceneReflect.cpp
 	//////////////////////////////////////////////////
 	void LoginNtf(char* pData);
 	void LobbyUserNameListRes(char* pData);
 	void LobbyChatRes(char* pData);
 	void LobbyChatNtf(char* pData);
 
-	void AddUserToNode(char* newbieName);
+	void AddUserNameList(const char* userName);
 
 private:
 	//ui
@@ -36,11 +36,10 @@ private:
 	ui::TextField* m_tfPW;
 	ui::TextField* m_tfMsg;
 	ui::Button* m_btnLogin;
+	
 	Node* m_nodeUserName;
-
-	//data
-	Network* m_pRefNetwork;
-
-	char m_UserNameArr[MAX_USER_NUM][MAX_USER_NAME_LEN];
+	char m_userNameArr[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN];
 	int m_userNum = 0;
+	
+	Network* m_pRefNetwork;
 };

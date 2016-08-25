@@ -17,17 +17,18 @@ Scene* LobbyScene::createScene()
 
 bool LobbyScene::init()
 {
-	auto winSizeHalf = Director::getInstance()->getWinSize().width / 2;
+	auto winHeight = Director::getInstance()->getWinSize().height;
+	auto winWidthHalf = Director::getInstance()->getWinSize().width / 2;
 
 	m_tfMsg = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
-	m_tfMsg->setPosition(Point(winSizeHalf, 250));
+	m_tfMsg->setPosition(Point(winWidthHalf, 250));
 	m_tfMsg->setString("Lobby Scene");
 	m_tfMsg->setEnabled(false);
 
 	addChild(m_tfMsg);
 
-	m_tfID = ui::TextField::create("***", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
-	m_tfID->setPosition(Point(winSizeHalf, 200));
+	m_tfID = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfID->setPosition(Point(winWidthHalf, 200));
 	m_tfID->setColor(Color3B(100, 100, 100));
 	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
@@ -36,10 +37,10 @@ bool LobbyScene::init()
 
 	addChild(m_tfID);
 
-	m_tfPW = ui::TextField::create("***", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfPW = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfPW->setPasswordEnabled(true);
 	m_tfPW->setPasswordStyleText("*");
-	m_tfPW->setPosition(Point(winSizeHalf, 150));
+	m_tfPW->setPosition(Point(winWidthHalf, 150));
 	m_tfPW->setColor(Color3B(100, 100, 100));
 	m_tfPW->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
@@ -49,30 +50,30 @@ bool LobbyScene::init()
 	addChild(m_tfPW);
 
 	m_btnLogin = ui::Button::create("ButtonSelect.png", "ButtonSelected.png");
-	m_btnLogin->setPosition(Point(winSizeHalf, 80));
+	m_btnLogin->setPosition(Point(winWidthHalf, 80));
 	m_btnLogin->addTouchEventListener(CC_CALLBACK_2(LobbyScene::OnLoginBtnTouched, this));
 
 	addChild(m_btnLogin);
 
 	m_nodeUserName = Node::create();
-	m_nodeUserName->setPosition(Point(winSizeHalf*1.5f, 30));
+	m_nodeUserName->setPosition(Point(winWidthHalf*1.5f, winHeight));
 
 	addChild(m_nodeUserName);
 
 	m_pRefNetwork = Network::GetInstance();
-	
-	scheduleUpdate();
 
-	RequestManager::GetInstance()->RequestUserIdList();
+	m_userNum = 0;
+
+	/* Request user name list once at init*/
+	RequestManager::GetInstance()->RequestUserNameList();
+
+	scheduleUpdate();
 
 	return true;
 }
 
 void LobbyScene::update(float delta)
 {
-	//이후에 delta 값을 이용하여 
-	//네트워크 실행 횟수를 최적화한다.
-
 	m_pRefNetwork->Run();
 
 	while (m_pRefNetwork->PktQueueEmpty() == false)
@@ -115,8 +116,6 @@ void LobbyScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type
 	//	}
 	//}
 }
-
-
 
 void LobbyScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType)
 {

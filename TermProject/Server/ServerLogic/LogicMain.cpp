@@ -9,7 +9,12 @@ void LogicMain::Init()
 	m_isRun = true;
 
 	m_network = new Network();
-	m_network->Init(23452, "127.0.0.1");
+	auto res = m_network->Init(23452, "127.0.0.1");
+	if (res == false)
+	{
+		Logger::Write(Logger::ERR, "Server:: Network init fail");
+		return;
+	}
 
 	m_pktMgr = new PacketManager();
 	m_pktMgr->Init(m_network);
