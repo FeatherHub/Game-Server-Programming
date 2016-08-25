@@ -40,7 +40,7 @@ namespace NNetworkLib
 		m_bodySizeMgr = new BodySizeManager();
 		m_bodySizeMgr->Init();
 
-		Logger::Write(Logger::INFO, "Server run");
+		Logger::Write(Logger::INFO, "Network Init Success");
 
 		return true;
 	}
@@ -64,6 +64,11 @@ namespace NNetworkLib
 		FD_ZERO(&m_writeFds);
 		for (int id = 0; id < MAX_CLIENT_NUM; id++)
 		{
+			if (m_clientPool[id].IsConnected() == false)
+			{
+				continue;
+			}
+
 			if (m_clientPool[id].sendSize > 0)
 			{
 				FD_SET(m_clientPool[id].s, &m_writeFds);
@@ -265,6 +270,7 @@ namespace NNetworkLib
 
 		if (c.sendSize + PACKET_HEADER_SIZE + bodySize > Client::MAX_BUFF_SIZE)
 		{
+			Logger::Write(Logger::WARN, "Send Buffer Full");
 			return NETCODE::ERROR_SENDBUFFER_FULL;
 		}
 
@@ -305,7 +311,7 @@ namespace NNetworkLib
 		closesocket(target.s);
 		target.recvSize = 0;
 		target.sendSize = 0;
-
+		
 		m_clientIndexPool.push(id);
 
 		m_clientNum--;
