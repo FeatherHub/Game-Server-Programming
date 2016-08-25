@@ -1,11 +1,9 @@
 #include "PktProcHeaders.h"
 
-void PacketProcessor::Init(Network* network)
+void PacketProcessor::Init(Network* network, UserManager* userMgr)
 {
 	m_pRefNetwork = network;
-
-	m_pUserManager = new UserManager();
-	m_pUserManager->Init(network);
+	m_pRefUserManager = userMgr;
 }
 
 ERRORCODE PacketProcessor::TestReq(char* pData, int clientIdx)

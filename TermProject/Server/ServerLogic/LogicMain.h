@@ -5,6 +5,7 @@ namespace NNetworkLib
 	class SelectNetwork;
 }
 
+class UserManager;
 class PacketProcArray;
 
 class LogicMain
@@ -20,7 +21,8 @@ public:
 
 private:
 	Network* m_network;
-	PacketProcArray* m_pktMgr;
+	PacketProcArray* m_pktProcArr;
+	UserManager* m_pUserMgr;
 
 	bool m_isRun;
 };

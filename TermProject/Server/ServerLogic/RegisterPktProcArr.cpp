@@ -1,4 +1,5 @@
 #include "PacketProcArray.h"
+#include "PacketProcessor.h"
 
 void PacketProcArray::RegisterPktProcArr()
 {

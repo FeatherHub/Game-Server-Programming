@@ -1,12 +1,16 @@
 #include "PacketProcArray.h"
+#include "PacketProcessor.h"
+
 #include "..\Network\SelectNetwork.h"
 
 #include "..\..\Common\Util\Logger.h"
 
-void PacketProcArray::Init(Network* network)
+void PacketProcArray::Init(Network* network, UserManager* userMgr)
 {
 	m_pRefNetwork = network;
-	m_pktProcessor.Init(network);
+
+	m_pPktProcessor = new PacketProcessor();
+	m_pPktProcessor->Init(network, userMgr);
 
 	for (int i = 0; i < (int)PacketId::MAX; i++)
 	{
@@ -22,16 +26,8 @@ void PacketProcArray::ProcessPacket(RecvPacket& recvPkt)
 {
 	int pktId = recvPkt.id;
 
-	if (pktId < 0 || pktId >(int)PacketId::MAX)
-	{
-		m_pRefNetwork->BanClient(recvPkt.clientId);
-		
-		Logger::Write(Logger::INFO, "Unavailable Pkt id (%d)", pktId);
-
-		return;
-	}
-
-	if (m_pktFuncArray[pktId] == nullptr)
+	if (pktId < 0 || pktId >(int)PacketId::MAX ||
+		m_pktFuncArray[pktId] == nullptr)
 	{
 		m_pRefNetwork->BanClient(recvPkt.clientId);
 		
@@ -42,5 +38,5 @@ void PacketProcArray::ProcessPacket(RecvPacket& recvPkt)
 
 	Logger::Write(Logger::INFO, "Got packet id %d", pktId);
 
-	(m_pktProcessor.*m_pktFuncArray[pktId])(recvPkt.pDataAtBuff, recvPkt.clientId);
+	(m_pPktProcessor->*m_pktFuncArray[pktId])(recvPkt.pDataAtBuff, recvPkt.clientId);
 }

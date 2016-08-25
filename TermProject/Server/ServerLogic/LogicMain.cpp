@@ -1,6 +1,7 @@
 #include "LogicMain.h"
 #include "..\Network\SelectNetwork.h"
 #include "PacketProcArray.h"
+#include "UserManager.h"
 
 #include "..\..\Common\Util\Logger.h"
 
@@ -16,8 +17,11 @@ void LogicMain::Init()
 		return;
 	}
 
-	m_pktMgr = new PacketProcArray();
-	m_pktMgr->Init(m_network);
+	m_pUserMgr = new UserManager();
+	m_pUserMgr->Init(m_network);
+
+	m_pktProcArr = new PacketProcArray();
+	m_pktProcArr->Init(m_network, m_pUserMgr);
 }
 
 void LogicMain::Run()
@@ -30,7 +34,7 @@ void LogicMain::Run()
 		{
 			auto pkt = m_network->GetPacket();
 
-			m_pktMgr->ProcessPacket(pkt);
+			m_pktProcArr->ProcessPacket(pkt);
 		}
 	}
 }

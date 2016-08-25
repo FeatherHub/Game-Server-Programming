@@ -14,8 +14,7 @@ class PacketProcessor
 	friend class PacketProcArray;
 	using Network = NNetworkLib::SelectNetwork;
 public:
-	void Init(Network* network);
-
+	void Init(Network* network, UserManager* userMgr);
 private:
 	ERRORCODE TestReq(char* pData, int clientIdx);
 	ERRORCODE LoginReq(char* pData, int clientIdx);
@@ -23,5 +22,5 @@ private:
 	ERRORCODE LobbyChatReq(char* pData, int clientIdx);
 private:
 	Network* m_pRefNetwork;
-	UserManager* m_pUserManager;
+	UserManager* m_pRefUserManager;
 };
