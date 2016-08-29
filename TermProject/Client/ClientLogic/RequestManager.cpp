@@ -60,7 +60,7 @@ ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::strin
 	reqPkt.name[name.length()] = '\0';
 
 	CopyMemory(reqPkt.pw, pw.c_str(), pw.length());
-	reqPkt.name[pw.length()] = '\0';
+	reqPkt.pw[pw.length()] = '\0';
 
 	m_refNetwork->SendPacket(PacketId::LoginReq, (char*)&reqPkt);
 	

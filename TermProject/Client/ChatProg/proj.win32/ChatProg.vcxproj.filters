@@ -19,6 +19,9 @@
     <Filter Include="Scene\3.Lobby">
       <UniqueIdentifier>{653c848f-44f7-4600-a572-f81d6dfd0e5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{00233651-2870-4e0c-91db-7dc70def5b0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -39,6 +42,10 @@
     <ClCompile Include="..\Classes\LobbyScene2.cpp">
       <Filter>Scene\3.Lobby</Filter>
     </ClCompile>
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="..\Classes\User.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -58,6 +65,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\LobbyScene.h">
       <Filter>Scene\3.Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\User.h">
+      <Filter>Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

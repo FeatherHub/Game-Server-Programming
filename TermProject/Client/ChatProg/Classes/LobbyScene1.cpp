@@ -1,4 +1,5 @@
 #include "LobbyScene.h"
+#include "User.h"
 #include "Constants.h"
 
 #include "..\Network\Network.h"
@@ -67,6 +68,11 @@ bool LobbyScene::init()
 	/* Request user name list once at init*/
 	RequestManager::GetInstance()->RequestUserNameList();
 
+	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
+	{
+		m_userPool[i] = new User();
+	}
+
 	scheduleUpdate();
 
 	return true;
@@ -132,5 +138,13 @@ void LobbyScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventTy
 	case ui::TextField::EventType::DETACH_WITH_IME:
 		textField->setColor(Color3B(100, 100, 100));
 		break;
+	}
+}
+
+LobbyScene::~LobbyScene()
+{
+	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
+	{
+		delete m_userPool[i];
 	}
 }

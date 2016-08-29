@@ -18,6 +18,7 @@ void UserManager::NotifyNewbieLogin(int newbieClientIdx, char* newbieName)
 		}
 
 		LoginNtfPkt ntfPkt;
+		ntfPkt.newbieClientIdx = newbieClientIdx;
 		CopyMemory(ntfPkt.newbieName, newbieName, MAX_USER_NAME_LEN + 1);
 
 		m_pRefNetwork->SendPacket(otherClientIdx, (unsigned short)PacketId::LoginNtf, (char*)&ntfPkt);
@@ -58,7 +59,8 @@ void UserManager::NotifyRemoveUser(int removedClientIdx)
 		}
 
 		RemoveUserNtfPkt ntfPkt;
-		CopyMemory(ntfPkt.name, m_userPool[removedClientIdx].name, MAX_USER_NAME_LEN);
+		ntfPkt.clientIdx = removedClientIdx;
+
 		m_pRefNetwork->SendPacket(user.clientIdx, PacketId::RemoveUserNtf, (char*)&ntfPkt);
 	}
 }

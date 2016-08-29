@@ -2,6 +2,8 @@
 
 #include "..\ClientLogic\ErrorCode.h"
 
+class User;
+
 class ProcessManager
 {
 public:
@@ -11,6 +13,6 @@ private:
 
 public:
 	ERRORCODE LoginRes(char* pData);
-	ERRORCODE LoginNtf(char* pData, char* newbieNameBuff);
-	ERRORCODE LobbyUserNameList(char* pData, char* userNameListBuff, int* pUserNumBuff);
+	ERRORCODE LoginNtf(char* pData, User* pNewbie);
+	ERRORCODE LobbyUserNameList(char* pData, User** pUserArr, int* pUserNumBuf);
 };

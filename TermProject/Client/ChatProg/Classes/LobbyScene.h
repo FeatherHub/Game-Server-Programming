@@ -8,12 +8,14 @@ USING_NS_CC;
 #include "..\..\Common\Constants.h"
 
 class Network;
+class User;
 
 class LobbyScene : public Layer
 {
 public:
 	static Scene* createScene();
 	CREATE_FUNC(LobbyScene);
+	virtual ~LobbyScene();
 	virtual bool init() override;
 private:
 	void update(float delta);
@@ -29,7 +31,7 @@ private:
 	void LobbyChatNtf(char* pData);
 	void RemoveUserNtf(char* pData);
 
-	void AddUserNameToList(const char* userName);
+	void AddUserNameToList(User* user);
 
 private:
 	//ui
@@ -40,8 +42,9 @@ private:
 	
 	Node* m_nodeUserName;
 	Label* m_labelNameArr[MAX_LOBBY_USER_NUM];
+	User* m_userPool[MAX_LOBBY_USER_NUM];
 	char m_userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN+1];
-	int m_userNum = 0;
+	int m_userNum = 0; 
 	
 	Network* m_pRefNetwork;
 };

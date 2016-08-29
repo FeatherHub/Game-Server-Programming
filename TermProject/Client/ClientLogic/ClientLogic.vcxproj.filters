@@ -8,4 +8,9 @@
     <ClCompile Include="RequestManager.cpp" />
     <ClCompile Include="ProcessManager.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Client Data">
+      <UniqueIdentifier>{14bfbb04-a2a4-4493-83eb-f7f310af5302}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
 </Project>

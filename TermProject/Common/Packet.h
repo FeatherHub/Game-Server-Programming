@@ -24,7 +24,7 @@ struct TestReqPkt
 
 struct RemoveUserNtfPkt
 {
-	char name[MAX_USER_NAME_LEN];
+	int clientIdx;
 };
 
 struct TestResPkt
@@ -47,6 +47,7 @@ struct LoginResPkt
 struct LoginNtfPkt
 {
 	char newbieName[MAX_USER_NAME_LEN + 1];
+	int newbieClientIdx;
 };
 
 //LobbyUserList
