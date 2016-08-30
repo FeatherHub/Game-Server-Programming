@@ -1,5 +1,5 @@
 #include "LobbyScene.h"
-#include "User.h"
+#include "Client.h"
 #include "Constants.h"
 
 #include "..\Network\Network.h"
@@ -70,7 +70,7 @@ bool LobbyScene::init()
 
 	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
 	{
-		m_userPool[i] = new User();
+		m_userPool[i] = new Client();
 	}
 
 	scheduleUpdate();
@@ -145,6 +145,7 @@ LobbyScene::~LobbyScene()
 {
 	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
 	{
-		delete m_userPool[i];
+		if(m_userPool[i] != nullptr)
+			delete m_userPool[i];
 	}
 }

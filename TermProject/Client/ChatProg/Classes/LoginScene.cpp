@@ -33,7 +33,8 @@ bool LoginScene::init()
 	m_tfID->setColor(Color3B(100, 100, 100));
 	m_tfID->setMaxLengthEnabled(true);
 	m_tfID->setMaxLength(MAX_USER_NAME_LEN);
-
+	m_tfID->setCursorChar('|');
+	m_tfID->setCursorEnabled(true);
 	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -48,6 +49,8 @@ bool LoginScene::init()
 	m_tfPW->setColor(Color3B(100, 100, 100));
 	m_tfPW->setMaxLengthEnabled(true);
 	m_tfPW->setMaxLength(MAX_USER_PW_LEN);
+	m_tfPW->setCursorChar('|');
+	m_tfPW->setCursorEnabled(true);
 	m_tfPW->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -110,6 +113,7 @@ void LoginScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type
 			break;
 		case LOGIN_REQ_ID_OR_PW_EMPTY:
 			m_tfMsg->setString("ID or PW is empty");
+			break;
 		case LOGIN_REQ_ID_OR_PW_OVERFLOW:
 			m_tfMsg->setString("ID or PW is overflowed");
 			break;

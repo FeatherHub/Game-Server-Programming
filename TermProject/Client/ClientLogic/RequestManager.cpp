@@ -49,12 +49,12 @@ ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::strin
 		return ERRORCODE::LOGIN_REQ_ID_OR_PW_OVERFLOW;
 	}
 
-	LoginReqPkt reqPkt;
-
 	/* 이후에 최적화하기
 	/* SendPacket에 가변인자로 데이터의 위치를 받아서
 	/* 복사작업은 SendPacket에서 일괄적으로 처리한다
 	*/
+
+	LoginReqPkt reqPkt;
 
 	CopyMemory(reqPkt.name, name.c_str(), name.length());
 	reqPkt.name[name.length()] = '\0';

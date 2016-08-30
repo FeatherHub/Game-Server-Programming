@@ -329,12 +329,6 @@ namespace NNetworkLib
 
 		m_clientToClosePool.push(id);
 
-		target.recvSize = 0;
-		target.sendSize = 0;
-		
-		m_clientIndexPool.push(id);
-		m_clientNum--;
-
 		Logger::Write(Logger::INFO, "Client %s has left", target.IP);
 	}
 
@@ -369,6 +363,10 @@ namespace NNetworkLib
 		m_clientNum--;
 
 		Logger::Write(Logger::INFO, "Force close client %s", target.IP);
+		
+		int breakpoint = 15;
+		breakpoint++;
+		breakpoint--;
 	}
 
 	void SelectNetwork::InitClientStuff()

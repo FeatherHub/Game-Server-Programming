@@ -58,6 +58,7 @@ struct LobbyUserNameListReqPkt
 struct LobbyUserNameListResPkt
 {
 	char userNameList[MAX_LOBBY_USER_NUM][MAX_USER_NAME_LEN + 1];
+	int userClientIdxList[MAX_LOBBY_USER_NUM];
 	int userNum;
 };
 

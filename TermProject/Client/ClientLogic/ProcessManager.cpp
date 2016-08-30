@@ -1,7 +1,7 @@
 #include "ProcessManager.h"
 #include "..\..\Common\Packet.h"
 
-#include "..\ChatProg\Classes\User.h"
+#include "..\ChatProg\Classes\Client.h"
 
 #include <Windows.h> //CopyMemory
 
@@ -24,27 +24,32 @@ ERRORCODE ProcessManager::LoginRes(char* pData)
 	return pkt->isPermiited ? ERRORCODE::LOGIN_RES_OK : ERRORCODE::LOGIN_RES_NO;
 }
 
-ERRORCODE ProcessManager::LoginNtf(char* pData, User* pNewbie)
+ERRORCODE ProcessManager::LoginNtf(char* pData, Client* pNewbie)
 {
 	auto* resPkt = (LoginNtfPkt*)pData;
 	
 	pNewbie->SetName(resPkt->newbieName);
 	pNewbie->SetClientIdx(resPkt->newbieClientIdx);
-	pNewbie->SetKey();
+	pNewbie->SetNewKey();
+	pNewbie->Connect();
 
 	return ERRORCODE::NONE;
 }
 
-ERRORCODE ProcessManager::LobbyUserNameList(char* pData, User** pUserArr, int* pUserNumBuf)
+ERRORCODE ProcessManager::LobbyUserNameList(char* pData, Client** pUserArr, int* pUserNumBuf)
 {
 	auto* resPkt = (LobbyUserNameListResPkt*)pData;
-	/*
+
 	for (int i = 0; i < resPkt->userNum; i++)
 	{
-		pUserArr[i]->SetName();
-		pUserArr[i]->SetClientIdx();
-		pUserArr[i]->SetKey();
+		int clientIdx = resPkt->userClientIdxList[i];
+		pUserArr[clientIdx]->SetName(resPkt->userNameList[i]);
+		pUserArr[clientIdx]->SetClientIdx(clientIdx);
+		pUserArr[clientIdx]->SetNewKey();
+		pUserArr[clientIdx]->Connect();
 	}
-	*/
+	
+	*pUserNumBuf = resPkt->userNum;
+
 	return ERRORCODE::NONE;
 }

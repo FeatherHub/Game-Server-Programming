@@ -43,7 +43,7 @@
       <Filter>Scene\3.Lobby</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp" />
-    <ClCompile Include="..\Classes\User.cpp">
+    <ClCompile Include="..\Classes\Client.cpp">
       <Filter>Data</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,7 +66,7 @@
     <ClInclude Include="..\Classes\LobbyScene.h">
       <Filter>Scene\3.Lobby</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\User.h">
+    <ClInclude Include="..\Classes\Client.h">
       <Filter>Data</Filter>
     </ClInclude>
   </ItemGroup>

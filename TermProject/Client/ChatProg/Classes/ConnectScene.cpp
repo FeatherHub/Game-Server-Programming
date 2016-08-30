@@ -34,7 +34,8 @@ bool ConnectScene::init()
 	m_tfIP->setString("127.0.0.1");
 	m_tfIP->setMaxLengthEnabled(true);
 	m_tfIP->setMaxLength(Constants::MAX_IP_LEN);
-	m_tfIP->setPosition(Point(winSizeHalf, 200));
+	m_tfIP->setCursorChar('|');
+	m_tfIP->setCursorEnabled(true); m_tfIP->setPosition(Point(winSizeHalf, 200));
 	m_tfIP->setColor(Color3B(100, 100, 100));
 	m_tfIP->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
@@ -47,6 +48,8 @@ bool ConnectScene::init()
 	m_tfPort->setString("23452");
 	m_tfPort->setMaxLengthEnabled(true);
 	m_tfPort->setMaxLength(Constants::MAX_PORT_LEN);
+	m_tfPort->setCursorChar('|');
+	m_tfPort->setCursorEnabled(true);
 	m_tfPort->setPosition(Point(winSizeHalf, 150));
 	m_tfPort->setColor(Color3B(100, 100, 100));
 	m_tfPort->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)

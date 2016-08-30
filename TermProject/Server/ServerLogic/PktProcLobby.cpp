@@ -3,6 +3,7 @@
 ERRORCODE PacketProcessor::LobbyUserListReq(char* pData, int clientIdx)
 {
 //	auto reqPkt = (LobbyUserNameListReqPkt*)pData; //dummy packet
+	pData;
 	
 	//Ã³¸®
 	LobbyUserNameListResPkt resPkt;
@@ -14,6 +15,7 @@ ERRORCODE PacketProcessor::LobbyUserListReq(char* pData, int clientIdx)
 		if (userList[i].Connected() == true)
 		{
 			CopyMemory(resPkt.userNameList[cnt], userList[i].name, MAX_USER_NAME_LEN + 1);
+			resPkt.userClientIdxList[cnt] = userList[i].clientIdx;
 			cnt++;
 		}
 	}
