@@ -28,39 +28,23 @@ bool LobbyScene::init()
 
 	addChild(m_tfMsg);
 
-	m_tfID = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
-	m_tfID->setPosition(Point(winWidthHalf, 200));
-	m_tfID->setColor(Color3B(100, 100, 100));
-	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
-	{
-		OnTextFieldEvent(pSender, eventType);
-	});
+	m_tfChatInput = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfChatInput->setPosition(Point(winWidthHalf * 0.3f, 50));
+	addChild(m_tfChatInput);
 
-	addChild(m_tfID);
 
-	m_tfPW = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
-	m_tfPW->setPasswordEnabled(true);
-	m_tfPW->setPasswordStyleText("*");
-	m_tfPW->setPosition(Point(winWidthHalf, 150));
-	m_tfPW->setColor(Color3B(100, 100, 100));
-	m_tfPW->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
-	{
-		OnTextFieldEvent(pSender, eventType);
-	});
+	m_btnSendChat = ui::Button::create("ButtonSelect.png", "ButtonSelected.png");
+	m_btnSendChat->setPosition(Point(winWidthHalf, 50));
+	m_btnSendChat->addTouchEventListener(CC_CALLBACK_2(LobbyScene::OnChatSendBtnTouched, this));
 
-	addChild(m_tfPW);
-
-	m_btnLogin = ui::Button::create("ButtonSelect.png", "ButtonSelected.png");
-	m_btnLogin->setPosition(Point(winWidthHalf, 80));
-	m_btnLogin->addTouchEventListener(CC_CALLBACK_2(LobbyScene::OnLoginBtnTouched, this));
-
-	addChild(m_btnLogin);
+	addChild(m_btnSendChat);
 
 	m_nodeUserName = Node::create();
 	m_nodeUserName->setPosition(Point(winWidthHalf*1.5f, winHeight));
 
 	addChild(m_nodeUserName);
 
+	//Datas 
 	m_pRefNetwork = Network::GetInstance();
 
 	m_userNum = 0;
@@ -106,7 +90,7 @@ void LobbyScene::update(float delta)
 	}
 }
 
-void LobbyScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type)
+void LobbyScene::OnChatSendBtnTouched(Ref *pSender, ui::Widget::TouchEventType type)
 {
 	//switch (type)
 	//{
@@ -124,21 +108,6 @@ void LobbyScene::OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type
 	//		break;
 	//	}
 	//}
-}
-
-void LobbyScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType)
-{
-	auto textField = (ui::TextField*)pSender;
-
-	switch (eventType)
-	{
-	case ui::TextField::EventType::ATTACH_WITH_IME:
-		textField->setColor(Color3B::WHITE);
-		break;
-	case ui::TextField::EventType::DETACH_WITH_IME:
-		textField->setColor(Color3B(100, 100, 100));
-		break;
-	}
 }
 
 LobbyScene::~LobbyScene()

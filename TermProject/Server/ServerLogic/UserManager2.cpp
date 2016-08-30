@@ -25,7 +25,7 @@ void UserManager::NotifyNewbieLogin(int newbieClientIdx, char* newbieName)
 	}
 }
 
-void UserManager::NotifyLobbyChatMsg(int senderClientIdx, const char* senderName, const char* msg)
+void UserManager::NotifyLobbyChatMsg(int senderClientIdx, const char* msg)
 {
 	for (int i = 0; i < MAX_LOBBY_USER_NUM; i++)
 	{
@@ -41,8 +41,8 @@ void UserManager::NotifyLobbyChatMsg(int senderClientIdx, const char* senderName
 		}
 
 		LobbyChatNtfPkt ntfPkt;
-		CopyMemory(ntfPkt.senderName, senderName, MAX_USER_NAME_LEN);
 		CopyMemory(ntfPkt.msg, msg, MAX_CHAT_MSG_LEN);
+		ntfPkt.senderIdx = senderClientIdx;
 
 		m_pRefNetwork->SendPacket(user.GetClientIdx(), PacketId::LobbyChatNtf, (char*)&ntfPkt);
 	}

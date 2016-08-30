@@ -22,6 +22,12 @@
     <Filter Include="Data">
       <UniqueIdentifier>{00233651-2870-4e0c-91db-7dc70def5b0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\0.Test">
+      <UniqueIdentifier>{e0dad58b-ca0d-4e82-a900-286d06ea133a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{dc0c6c9d-9399-455e-ac39-b1bb4e00e19b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,9 +48,14 @@
     <ClCompile Include="..\Classes\LobbyScene2.cpp">
       <Filter>Scene\3.Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp" />
     <ClCompile Include="..\Classes\Client.cpp">
       <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TestScene.cpp">
+      <Filter>Scene\0.Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UIChatOutput.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +79,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Client.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TestScene.h">
+      <Filter>Scene\0.Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UIChatOutput.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

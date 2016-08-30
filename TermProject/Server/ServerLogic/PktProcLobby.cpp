@@ -30,21 +30,19 @@ ERRORCODE PacketProcessor::LobbyChatReq(char* pData, int clientIdx)
 {
 	auto* reqPkt = (LobbyChatReqPkt*)pData;
 	
-	//데이터 가져오기 및 유효성 검사
-	const auto* senderName = m_pRefUserManager->FindUserName(clientIdx);
-	if (senderName == nullptr)
-	{
-		return ERRORCODE::LOBBY_CHAT_SENDER_NAME_NULL;
-	}
-
 	//처리
 	LobbyChatResPkt resPkt;
 	resPkt.permitted = true;
 	
 	m_pRefNetwork->SendPacket(clientIdx, PacketId::LobbyChatRes, (char*)&resPkt);
 
+	if (resPkt.permitted == false)
+	{
+		return ERRORCODE::LOBBY_CHAT_PERMIITED_NO;
+	}
+
 	//통지
-	m_pRefUserManager->NotifyLobbyChatMsg(clientIdx, senderName, reqPkt->msg);
+	m_pRefUserManager->NotifyLobbyChatMsg(clientIdx, reqPkt->msg);
 
 	return ERRORCODE::NONE;
 }

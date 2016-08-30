@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "ui/UITextField.h"
 #include "ui/UIButton.h"
+
 USING_NS_CC;
 
 #include "..\..\Common\Constants.h"
@@ -19,12 +20,12 @@ public:
 	virtual bool init() override;
 private:
 	void update(float delta);
-	void OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType);
-	void OnLoginBtnTouched(Ref *pSender, ui::Widget::TouchEventType type);
+	void OnChatSendBtnTouched(Ref *pSender, ui::Widget::TouchEventType type);
 private:
 	//////////////////////////////////////////////////
-	// LobbySceneReflect.cpp
+	// LobbyScene2.cpp
 	//////////////////////////////////////////////////
+
 	void LoginNtf(char* pData);
 	void LobbyUserNameListRes(char* pData);
 	void LobbyChatRes(char* pData);
@@ -34,16 +35,14 @@ private:
 	void AddUserNameToListUI(Client* user);
 
 private:
-	//ui
-	ui::TextField* m_tfID;
-	ui::TextField* m_tfPW;
 	ui::TextField* m_tfMsg;
-	ui::Button* m_btnLogin;
-	
+	ui::TextField* m_tfChatInput;
+	ui::Button* m_btnSendChat;
+
 	Node* m_nodeUserName;
 	Label* m_labelNameArr[MAX_LOBBY_USER_NUM];
+
+	Network* m_pRefNetwork;
 	Client* m_userPool[MAX_LOBBY_USER_NUM];
 	int m_userNum = 0; 
-	
-	Network* m_pRefNetwork;
 };

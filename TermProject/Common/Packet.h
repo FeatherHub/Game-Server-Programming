@@ -75,7 +75,7 @@ struct LobbyChatResPkt
 
 struct LobbyChatNtfPkt 
 {
-	char senderName[MAX_USER_NAME_LEN + 1];
+	int senderIdx;
 	char msg[MAX_CHAT_MSG_LEN + 1];
 };
 #pragma pack(pop)

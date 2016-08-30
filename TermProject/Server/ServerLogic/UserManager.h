@@ -28,7 +28,7 @@ public:
 
 	void NotifyRemoveUser(int removedClientIdx);
 	void NotifyNewbieLogin(int newbieClientIdx, char* newbieName);
-	void NotifyLobbyChatMsg(int senderClientIdx, const char* senderName, const char* msg);
+	void NotifyLobbyChatMsg(int senderClientIdx, const char* msg);
 private:
 	Network* m_pRefNetwork;
 	
