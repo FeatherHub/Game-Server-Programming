@@ -18,14 +18,14 @@ RequestManager* RequestManager::GetInstance()
 
 RequestManager::RequestManager()
 {
-	m_refNetwork = Network::GetInstance();
+	m_pRefNetwork = Network::GetInstance();
 }
 
 ERRORCODE RequestManager::RequestConnect(const std::string& port, const std::string& ip)
 {
 	unsigned short portNumber = atoi(port.c_str());
 
-	auto res = m_refNetwork->ConnectTo(ip.c_str(), portNumber);
+	auto res = m_pRefNetwork->ConnectTo(ip.c_str(), portNumber);
 
 	if (res == true)
 	{
@@ -62,7 +62,7 @@ ERRORCODE RequestManager::RequestLogin(const std::string& name, const std::strin
 	CopyMemory(reqPkt.pw, pw.c_str(), pw.length());
 	reqPkt.pw[pw.length()] = '\0';
 
-	m_refNetwork->SendPacket(PacketId::LoginReq, (char*)&reqPkt);
+	m_pRefNetwork->SendPacket(PacketId::LoginReq, (char*)&reqPkt);
 	
 	return ERRORCODE::LOGIN_REQ_OK;
 }
@@ -71,7 +71,29 @@ ERRORCODE RequestManager::RequestUserNameList()
 {
 	LobbyUserNameListReqPkt reqPkt;
 	
-	m_refNetwork->SendPacket(PacketId::LobbyUserNameListReq, (char*)&reqPkt);
+	m_pRefNetwork->SendPacket(PacketId::LobbyUserNameListReq, (char*)&reqPkt);
 	
 	return ERRORCODE::LOBBY_USER_ID_LIST_REQ_OK;
+}
+
+ERRORCODE RequestManager::RequestLobbyChat(const std::string& szMsg)
+{
+	LobbyChatReqPkt reqPkt;
+	
+	if (szMsg.length() == 0)
+	{
+		return ERRORCODE::LOBBY_CHAT_REQ_NO_MSG;
+	}
+
+	if (szMsg.length() > MAX_CHAT_MSG_LEN)
+	{
+		return ERRORCODE::LOBBY_CHAT_REQ_OVERFLOW_MSG;
+	}
+
+	CopyMemory(reqPkt.msg, szMsg.c_str(), szMsg.length());
+	reqPkt.msg[szMsg.length()] = '\0';
+
+	m_pRefNetwork->SendPacket(PacketId::LobbyChatReq, (char*)&reqPkt);
+
+	return ERRORCODE::LOBBY_CHAT_REQ_OK;
 }

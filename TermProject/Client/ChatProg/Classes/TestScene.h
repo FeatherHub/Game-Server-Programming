@@ -4,7 +4,7 @@
 
 USING_NS_CC;
 
-class UIChatOutPut;
+class UIChatOutput;
 
 class TestScene : public Layer
 {
@@ -16,5 +16,5 @@ public:
 private:
 	virtual void update(float delta) override;
 
-	UIChatOutPut* m_a;
+	UIChatOutput* m_a;
 };

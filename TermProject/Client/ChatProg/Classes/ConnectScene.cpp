@@ -23,20 +23,21 @@ bool ConnectScene::init()
 
 	auto winSizeHalf = Director::getInstance()->getWinSize().width / 2;
 
-	m_tfMsg = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfMsg = ui::TextField::create("-", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfMsg->setPosition(Point(winSizeHalf, 250));
 	m_tfMsg->setString("Connect Scene");
 	m_tfMsg->setEnabled(false);
 
 	addChild(m_tfMsg);
 
-	m_tfIP = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfIP = ui::TextField::create("-", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfIP->setString("127.0.0.1");
-	m_tfIP->setMaxLengthEnabled(true);
 	m_tfIP->setMaxLength(Constants::MAX_IP_LEN);
+	m_tfIP->setMaxLengthEnabled(true);
 	m_tfIP->setCursorChar('|');
 	m_tfIP->setCursorEnabled(true); m_tfIP->setPosition(Point(winSizeHalf, 200));
 	m_tfIP->setColor(Color3B(100, 100, 100));
+	m_tfIP->attachWithIME();
 	m_tfIP->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -44,10 +45,10 @@ bool ConnectScene::init()
 
 	addChild(m_tfIP);
 
-	m_tfPort = ui::TextField::create("", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
+	m_tfPort = ui::TextField::create("-", Constants::DEFAULT_FONT, Constants::DEFAULT_FONT_SIZE);
 	m_tfPort->setString("23452");
-	m_tfPort->setMaxLengthEnabled(true);
 	m_tfPort->setMaxLength(Constants::MAX_PORT_LEN);
+	m_tfPort->setMaxLengthEnabled(true);
 	m_tfPort->setCursorChar('|');
 	m_tfPort->setCursorEnabled(true);
 	m_tfPort->setPosition(Point(winSizeHalf, 150));
@@ -105,6 +106,7 @@ void ConnectScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType event
 		break;
 	case ui::TextField::EventType::DETACH_WITH_IME:
 		textField->setColor(Color3B(100, 100, 100));
+		textField->setInsertText(true);
 		break;
 	}
 }

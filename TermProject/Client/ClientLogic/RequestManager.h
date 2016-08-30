@@ -16,7 +16,8 @@ public:
 	ERRORCODE RequestConnect(const std::string& port, const std::string& ip);
 	ERRORCODE RequestLogin(const std::string& id, const std::string& pw);
 	ERRORCODE RequestUserNameList();
+	ERRORCODE RequestLobbyChat(const std::string& szMsg);
 
 private:
-	Network* m_refNetwork;
+	Network* m_pRefNetwork;
 };

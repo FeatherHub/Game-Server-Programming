@@ -35,6 +35,7 @@ bool LoginScene::init()
 	m_tfID->setMaxLength(MAX_USER_NAME_LEN);
 	m_tfID->setCursorChar('|');
 	m_tfID->setCursorEnabled(true);
+	m_tfID->attachWithIME();
 	m_tfID->addEventListener([&](Ref* pSender, ui::TextField::EventType eventType)
 	{
 		OnTextFieldEvent(pSender, eventType);
@@ -132,6 +133,7 @@ void LoginScene::OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventTy
 		break;
 	case ui::TextField::EventType::DETACH_WITH_IME:
 		textField->setColor(Color3B(100, 100, 100));
+		textField->setInsertText(true);
 		break;
 	}
 }

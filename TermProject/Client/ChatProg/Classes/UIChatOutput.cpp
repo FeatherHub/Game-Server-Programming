@@ -1,7 +1,7 @@
 #include "UIChatOutput.h"
 #include "Constants.h"
 
-bool UIChatOutPut::init()
+bool UIChatOutput::init()
 {
 	if (Node::init() == false)
 	{
@@ -22,7 +22,7 @@ bool UIChatOutPut::init()
 	return true;
 }
 
-void UIChatOutPut::DisplayMsg(const char* msg)
+void UIChatOutput::DisplayMsg(const char* msg)
 {
 	if (m_curMsgLineNum >= Config::MAX_CHAT_LINE_DISPLAY)
 	{

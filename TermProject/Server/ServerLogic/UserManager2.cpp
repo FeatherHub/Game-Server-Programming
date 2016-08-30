@@ -41,9 +41,9 @@ void UserManager::NotifyLobbyChatMsg(int senderClientIdx, const char* msg)
 		}
 
 		LobbyChatNtfPkt ntfPkt;
-		CopyMemory(ntfPkt.msg, msg, MAX_CHAT_MSG_LEN);
+		CopyMemory(ntfPkt.msg, msg, MAX_CHAT_MSG_LEN + 1);
 		ntfPkt.senderIdx = senderClientIdx;
-
+		
 		m_pRefNetwork->SendPacket(user.GetClientIdx(), PacketId::LobbyChatNtf, (char*)&ntfPkt);
 	}
 }

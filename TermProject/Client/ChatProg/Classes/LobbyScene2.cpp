@@ -1,4 +1,5 @@
 #include "LobbyScene.h"
+#include "UIChatOutput.h"
 #include "Constants.h"
 #include "Client.h"
 
@@ -36,12 +37,29 @@ void LobbyScene::LobbyUserNameListRes(char* pData)
 
 void LobbyScene::LobbyChatRes(char* pData)
 {
-
+	LobbyChatResPkt* resPkt = (LobbyChatResPkt*)pData;
+	
+	if (resPkt->permitted)
+	{
+		m_tfMsg->setString("Your message has been permitted");
+	}
+	else
+	{
+		m_tfMsg->setString("Your message has been denied");
+	}
 }
 
 void LobbyScene::LobbyChatNtf(char* pData)
 {
+	LobbyChatNtfPkt* ntfPkt = (LobbyChatNtfPkt*)pData;
 
+	std::string& senderId = m_userPool[ntfPkt->senderIdx]->GetName();
+	auto msg = ntfPkt->msg;
+
+	senderId += ": ";
+	senderId += msg;
+
+	m_uiChatOutput->DisplayMsg(senderId.c_str());
 }
 
 void LobbyScene::RemoveUserNtf(char* pData)

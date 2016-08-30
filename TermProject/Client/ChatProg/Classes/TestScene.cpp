@@ -19,7 +19,7 @@ bool TestScene::init()
 		return false;
 	}
 
-	m_a = UIChatOutPut::create();
+	m_a = UIChatOutput::create();
 	m_a->setPosition(Point(100, 100));
 	addChild(m_a);
 

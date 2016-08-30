@@ -1,4 +1,5 @@
 #include "AppDelegate.h"
+#include "ConnectScene.h"
 #include "TestScene.h"
 
 USING_NS_CC;
@@ -74,7 +75,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     register_all_packages();
 
-    auto scene = TestScene::createScene();
+//  auto scene = TestScene::createScene();
+	auto scene = ConnectScene::createScene();
 
     director->runWithScene(scene);
 

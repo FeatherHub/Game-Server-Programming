@@ -8,6 +8,8 @@ USING_NS_CC;
 
 #include "..\..\Common\Constants.h"
 
+class UIChatOutput;
+
 class Network;
 class Client;
 
@@ -20,7 +22,10 @@ public:
 	virtual bool init() override;
 private:
 	void update(float delta);
+	void ReqSendMsg();
+	void OnTextFieldEvent(Ref* pSender, ui::TextField::EventType eventType);
 	void OnChatSendBtnTouched(Ref *pSender, ui::Widget::TouchEventType type);
+	void OnKeyPressed(EventKeyboard::KeyCode keyCode, Event* event);
 private:
 	//////////////////////////////////////////////////
 	// LobbyScene2.cpp
@@ -33,12 +38,11 @@ private:
 	void RemoveUserNtf(char* pData);
 
 	void AddUserNameToListUI(Client* user);
-
 private:
 	ui::TextField* m_tfMsg;
 	ui::TextField* m_tfChatInput;
 	ui::Button* m_btnSendChat;
-
+	UIChatOutput* m_uiChatOutput;
 	Node* m_nodeUserName;
 	Label* m_labelNameArr[MAX_LOBBY_USER_NUM];
 
