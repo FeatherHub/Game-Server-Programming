@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="NetPacket.h">
+      <Filter>Net Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Util\BodySizeMananger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Util\Logger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="NetData.h">
+      <Filter>Net Data</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPNetwork.h" />
+    <ClInclude Include="..\..\Common\Packetid.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="NetPacketQueue.h">
+      <Filter>Net Data</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Util\Logger.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPNetwork.cpp" />
+    <ClCompile Include="NetPacketQueue.cpp">
+      <Filter>Net Data</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Net Data">
+      <UniqueIdentifier>{f326bf0e-3984-4aee-b9c7-436f0d83cdc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{12eea463-c08c-4e93-8208-a2d8fddc9a49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{7df658dd-66d3-4ae2-b0a0-4a565818baf8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

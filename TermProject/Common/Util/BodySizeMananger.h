@@ -6,8 +6,10 @@ class BodySizeManager
 {
 public:
 	BodySizeManager();
-	void Init();
 	int Get(unsigned short pktId);
+
+private:
+	void Init();
 
 private:
 	short m_bodySizeArr[(int)PacketId::MAX];

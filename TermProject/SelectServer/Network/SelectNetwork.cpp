@@ -363,10 +363,6 @@ namespace NNetworkLib
 		m_clientNum--;
 
 		Logger::Write(Logger::INFO, "Force close client %s", target.IP);
-		
-		int breakpoint = 15;
-		breakpoint++;
-		breakpoint--;
 	}
 
 	void SelectNetwork::InitClientStuff()

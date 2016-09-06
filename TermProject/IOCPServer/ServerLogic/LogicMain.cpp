@@ -1,5 +1,5 @@
 #include "LogicMain.h"
-#include "..\Network\SelectNetwork.h"
+#include "..\Network\IOCPNetwork.h"
 #include "PacketProcArray.h"
 #include "UserManager.h"
 
@@ -10,8 +10,8 @@ void LogicMain::Init()
 	m_isRun = true;
 
 	m_pNetwork = new Network();
-	auto res = m_pNetwork->Init(23452, "127.0.0.1");
-	if (res == false)
+	auto res = m_pNetwork->Init(23452);
+	if (res == NETCODE::SOCKET_FUNC_ERROR)
 	{
 		Logger::Write(Logger::ERR, "Server:: Network init fail");
 		return;
@@ -26,10 +26,10 @@ void LogicMain::Init()
 
 void LogicMain::Run()
 {
+	m_pNetwork->Run();
+
 	while (m_isRun)
 	{
-		m_pNetwork->Run();
-
 		while (m_pNetwork->PacketQueueEmpty() == false)
 		{
 			auto pkt = m_pNetwork->GetPacket();
@@ -43,12 +43,19 @@ void LogicMain::Run()
 
 void LogicMain::PostProcess()
 {
-	auto& clientIdxToClose = m_pNetwork->GetClosedClients();
-	while (clientIdxToClose.empty() == false)
+	auto& closedClientIdxPool = m_pNetwork->GetClosedClientQueue();
+	auto& closedClientPoolMutex = m_pNetwork->GetClosedClientQueueMutex();
+
+	closedClientPoolMutex.lock();
+	while (closedClientIdxPool.empty() == false)
 	{
-		auto clientIdx = clientIdxToClose.front();
-		clientIdxToClose.pop();
+		auto clientIdx = closedClientIdxPool.front();
+		closedClientIdxPool.pop();
+		closedClientPoolMutex.unlock();
 
 		m_pUserMgr->RemoveUser(clientIdx);
+
+		closedClientPoolMutex.lock();
 	}
+	closedClientPoolMutex.unlock();
 }

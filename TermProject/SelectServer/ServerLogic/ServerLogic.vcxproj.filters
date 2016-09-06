@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="LogicMain.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\ErrorCode.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Packet.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Packetid.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Util\BodySizeMananger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Util\Logger.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketProcessor.h">
+      <Filter>PacketProcessCore</Filter>
+    </ClInclude>
+    <ClInclude Include="UserManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Constants.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>Data Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="PktProcHeaders.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketProcArray.h">
+      <Filter>PacketProcessCore</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LogicMain.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Util\BodySizeManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Util\Logger.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketProcessor.cpp">
+      <Filter>PacketProcessCore</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterPktProcArr.cpp">
+      <Filter>PacketProcessCore</Filter>
+    </ClCompile>
+    <ClCompile Include="PktProcLogin.cpp">
+      <Filter>PacketProcessParts</Filter>
+    </ClCompile>
+    <ClCompile Include="PktProcLobby.cpp">
+      <Filter>PacketProcessParts</Filter>
+    </ClCompile>
+    <ClCompile Include="UserManager2.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="UserManager1.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketProcArray.cpp">
+      <Filter>PacketProcessCore</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{d48c76f3-a310-4079-8859-7593e3f206a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{f40d0942-39f6-486b-8c39-f7af45dc35fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data Structure">
+      <UniqueIdentifier>{5fac2b2a-c030-446f-8865-b8b494c0d428}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{8b117848-5bcf-41d0-9e97-85e4910fbeef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{1dedf8c6-28d0-4d2c-9ae6-c943918b7dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketProcessCore">
+      <UniqueIdentifier>{ac6afc9a-7eb2-4295-87fb-0d27e56ec7ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PacketProcessParts">
+      <UniqueIdentifier>{fae32f33-cab8-44c6-861d-40a5edf25012}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -2,6 +2,9 @@
 
 enum PacketId : unsigned short
 {
+
+	EMPTY_PKT = 10,
+
 	TestReq = 30,
 	TestRes = 31,
 	
