@@ -145,9 +145,9 @@ void IOCPNetwork::AcceptThreadFunc()
 		m_clientIdxPool.pop();
 		m_idxPoolMutex.unlock();
 
-		m_clientPoolMutex.lock();
+//		m_clientPoolMutex.lock();
 		Client& newClient = m_clientPool[newIdx];
-		m_clientPoolMutex.unlock();
+//		m_clientPoolMutex.unlock();
 
 		InitClient(newClient, clientSocket, &clientAddr, true);
 
@@ -191,9 +191,9 @@ void IOCPNetwork::RecvThreadFunc()
 
 		auto clientIdx = pClientData->clientIdx;
 
-		m_clientPoolMutex.lock();
+		m_clientPoolMutex.lock(); //lock start
+
 		Client& c = m_clientPool[clientIdx]; //참조 괜찮나?
-		m_clientPoolMutex.unlock();
 		
 		if (pClientData->rwMode == RW_MODE::READ)
 		{
@@ -255,6 +255,8 @@ void IOCPNetwork::RecvThreadFunc()
 				&recvSize, &flag, 
 				&pClientData->overlapped, 
 				nullptr);
+
+		m_clientPoolMutex.unlock(); //end lock
 		}
 	}
 }
@@ -276,16 +278,23 @@ void IOCPNetwork::SendThreadFunc()
 		if(recvPkt.id == PacketId::EMPTY_PKT)
 			continue;
 
-		m_clientPoolMutex.lock();
-		Client& c = m_clientPool[recvPkt.clientIdx]; //참조인데 괜찮을까? - 데이터 공유 문제
-		m_clientPoolMutex.unlock();
+		m_clientPoolMutex.lock(); //lock start
+
+		const Client& c = m_clientPool[recvPkt.clientIdx]; //참조인데 괜찮을까? - 데이터 공유 문제
 		
 		m_bodySizeMgrMutex.lock();
 		int bodySize = m_bodySizeMgr->Get(recvPkt.id);
 		m_bodySizeMgrMutex.unlock();
 
-		send(c.socket, (char*)&recvPkt.id, PACKET_HEADER_SIZE, 0);
-		send(c.socket, recvPkt.pDataAtBuff, bodySize, 0);
+//		send(c.socket, (char*)&recvPkt.id, PACKET_HEADER_SIZE, 0);
+//		send(c.socket, recvPkt.pDataAtBuff, bodySize, 0);
+
+		int sentNum = send(c.socket, (char*)&recvPkt, PACKET_HEADER_SIZE + bodySize, 0);
+
+		//1. 다 안 보내졌을 경우에 대해 처리
+		//2. 다 보내졌으면 pData delete하기
+
+		m_clientPoolMutex.unlock(); //end lock
 	}
 }
 
