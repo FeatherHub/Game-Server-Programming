@@ -96,6 +96,12 @@ int main()
 		inet_ntop(AF_INET, &(clientAddr.sin_addr), clientIP, 32 - 1);
 		cout << "[TCP Server] Connected client IP : " << clientIP << endl;
 		
+		class Packet
+		{
+			int packetId;
+			int bodySize;
+		};
+
 		//데아터 통신
 		while (true)
 		{
@@ -109,6 +115,11 @@ int main()
 
 			buf[returnValue] = '\0';
 			cout << "Received data : " << buf << endl;
+
+			for (int i = 0; i < returnValue; i++)
+			{
+				cout << buf[i] << endl;
+			}
 
 			//데이터 전송
 			returnValue = send(client_sock, buf, returnValue, 0);
